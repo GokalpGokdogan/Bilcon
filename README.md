@@ -9,7 +9,12 @@ Begüm Kunaç
 
 Motivations and Goals:
 
-The motivation behind the project is; pivoting the currently scattered information in different platforms (buying second hand products, looking for lost items etc.) that people are looking for and allowing for a more time efficient searching/trading/buying process. Which also allows for better student solidarity. 
+The motivation behind the project is; pivoting the currently scattered information and functionality in different platforms (buying second hand products, looking for lost items etc.) that people are looking for and allowing for a more time efficient searching/trading/buying process. Which also allows for better student solidarity. 
+
+Problems:
+
+Students on campus try to perform second-hand sales and find lost items by using another application or social media apps. Not having a website specifically for this purpose and trying to carry out these transactions through different applications does not always yield the desired results. Some of these result in lost items not being found or mismatches of people buying and selling second-hand books.
+
 Features:
 
 Buying Products ~ Buyer will be able to search products through tags of the products and products’ names and will be able to communicate with the seller and bargain the price and buy the product with the bargained price,
@@ -30,5 +35,5 @@ Main selling points of our web app are uniting the solutions to the problems tha
 
 What Makes our Web App Interesting/Cool:
 
-What makes our web app interesting is that it offers a lot of features with simplistic design. 
+What makes our application interesting is not moving from application to application for the problems mentioned above, but completing these processes successfully and doing it with a simplistic design.
 
