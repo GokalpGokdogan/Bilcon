@@ -1,1 +1,1 @@
-[Link](https://online.visual-paradigm.com/share.jsp?id=323834313936362d31)
+[Link](https://online.visual-paradigm.com/share/book/class-diagram-design--1j7tura1if)
