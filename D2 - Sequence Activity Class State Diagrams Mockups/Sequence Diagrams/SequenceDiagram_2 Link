@@ -1,0 +1,13 @@
+https://online.visual-paradigm.com/share/book/communicatewithsellersequence-1k1759mcl4
+
+
+
+Scenario name: Communicate with seller
+
+Participating actor instances: Seller, Buyer:Account
+Flow of events:
+1.Buyer is interested in a product that the seller is actively selling within the system
+2. Buyer decides to send a offer to the seller
+3. Seller receives the offer
+4. Seller accepts or declines the offer message
+5. Buyer views the state of the sent message, that is, if it is accepted or declined.
