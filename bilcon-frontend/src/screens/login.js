@@ -16,8 +16,8 @@ function Login()
             <input type="password" className="border border-gray text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Min. 8 characters" required=""></input>
         </div>
         <div className='flex flex-col w-64'>
-        <button type="submit" className="w-64 mt-4 text-white bg-blue hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
-        <a href='#' className=" self-center p-2 font-sans text-blue font-medium text-xs justify-end hover:underline">Forgot Password?</a>
+        <Link type="submit" to="/home" className="w-64 mt-4 text-white bg-blue hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</Link>
+        <Link  to="/forgotPassword" className="self-center p-2 font-sans text-blue font-medium text-xs justify-end hover:underline">Forgot Password?</Link>
         </div>
         <div className='flex flex-row w-64'>
         <p className="p-2 font-sans text-blue font-medium text-xs">Don't have an account?</p>
