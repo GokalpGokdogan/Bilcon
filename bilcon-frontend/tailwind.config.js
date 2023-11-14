@@ -14,6 +14,8 @@ module.exports = {
       'gray-dark': '#273444',
       'gray': '#979797',
       'gray-light': '#F5F5F5',
+      'gray-blue': '#EDEDF9',
+      'ui-purple': '#5F6BDF',
     },
     fontFamily: {
       sans: 'DM Sans',
