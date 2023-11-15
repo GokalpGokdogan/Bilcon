@@ -7,6 +7,7 @@ import Home from './screens/home';
 import ForgotPassword from './screens/forgotPassword'
 import VerificationPage from './screens/verificationPage'
 import AccountPage from './screens/accountPage'
+import DetailsPage from './screens/detailsPage'
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="forgotPassword" element={<ForgotPassword/>} />
         <Route path="verificationPage" element={<VerificationPage/>} />
         <Route path="accountPage" element={<AccountPage/>} />
+        <Route path='detailsPage' element={<DetailsPage/>}/>
       </Routes>
     </div>
   );

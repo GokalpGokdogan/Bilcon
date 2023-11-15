@@ -4,6 +4,26 @@ import { Link } from 'react-router-dom';
 
 function Home() 
 {
+    
+    let products = [];
+    for (let i = 0; i < 5; i++) {
+        
+        products.push(
+            <Link to='/detailsPage'>
+                <img
+                    key={i}
+                    className="h-40 w-32 rounded-md mx-6 my-6"
+                    alt=''
+                    src='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg'
+                    
+                />
+            </Link>
+           
+        );
+        
+    }
+
+    
     return(
         <div className='bg-white h-screen'>
             <div className='flex flex-row p-4 w-full'>
@@ -13,11 +33,7 @@ function Home()
             </div>
             <div className='flex flex-row mx-auto justify-center items-center py-10'>
                 <div className='flex flex-row w-220'>
-                    <img className="h-40 w-32 rounded-md mx-6 my-6" alt='' src='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg'></img>
-                    <img className="h-40 w-32 rounded-md mx-6 my-6" alt='' src='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg'></img>
-                    <img className="h-40 w-32 rounded-md mx-6 my-6" alt='' src='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg'></img>
-                    <img className="h-40 w-32 rounded-md mx-6 my-6" alt='' src='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg'></img>
-                    <img className="h-40 w-32 rounded-md mx-6 my-6" alt='' src='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg'></img>
+                    {products}
                 </div>
             </div> 
        </div>
