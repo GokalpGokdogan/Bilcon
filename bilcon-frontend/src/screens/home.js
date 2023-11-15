@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Tabs, Tab } from '@mui/material';
 
 
 function Home() 
@@ -14,11 +13,11 @@ function Home()
             </div>
             <div className='flex flex-row mx-auto justify-center items-center py-10'>
                 <div className='flex flex-row w-220'>
-                    <img className="h-40 w-32 rounded-md mx-6 my-6" src='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg'></img>
-                    <img className="h-40 w-32 rounded-md mx-6 my-6" src='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg'></img>
-                    <img className="h-40 w-32 rounded-md mx-6 my-6" src='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg'></img>
-                    <img className="h-40 w-32 rounded-md mx-6 my-6" src='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg'></img>
-                    <img className="h-40 w-32 rounded-md mx-6 my-6" src='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg'></img>
+                    <img className="h-40 w-32 rounded-md mx-6 my-6" alt='' src='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg'></img>
+                    <img className="h-40 w-32 rounded-md mx-6 my-6" alt='' src='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg'></img>
+                    <img className="h-40 w-32 rounded-md mx-6 my-6" alt='' src='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg'></img>
+                    <img className="h-40 w-32 rounded-md mx-6 my-6" alt='' src='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg'></img>
+                    <img className="h-40 w-32 rounded-md mx-6 my-6" alt='' src='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg'></img>
                 </div>
             </div> 
        </div>

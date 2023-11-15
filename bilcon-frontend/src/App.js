@@ -16,7 +16,7 @@ export default function App() {
         <Route path="register" element={<Register/>} />
         <Route path="home" element={<Home/>} />
         <Route path="forgotPassword" element={<ForgotPassword/>} />
-        <Route path="forgotPassword/verificationPage" element={<VerificationPage/>} />
+        <Route path="verificationPage" element={<VerificationPage/>} />
         <Route path="accountPage" element={<AccountPage/>} />
       </Routes>
     </div>
