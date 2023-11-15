@@ -25,8 +25,8 @@ function detailsPage()
                 <p>
                 <strong>Seller:</strong>   @Gokalp
                 </p>
-                <p>
-                Required book for CS315. Especially you must buy it if 3 days left to your exam. Condition: meh
+                <p className='flex flex-col justify-center items-center'>
+                Required book for CS315. Especially you must buy it if 3 days left to your exam. <p></p>Condition: meh
                 </p> 
                 <p>
                 <strong>Price:</strong> 800 TL (price is negotiable)

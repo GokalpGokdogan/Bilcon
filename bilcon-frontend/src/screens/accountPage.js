@@ -6,7 +6,7 @@ function AccountPage()
     const buttonClassAccount = "w-64 my-1.5 text-black bg-gray-blue hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
     
     const starIcons = Array.from({ length: 5 }, (_, i) => (
-        <svg key={i} width="36px" height="35px" viewBox="0 0 36 35" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <svg key={i} className='my-auto' width="36px" height="35px" viewBox="0 0 36 35" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <title>Star</title>
             <desc>Created with Sketch.</desc>
             <defs></defs>
@@ -28,9 +28,12 @@ function AccountPage()
             <Link type="submit" to="/home" className={buttonClassAccount}>Notifications</Link>
             <Link type="submit" to="/home" className={buttonClassAccount}>Purchases</Link>
             <Link type="submit" to="/home" className={buttonClassAccount}>Sold Items</Link>
-            <Link type="submit" to="/home" className={buttonClassAccount}>Ratings
-                <div className='flex flex-row justify-center'>{starIcons}</div>
-            </Link>
+            
+            <div className='flex flex-row justify-center'>
+                <Link type="submit" to="/home" className={buttonClassAccount}>Ratings</Link>
+                {starIcons}
+            </div>
+            
             <Link type="submit" to="/home" className={buttonClassAccount}>Favorites</Link>
             
             <div className='flex flex-col w-64 mt-3'>
