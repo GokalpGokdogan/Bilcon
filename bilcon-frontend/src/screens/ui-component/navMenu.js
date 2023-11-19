@@ -9,8 +9,6 @@ function NavMenu({currPage})
     
     const pages = ['Market', 'Renting', 'Lost & Found', 'Private Lessons', 'Course Trading'];
     
-    // console.log('page:', page);
-    //console.log('currPage:', currPage);
     return(
         
         <div className="flex justify-center items-center flex-row p-4 w-full w-32 my-auto text-black bg-gray-blue hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
