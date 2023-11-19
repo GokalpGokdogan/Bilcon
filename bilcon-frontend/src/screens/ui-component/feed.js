@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 //gets product list and updates the feed
 function setList(/*filter*/){
     let list = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
         
         list.push(
             <Link to='/detailsPage' className='my-6' key={i}>
@@ -35,7 +35,9 @@ function Feed()
         
         
         <div className='flex flex-row mx-auto justify-center items-center py-10 w-220'>
-            {products}
+            <div class="grid grid-cols-5 gap-4">
+                {products}
+            </div>
         </div> 
        
     );
