@@ -1,0 +1,5 @@
+Tech Stack
+The tech stack of Bilcon is as follows:
+Client-Side / Front-end: React.js
+Server-Side: Express.js, Node.js
+Database: MongoDB
