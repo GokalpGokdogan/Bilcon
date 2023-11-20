@@ -1,17 +1,22 @@
 import React from 'react';
-import Product from './product';
+import ProductComponent from './productComponent';
+import Product from '../../Classes/Product'
 
 //gets product list and updates the feed
 function setList(/*filter*/){
     let list = [];
     for (let i = 0; i < 10; i++) {
         
+        let obj = new Product();
+        obj.productId=10+i*i*1.5
+        obj.price=10+i*i*1.5 
         list.push(
-            <Product nameIn={"CS315 Book " + (i+1)} 
+            /*<Product nameIn={"CS315 Book " + (i+1)} 
             priceIn={10+i*i*1.5} 
             sellerIn="@Gokalp" 
             photoIn='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg' 
-            key={i} />
+            key={i} />*/
+            <ProductComponent productIn={obj} key={i}/>
         );
     }
     return list;
