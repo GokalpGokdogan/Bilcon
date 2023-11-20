@@ -33,7 +33,7 @@ function Feed()
         
         
         <div className='flex flex-row mx-auto justify-center items-center py-10 w-220'>
-            <div class="grid grid-cols-5 gap-4">
+            <div className='grid grid-cols-5 gap-4'>
                 {products}
             </div>
         </div> 
