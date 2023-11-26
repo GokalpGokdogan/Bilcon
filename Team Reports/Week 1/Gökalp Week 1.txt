@@ -1,0 +1,7 @@
+I have developed pop-up error messages component. However, it created an error in registration page.
+I have created a grid system to show products in feed.
+Some pages were hard-coded, so I have created Product, Header, Feed and Navigtion Menu components.
+
+Before The Demo-Day:
+I have created Account, Details, Forgot Password, Verification and Feed(Market, Second Hand, Renting...) Pages.
+I also fixed the feed pages.
