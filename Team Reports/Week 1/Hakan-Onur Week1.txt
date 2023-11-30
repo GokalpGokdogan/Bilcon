@@ -1,0 +1,2 @@
+We have defined a User class, a UserController class, the model to store the user data in the db and also defined a basic server.
+The server handles addUser request(a post request), checks if the user exists in the db and if not, adds the user to db.
