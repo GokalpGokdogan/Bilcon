@@ -1,12 +1,16 @@
+
 const express = require("express");
 const mongoose = require("mongoose");
 const UserDB = require("./userDb");
 const UserController = require("./UserController");
+const bodyParser = require("body-parser");
+
 
 
 let userId = 0; // every user has a user id assigned by the system, this is incremented in every user
 const app = express();
-const dbUrl = ""; //enter the link of mongo db cluster;
+app.use(bodyParser.urlencoded({ extended: false }));
+const dbUrl = "mongodb://localhost:27017/UserDB"; //enter the link of mongo db cluster;
 /* 
 In order to test it, first the url should be entered above.
 In postman select post request, the link is http://localhost:3000/addUser,
@@ -45,4 +49,21 @@ app.post("/addUser", (req, res) => {
             res.send("Provided email or student id already exists");
         }
     })
+})
+app.get("/", (req,res)=>{
+    //res.send("HELLO");
+})
+app.post("/register", (req,res)=>{    
+    const nameOfUser = req.body.name;
+    const emailOfUser = req.body.email;
+    const studentIdOfUser = req.body.id;
+    const passwordOfUser = req.body.password;
+    let userController = new UserController();   
+    userController.registerUser(nameOfUser, emailOfUser, studentIdOfUser, passwordOfUser);
+})
+app.post("/login", (req,res)=>{
+    const studentIdOfUser = req.body.id;
+    const passwordOfUser = req.body.password;
+    let userController = new UserController();   
+    userController.loginUser(studentIdOfUser, passwordOfUser);
 })
