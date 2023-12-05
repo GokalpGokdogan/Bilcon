@@ -41,7 +41,7 @@ app.use(cookieParser());
  
 app.use(session({
     secret: "Lahmar",
-    saveUninitialized: true,
+    saveUninitialized: false,
     resave: false,
     cookie: {
         maxAge: 3600000,
@@ -93,6 +93,7 @@ app.post("/login", async(req,res)=>{
         req.session.save();
         console.log(req.session);        
         console.log("Login Successful");
+        res.redirect('/dashboard');
     }
     else {
         console.log("Invalid login credentials");
@@ -125,15 +126,15 @@ app.get("/logout", (req,res)=>{
     req.session.destroy();    
     console.log("You are logged out.");
 });
-app.get('/dashboard', async (req, res) => {
-    const user = await req.session.foundUser;
+app.get('/dashboard', (req, res) => {
+    const user = req.session.foundUser;
     if (user && Object.keys(user).length > 0) {
         // User is authenticated
         const user = req.session.foundUser;
         res.send(`Welcome to the dashboard, ${user.mail} with student ID ${user.studentId}`);
     } else {
         // User is not authenticated
-        console.log("Unauthorized. Session foundUser:", user);
+        console.log("Unauthorized. Session foundUser:", req.session.foundUser);
         res.status(401).send("Unauthorized. You should login again.");
     }
 });
