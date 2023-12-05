@@ -81,8 +81,8 @@ app.post("/login", (req,res)=>{
     const studentIdOfUser = req.body.id;
     const passwordOfUser = req.body.password;
     let userController = new UserController();   
-    foundUser = userController.loginUser(studentIdOfUser, passwordOfUser)
-    .then((foundUser) => {
+    let foundUser = userController.loginUser(studentIdOfUser, passwordOfUser);
+    
         if (foundUser) {
             req.session.foundUser = {
                 mail: foundUser.email,
@@ -94,11 +94,9 @@ app.post("/login", (req,res)=>{
         else {
             console.log("Invalid login credentials");
         }
-    })
-    .catch((err) => {
-        console.log(err);
+    
+
     });
-});
 
 app.get('/verify/:token/:email', (req, res)=>{ 
     const token = req.params.token; 
@@ -121,6 +119,8 @@ app.get('/verify/:token/:email', (req, res)=>{
 }); 
 
 app.get("/logout", (req,res)=>{
+    console.log(req.session);
     req.session.destroy();
+    
     console.log("You are logged out.");
 });
