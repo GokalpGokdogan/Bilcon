@@ -5,7 +5,8 @@ const UserDB = require("./userDb");
 const UserController = require("./UserController");
 const bodyParser = require("body-parser");
 const jwt = require('jsonwebtoken');
-
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
 
 
 let userId = 0; // every user has a user id assigned by the system, this is incremented in every user
@@ -24,6 +25,7 @@ the body should be in the following format:
     "passwordOfUser": "abc"
 }
 */
+
 app.use(express.json());
 mongoose.connect(dbUrl)
     .then((result) => {
@@ -34,6 +36,19 @@ mongoose.connect(dbUrl)
         console.log(err);
     })
 
+
+app.use(cookieParser());
+ 
+app.use(session({
+    secret: "Lahmar",
+    saveUninitialized: true,
+    resave: true,
+    cookie: {
+        maxAge: 3600000,
+        secure: false,
+        httpOnly: true
+    }
+}));
 
 app.post("/addUser", (req, res) => {
     const {nameOfUser, emailOfUser, studentIdOfUser, passwordOfUser} = req.body;
@@ -66,8 +81,25 @@ app.post("/login", (req,res)=>{
     const studentIdOfUser = req.body.id;
     const passwordOfUser = req.body.password;
     let userController = new UserController();   
-    userController.loginUser(studentIdOfUser, passwordOfUser);
-})
+    foundUser = userController.loginUser(studentIdOfUser, passwordOfUser)
+    .then((foundUser) => {
+        if (foundUser) {
+            req.session.foundUser = {
+                mail: foundUser.email,
+                studentId: foundUser.studentId
+            };
+            req.session.save();
+            console.log("Login Successful");
+        }
+        else {
+            console.log("Invalid login credentials");
+        }
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+});
+
 app.get('/verify/:token/:email', (req, res)=>{ 
     const token = req.params.token; 
     const email = req.params.email;     
@@ -86,6 +118,9 @@ app.get('/verify/:token/:email', (req, res)=>{
         } 
     }); 
     
-
-
 }); 
+
+app.get("/logout", (req,res)=>{
+    req.session.destroy();
+    console.log("You are logged out.");
+});
