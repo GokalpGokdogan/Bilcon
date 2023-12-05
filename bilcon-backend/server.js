@@ -42,7 +42,7 @@ app.use(cookieParser());
 app.use(session({
     secret: "Lahmar",
     saveUninitialized: true,
-    resave: true,
+    resave: false,
     cookie: {
         maxAge: 3600000,
         secure: false,
@@ -77,25 +77,26 @@ app.post("/register", (req,res)=>{
     let userController = new UserController();   
     userController.registerUser(nameOfUser, emailOfUser, studentIdOfUser, passwordOfUser);
 })
-app.post("/login", (req,res)=>{
+app.post("/login", async(req,res)=>{
     const studentIdOfUser = req.body.id;
     const passwordOfUser = req.body.password;
     let userController = new UserController();   
-    let foundUser = userController.loginUser(studentIdOfUser, passwordOfUser);
+    let foundUser = await userController.loginUser(studentIdOfUser, passwordOfUser);
     
-        if (foundUser) {
-            req.session.foundUser = {
-                mail: foundUser.email,
-                studentId: foundUser.studentId
-            };
-            req.session.save();
-            console.log("Login Successful");
-        }
-        else {
-            console.log("Invalid login credentials");
-        }
-    
-
+    //console.log(foundUser);
+    if (foundUser) {
+        req.session.foundUser = {
+            mail: foundUser.email,
+            studentId: foundUser.studentId
+        };
+        
+        req.session.save();
+        console.log(req.session);        
+        console.log("Login Successful");
+    }
+    else {
+        console.log("Invalid login credentials");
+    }
     });
 
 app.get('/verify/:token/:email', (req, res)=>{ 
@@ -120,7 +121,19 @@ app.get('/verify/:token/:email', (req, res)=>{
 
 app.get("/logout", (req,res)=>{
     console.log(req.session);
-    req.session.destroy();
-    
+    //req.session = null;
+    req.session.destroy();    
     console.log("You are logged out.");
+});
+app.get('/dashboard', async (req, res) => {
+    const user = await req.session.foundUser;
+    if (user && Object.keys(user).length > 0) {
+        // User is authenticated
+        const user = req.session.foundUser;
+        res.send(`Welcome to the dashboard, ${user.mail} with student ID ${user.studentId}`);
+    } else {
+        // User is not authenticated
+        console.log("Unauthorized. Session foundUser:", user);
+        res.status(401).send("Unauthorized. You should login again.");
+    }
 });

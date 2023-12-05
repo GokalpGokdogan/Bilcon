@@ -84,27 +84,30 @@ class UserController{
     
 
 
-    async loginUser(studentIdOfUser, passwordOfUser){  
-        let doesExists = await this.userExistsID(studentIdOfUser); 
-        if(doesExists){ //If user with given ID exists
-            const userDB = UserDB;
-            const foundUser = await userDB.findOne ({ studentId : studentIdOfUser });    
-            
-            //return new Promise(resolve, rejects);
-            
-            bcrypt.compare(passwordOfUser, foundUser.password , function(err,result){
-                if(result ===true){
-                    console.log(`User with ID ${foundUser.studentId} has logged in.`);
-                    return foundUser;
-                }
-                else{
-                    console.log("Entered wrong password");
-                    return null;
-                }
-            })
-        }
-        else{ //No user with given ID exists
-            console.log("User with entered ID does not exist.");
+    async loginUser(studentIdOfUser, passwordOfUser) {
+        try {
+            let doesExists = await this.userExistsID(studentIdOfUser);
+            if (doesExists) {
+                const userDB = UserDB;
+                const foundUser = await userDB.findOne({ studentId: studentIdOfUser });
+    
+                return new Promise((resolve, reject) => {
+                    bcrypt.compare(passwordOfUser, foundUser.password, function (err, result) {
+                        if (result === true) {
+                            console.log(`User with ID ${foundUser.studentId} has logged in.`);
+                            resolve(foundUser);
+                        } else {
+                            console.log("Entered wrong password");
+                            resolve(null);
+                        }
+                    });
+                });
+            } else {
+                console.log("User with entered ID does not exist.");
+                return null;
+            }
+        } catch (error) {
+            console.log(error);
             return null;
         }
     }
