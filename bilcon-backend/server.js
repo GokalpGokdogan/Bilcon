@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const UserDB = require("./userDb");
 const UserController = require("./UserController");
 const bodyParser = require("body-parser");
+const jwt = require('jsonwebtoken');
 
 
 
@@ -67,3 +68,24 @@ app.post("/login", (req,res)=>{
     let userController = new UserController();   
     userController.loginUser(studentIdOfUser, passwordOfUser);
 })
+app.get('/verify/:token/:email', (req, res)=>{ 
+    const token = req.params.token; 
+    const email = req.params.email;     
+    
+        
+        // Verifying the JWT token  
+    jwt.verify(token, 'ourSecretKey', function(err, decoded) { 
+        if (err) {
+            console.log(err); 
+            res.send("Email verification failed,possibly the link is invalid or expired"); 
+        } 
+        else { 
+            let userController = new UserController();               
+            userController.activateUser(email);
+            res.send("Email verifified successfully"); 
+        } 
+    }); 
+    
+
+
+}); 

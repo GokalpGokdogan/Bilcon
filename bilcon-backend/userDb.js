@@ -17,23 +17,16 @@ const userSchema = new Schema({
         type: Number,
         required: true
     },
-/*     userId: {
-        type: Number,
-        required: true
-    }, */
+
     password: {
         type: String,
         required: true
-    }
-/*     isVerified: {
+    },
+     isVerified: {
         type: Boolean,
         default: false,
         required: true
-    },
-    emailToken: {
-        type: String,
-        required: true
-    } */
+    }
 }, {timestamps: false});
 
 
