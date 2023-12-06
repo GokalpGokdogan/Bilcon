@@ -43,7 +43,7 @@ function Feed(type='Market')
                     </div> 
     }
     else if(type.type === pages[2]){
-        component = <div className='flex flex-col justify-center py-10 w-220 mx-15' style={{width:'%90',marginLeft: '45px'}}>
+        component = <div className='flex flex-col justify-center py-10 w-220' style={{marginLeft: '45px', marginRight: '45px'}}>
                         {products}
                     </div> 
     }
