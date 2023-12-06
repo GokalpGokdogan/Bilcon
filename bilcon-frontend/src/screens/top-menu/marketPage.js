@@ -16,7 +16,7 @@ function Market()
            
             <Header/>
             <NavMenu currPage='Market' />
-            <Feed/> 
+            <Feed type='Market'/> 
        </div>
     );
 }

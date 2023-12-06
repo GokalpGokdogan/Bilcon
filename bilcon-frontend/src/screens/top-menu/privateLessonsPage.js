@@ -12,7 +12,7 @@ function PrivateLessons()
            
             <Header/>
             <NavMenu currPage='Private Lessons' />
-            <Feed/> 
+            <Feed type='Private Lessons'/> 
        </div>
     );
 }

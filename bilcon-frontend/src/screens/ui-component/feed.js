@@ -3,40 +3,81 @@ import ProductComponent from './productComponent';
 import Product from '../../Classes/Product'
 
 //gets product list and updates the feed
-function setList(/*filter*/){
+function setList(prodType/*filter*/){
     let list = [];
     for (let i = 0; i < 10; i++) {
         
         let obj = new Product();
         obj.productId=10+i*i*1.5
         obj.price=10+i*i*1.5 
+        
         list.push(
-            /*<Product nameIn={"CS315 Book " + (i+1)} 
-            priceIn={10+i*i*1.5} 
-            sellerIn="@Gokalp" 
-            photoIn='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg' 
-            key={i} />*/
-            <ProductComponent productIn={obj} key={i}/>
+            <ProductComponent key={ obj.productId + i} productIn={obj}  type={prodType}/>
         );
     }
     return list;
 }
 
-function Feed() 
+function Feed(type='Market') 
 {
     
     /**filter = database; */
-    let products = setList(/*filter*/);
-    
+    let products = setList(type/*filter*/);
+    const pages = ['Market', 'Renting', 'Lost & Found', 'Private Lessons', 'Course Trading'];
+
+    let component;
+    //console.log(productIn)
+
+    if(type.type === pages[0]){
+        component = <div className='flex flex-row mx-auto justify-center items-center py-10 w-220'>
+                        <div className='grid grid-cols-5 gap-4'>
+                            {products}
+                        </div>
+                    </div> 
+    }
+    else if(type.type === pages[1]){
+        component = <div className='flex flex-row mx-auto justify-center items-center py-10 w-220'>
+                        <div className='grid grid-cols-5 gap-4'>
+                            {products}
+                        </div>
+                    </div> 
+    }
+    else if(type.type === pages[2]){
+        component = <div className='flex flex-col justify-center py-10 w-220 mx-15' style={{width:'%90',marginLeft: '45px'}}>
+                        {products}
+                    </div> 
+    }
+    else if(type.type === pages[3]){
+        component = <div className='flex flex-row mx-auto justify-center items-center py-10 w-220'>
+                        <div className='grid grid-cols-4 gap-4'>
+                            {products}
+                        </div>
+                    </div> 
+    }
+    else if(type.type === pages[4]){
+        /**Must be discussed later */
+        component = <div className='flex flex-row mx-auto justify-center items-center py-10 w-220'>
+                        <div className='grid grid-cols-5 gap-4'>
+                            {products}
+                        </div>
+                    </div> 
+    }
+    else {
+        component = <div>
+                        <strong>Unknown Error</strong>
+                    </div>
+    }
+
+
+
+
+
+
     
     return(
         
         
-        <div className='flex flex-row mx-auto justify-center items-center py-10 w-220'>
-            <div className='grid grid-cols-5 gap-4'>
-                {products}
-            </div>
-        </div> 
+        component
        
     );
 }
