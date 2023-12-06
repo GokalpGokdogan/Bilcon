@@ -76,6 +76,7 @@ app.post("/register", (req,res)=>{
     const passwordOfUser = req.body.password;
     let userController = new UserController();   
     userController.registerUser(nameOfUser, emailOfUser, studentIdOfUser, passwordOfUser);
+    res.send("User registered, waiting for email confirm");
 })
 app.post("/login", async(req,res)=>{
     const studentIdOfUser = req.body.id;
@@ -109,22 +110,23 @@ app.get('/verify/:token/:email', (req, res)=>{
     jwt.verify(token, 'ourSecretKey', function(err, decoded) { 
         if (err) {
             console.log(err); 
-            res.send("Email verification failed,possibly the link is invalid or expired"); 
+            res.send("Email verification failed,possibly the link is invalid or expired").redirect("/register");
+         
         } 
         else { 
             let userController = new UserController();               
             userController.activateUser(email);
-            res.send("Email verifified successfully"); 
+            res.redirect("/login"); 
         } 
     }); 
     
 }); 
 
 app.get("/logout", (req,res)=>{
-    console.log(req.session);
+    //console.log(req.session);
     //req.session = null;
     req.session.destroy();    
-    console.log("You are logged out.");
+    res.send("You are logged out.");
 });
 app.get('/dashboard', (req, res) => {
     const user = req.session.foundUser;
@@ -134,7 +136,11 @@ app.get('/dashboard', (req, res) => {
         res.send(`Welcome to the dashboard, ${user.mail} with student ID ${user.studentId}`);
     } else {
         // User is not authenticated
-        console.log("Unauthorized. Session foundUser:", req.session.foundUser);
-        res.status(401).send("Unauthorized. You should login again.");
+        //console.log("Unauthorized. Session foundUser:", req.session.foundUser);
+        res.status(401).redirect("/login");
+       
     }
 });
+app.get("/login", (req,res)=>{
+    res.send("Hello, log in");
+})
