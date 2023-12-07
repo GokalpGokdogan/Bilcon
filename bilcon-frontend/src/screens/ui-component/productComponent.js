@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 
 
-function ProductComponent({productIn, type = 'Market'} /*{nameIn="Nameless", priceIn=-1, sellerIn="@Gokalp", photoIn='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg', key="" }*/) 
+function ProductComponent({productIn, type = 'Market'} /*{nameIn="Nameless", priceIn=-1, sellerIn="@Gokalp", imgIn='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg', key="" }*/) 
 {
     
     /**filter = database; */
@@ -16,14 +16,14 @@ function ProductComponent({productIn, type = 'Market'} /*{nameIn="Nameless", pri
 
     let component;
     //console.log(productIn)
-
+        
     if(type.type === pages[0]){
         component = <Link to='/detailsPage' className='bg-gray-light rounded-md' key={product.id}>
         <div className='m-6'>
             <img            
             className="h-40 w-32 rounded-md "
                 alt=''
-                src={`${product.photo } `}
+                src={`${product.img} `}
             />
             <div className='w-auto flex flex-col justify-center items-left mt-3 text-ellipsis' style={{fontSize:'12px'}}>
                 <strong className='text-ui-purple'>{product.name}</strong>
@@ -39,7 +39,7 @@ function ProductComponent({productIn, type = 'Market'} /*{nameIn="Nameless", pri
             <img            
             className="h-40 w-32 rounded-md "
                 alt=''
-                src={`${product.photo } `}
+                src={`${product.img } `}
             />
             <div className='w-auto flex flex-col justify-center items-left mt-3 text-ellipsis' style={{fontSize:'12px'}}>
                 <strong className='text-ui-purple'>{product.name}</strong>
@@ -56,7 +56,7 @@ function ProductComponent({productIn, type = 'Market'} /*{nameIn="Nameless", pri
             <img            
             className="h-60 w-48 rounded-md mr-4"
                 alt=''
-                src={`${product.photo } `}
+                src={`${product.img } `}
             />
             <div className='w-auto flex flex-col m-6 w-60 ' style={{fontSize:'12px'}}>
             <strong  className='text-ui-purple text-ellipsis' style={{fontSize:'20px'}}>{product.name}</strong>
@@ -94,7 +94,7 @@ function ProductComponent({productIn, type = 'Market'} /*{nameIn="Nameless", pri
                         <img            
                         className="h-40 w-32 rounded-md mx-6 my-2"
                             alt=''
-                            src={`${product.photo } `}
+                            src={`${product.img } `}
                         />
                         <div className='w-auto flex flex-col justify-center items-center text-ellipsis' style={{fontSize:'12px'}}>
                             <strong>{product.name}</strong>
