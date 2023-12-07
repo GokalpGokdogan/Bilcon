@@ -27,7 +27,7 @@ function ProductComponent({productIn, type = 'Market'} /*{nameIn="Nameless", pri
             />
             <div className='w-auto flex flex-col justify-center items-left mt-3 text-ellipsis' style={{fontSize:'12px'}}>
                 <strong className='text-ui-purple'>{product.name}</strong>
-                <p>{product.seller}</p>
+                <p>{(product.seller).replace('@','')}</p>
                 <p>Price: {product.price}</p>
             </div>
         </div>
@@ -43,7 +43,7 @@ function ProductComponent({productIn, type = 'Market'} /*{nameIn="Nameless", pri
             />
             <div className='w-auto flex flex-col justify-center items-left mt-3 text-ellipsis' style={{fontSize:'12px'}}>
                 <strong className='text-ui-purple'>{product.name}</strong>
-                <p>{product.seller}</p>
+                <p>{(product.seller).replace('@','')}</p>
                 <p>Price: {product.price}</p>
                 <p>Duration: - </p>
             </div>
@@ -59,16 +59,15 @@ function ProductComponent({productIn, type = 'Market'} /*{nameIn="Nameless", pri
                 src={`${product.img } `}
             />
             <div className='w-auto flex flex-col m-6 w-60 ' style={{fontSize:'12px'}}>
-            <strong  className='text-ui-purple text-ellipsis' style={{fontSize:'20px'}}>{product.name}</strong>
-            <div className='flex flex-row text-ui-pruple'>
-                <img className='h-4 w-4' alt='' src='https://png.pngtree.com/png-clipart/20191121/original/pngtree-vector-location-icon-png-image_5159127.jpg'/>
-                <p className='text-gray'>Lorem ipsum  
-                --/--/---- </p>
-            </div>
-            <div className='flex flex-col mt-auto text-ellipsis'>
-                <strong>{product.seller}</strong>
-                <strong>Price: {product.price} TL/hour</strong>
-            </div>
+                <strong  className='text-ui-purple text-ellipsis' style={{fontSize:'20px'}}>{product.name}</strong>
+                <div className='flex flex-row text-ui-pruple'>
+                    <img className='h-4 w-4' alt='' src='https://png.pngtree.com/png-clipart/20191121/original/pngtree-vector-location-icon-png-image_5159127.jpg'/>
+                    <p className='text-gray'>Lorem ipsum  
+                    --/--/---- </p>
+                </div>
+                <div className='flex flex-col mt-auto text-ellipsis'>
+                    <strong>{(product.seller).replace('@','')}</strong>
+                </div>
             </div>
 
         </div>
@@ -81,7 +80,7 @@ function ProductComponent({productIn, type = 'Market'} /*{nameIn="Nameless", pri
             <strong  className='text-ui-purple' style={{fontSize:'20px', overflowWrap: 'break-word'}}>{product.name}</strong>
             <div className='flex flex-col mt-auto'>
                 
-                <strong>{product.seller}</strong>
+                <strong>{(product.seller).replace('@','')}</strong>
                 <strong>Price: {product.price} TL/hour</strong>
             </div>
             {/* <div className='h-20'></div> */}
@@ -98,7 +97,7 @@ function ProductComponent({productIn, type = 'Market'} /*{nameIn="Nameless", pri
                         />
                         <div className='w-auto flex flex-col justify-center items-center text-ellipsis' style={{fontSize:'12px'}}>
                             <strong>{product.name}</strong>
-                            <p>{product.seller}</p>
+                            <p>{(product.seller).replace('@','')}</p>
                             <p>Price: {product.price}</p>
                         </div>
                     </Link>
