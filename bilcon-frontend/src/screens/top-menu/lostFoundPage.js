@@ -15,7 +15,7 @@ function LostFound()
            
             <Header/>
             <NavMenu currPage='Lost & Found' />
-            <Feed/>
+            <Feed type='Lost & Found'/>
        </div>
     );
 }

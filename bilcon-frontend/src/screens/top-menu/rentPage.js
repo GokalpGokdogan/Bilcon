@@ -15,7 +15,7 @@ function Rent()
            
             <Header/>
             <NavMenu currPage='Renting' />
-            <Feed/>
+            <Feed type='Renting'/>
        </div>
     );
 }

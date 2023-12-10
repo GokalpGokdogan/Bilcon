@@ -13,7 +13,7 @@ function CourseTrading()
            
             <Header/>
             <NavMenu currPage='Course Trading' />
-            <Feed/>
+            <Feed  type='Course Trading'/>
        </div>
     );
 }

@@ -2,11 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import NavMenu from './ui-component/navMenu';
 import Header from './ui-component/header';
+import ListHorizontal from './ui-component/listHorizontal';
 
 
 function AccountPage() 
 {
-    const buttonClassAccount = "w-64 my-1.5 text-black bg-gray-blue hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+    const buttonClassAccount = "w-64 my-1.5 text-ui-purple bg-gray-blue hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
     
     const starIcons = Array.from({ length: 5 }, (_, i) => (
         <svg key={i} className='my-auto' width="36px" height="35px" viewBox="0 0 36 35" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -23,6 +24,8 @@ function AccountPage()
         </svg>
     ));
 
+    const line = <hr className='border-white border-1 w-100 my-[0.5vw]'/>
+
     
     
     return(
@@ -30,27 +33,35 @@ function AccountPage()
             <Header/>
             <NavMenu currPage="Account"/>
             <div className='flex flex-row'>
-        <div className='flex flex-col bg-white h-screen px-10'>
-            <p className='font-inter font-extrabold text-3xl text-ui-purple my-4'>Account</p>
-            <Link type="submit" to="/home" className={buttonClassAccount}>Favorites</Link>
-            <Link type="submit" to="/home" className={buttonClassAccount}>Purchases</Link>
-            <Link type="submit" to="/home" className={buttonClassAccount}>Notifications</Link>
-            
-            
-            <Link type="submit" to="/home" className={buttonClassAccount}>Security</Link>
-            <Link type="submit" to="/home" className={buttonClassAccount}>Sold Items</Link>
-            <Link type="submit" to="/home" className={buttonClassAccount}>Ratings</Link>
-            <div className='flex flex-row justify-center'>
-                
-                {starIcons}
-            </div>
+                <div className='flex flex-col bg-white h-screen px-10'>
+                    <p className='font-inter font-extrabold text-3xl text-ui-purple my-4'>Account</p>
+                    
+                    <Link type="submit" to="/home" className={buttonClassAccount}>Notifications</Link>
+                    {line}
+                    <Link type="submit" to="/home" className={buttonClassAccount}>Security</Link>
+                    {line}
+                    {ListHorizontal('Favorites')}
+                    {line}
+                    {ListHorizontal('Purchases')}
+                    {line}
+                    {ListHorizontal('Sold Items')}
+                    {line}
+                    <div className='flex flex-row justify-start ml-9'>
+                        {starIcons}
+                    </div>
+                    
+                    {/* <Link type="submit" to="/home" className={buttonClassAccount}>Favorites</Link>
+                    <Link type="submit" to="/home" className={buttonClassAccount}>Purchases</Link>
+                    <Link type="submit" to="/home" className={buttonClassAccount}>Notifications</Link>
+                    
+                    
+                    <Link type="submit" to="/home" className={buttonClassAccount}>Security</Link>
+                    <Link type="submit" to="/home" className={buttonClassAccount}>Sold Items</Link>
+                    <Link type="submit" to="/home" className={buttonClassAccount}>Ratings</Link> */}
 
-            <div className='flex flex-col w-64 mt-3'>
+                </div>
                 
             </div>
-        </div>
-        
-    </div>
         </div>
     
     
