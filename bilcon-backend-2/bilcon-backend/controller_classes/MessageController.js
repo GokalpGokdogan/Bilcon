@@ -24,11 +24,11 @@ class messageController{
         try{
         
             const messages = await messageModel.find({chatId});
-            res.status(200).json(messages);
+            return messages;
     
         }catch(error){
             console.log(error);
-            res.status(500).json(error);
+            return false;
         }
     };
 

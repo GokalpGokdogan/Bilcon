@@ -550,7 +550,7 @@ app.post("/createChat", (req, res) => {
                 res.status(200).json(result);
             }
             else{
-                res.status(500).json(error);
+                res.status(500);
             }
         })
 
@@ -578,7 +578,7 @@ app.get("/findUserChats/:userId", (req, res) => {
             if(result){
                 res.status(200).json(result);
             }else{
-                res.status(500).json(error);
+                res.status(500);
             }
 
 
@@ -609,7 +609,7 @@ app.get("/find/:firstId/:secondId", (req, res) => {
             if(result){
                 res.status(200).json(result);
             }else{
-                res.status(500).json(error);
+                res.status(500);
             }
         });
 
@@ -640,9 +640,9 @@ app.post("/createMessage", (req, res) => {
     messageController.createMessage(chatId, senderId, text)
         .then((result) => {
             if(result){     
-                res.status(200).json(response);
+                res.status(200).json(result);
             }else{
-                res.status(500).json(error);
+                res.status(500);
             }
         });
 
@@ -665,7 +665,11 @@ app.get("/getMessages/:chatId", (req, res)=>{
 
     messageController.getMessages(chatId)
         .then((result) =>{
-
+            if(result){
+                res.status(200).json(result);
+            }else{
+                res.status(500);
+            }
         })
 
 });
