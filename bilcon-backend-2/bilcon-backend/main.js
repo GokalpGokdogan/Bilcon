@@ -14,6 +14,9 @@ const archiver = require('archiver');
 const { Readable } = require('stream');
 const SaleItem = require("./js_classes/SaleItem");
 const RentItem = require("./js_classes/RentItem");
+const ChatController = require("./controller_classes/ChatController");
+const MessageController = require("./controller_classes/MessageController");
+
 
 let itemId = 0;
 
@@ -522,3 +525,147 @@ app.get("/filterItems", async (req, res) => {
     }
 })
 
+/* 
+    Creates a chat between the two designated users. 
+    The subsequent message objects are then tied to this chat object.
+    The format of the request:
+
+    {
+        "firstId" : "IdOfUser1",
+        "secondId" : "IfOfUser2"
+    }
+
+
+
+*/
+app.post("/createChat", (req, res) => {
+   
+    const {firstId, secondId} = req.body;
+
+    let chatController = new ChatController();
+
+    chatController.createChat(firstId, secondId)
+        .then((result) =>{
+            if(result){
+                res.status(200).json(result);
+            }
+            else{
+                res.status(500).json(error);
+            }
+        })
+
+
+});
+
+
+/*
+
+    Returns all chats of a user.
+    The user id of the given user is given as a PARAMETER in the request endpoint.
+
+*/
+ 
+
+app.get("/findUserChats/:userId", (req, res) => {
+
+        const userId = req.params.userId;
+
+        let chatController = new ChatController();
+
+        chatController.findUserChats(userId)
+        .then((result) =>{
+
+            if(result){
+                res.status(200).json(result);
+            }else{
+                res.status(500).json(error);
+            }
+
+
+        });
+
+});
+
+/*
+    Returns the specific chat between two users.
+    The user id's of the two users is given as parameters within the endpoint.
+
+    TODO:
+        Make the chats not tied between two users, but also between two different items.
+        That is, create different chats for different items.
+
+*/
+
+
+app.get("/find/:firstId/:secondId", (req, res) => {
+    
+
+    const {firstId, secondId} = req.params;
+    let chatController = new ChatController();
+
+    chatController.findChat(firstId, secondId)
+        .then((result) => {
+
+            if(result){
+                res.status(200).json(result);
+            }else{
+                res.status(500).json(error);
+            }
+        });
+
+});
+
+
+/*
+
+    Creates the message that the user wants to send to the other user, and ties it to the given chat.
+    For this, chatId, senderId, and the content of the message should be given within the request body.
+
+    The format of request:
+
+    {
+     "chatId" : "65737167ce518188d397f5b5",
+     "senderId" : "abc123",
+     "text" : "hello"
+    }
+
+*/
+
+app.post("/createMessage", (req, res) => {
+
+    const {chatId, senderId, text} = req.body;
+
+    let messageController = new MessageController();
+
+    messageController.createMessage(chatId, senderId, text)
+        .then((result) => {
+            if(result){     
+                res.status(200).json(response);
+            }else{
+                res.status(500).json(error);
+            }
+        });
+
+
+});
+
+/*
+
+   Returns all the messages of a given chat between two users.
+   For this, the chatId must be given within the request paramaters.
+
+*/
+
+
+app.get("/getMessages/:chatId", (req, res)=>{
+
+    const chatId = req.params.chatId;
+
+    let messageController = new MessageController();
+
+    messageController.getMessages(chatId)
+        .then((result) =>{
+
+        })
+
+});
