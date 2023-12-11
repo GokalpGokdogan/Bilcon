@@ -53,8 +53,6 @@ function AccountPage()
                     {/* <Link type="submit" to="/home" className={buttonClassAccount}>Favorites</Link>
                     <Link type="submit" to="/home" className={buttonClassAccount}>Purchases</Link>
                     <Link type="submit" to="/home" className={buttonClassAccount}>Notifications</Link>
-                    
-                    
                     <Link type="submit" to="/home" className={buttonClassAccount}>Security</Link>
                     <Link type="submit" to="/home" className={buttonClassAccount}>Sold Items</Link>
                     <Link type="submit" to="/home" className={buttonClassAccount}>Ratings</Link> */}
