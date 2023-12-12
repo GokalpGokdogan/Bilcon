@@ -1,0 +1,1 @@
+We have completed the registration, login and logout feautures. Session based authentication is done with the help of cookies and sending verification mail to users mail is implemented. Related database management(activating user etc.) also done.
