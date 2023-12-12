@@ -4,7 +4,7 @@
     import Header from './ui-component/header';
 import Product from '../Classes/Product';
 
-    function detailsPage({productIn, type = 'Private Lessons'}) 
+    function detailsPage({productIn, type = 'Course Trading'}) 
     {
         const product = productIn || new Product();
         const pages = ['Market', 'Renting', 'Lost & Found', 'Private Lessons', 'Course Trading'];
@@ -224,29 +224,45 @@ import Product from '../Classes/Product';
 
                             <Header/>
                             <NavMenu currPage="Details Page"/>
-                            <h1 className='font-inter font-extrabold text-3xl text-ui-purple my-4'>{product.name}</h1>
-                            <div className='flex flex-row'>
+                            <h1 className='font-inter font-extrabold text-3xl text-ui-purple my-1'>{product.name}~{product.price}{/**[lecture code]~[section no] */}</h1>
+                            <div className='flex flex-row bg-gray-light rounded-xl'>
                                 <div>
                                     <img
-                                        className="h-120 w-96 rounded-md mx-6 my-6"
+                                        className="h-[32vw] w-[24vw] rounded-md m-[2vw]"
                                         alt=''
                                         src={`${product.img } `}
                                     />
                                 </div>
-                                <div className='flex flex-col justify-center items-center'>
-                                    <p>
-                                    <strong>Seller:</strong>   {(product.seller).replace('@','')}
-                                    </p>
-                                    <p className='flex flex-col justify-center items-center'>
-                                    {product.description}
-                                    </p> 
-                                    <p>
-                                    <strong>Price:</strong> {product.price} TL
-                                    </p>
-                                    {/* DM */}
-                                    <Link to='/Market' /**Change it to correct form */ className='bg-ui-pirple rounded-md text-white' key={product.id}/**Change it to correct id */>
-                                    </Link>
+                                <div className='block h-[20vw] w-[50vw]'>
+                                    <div className='flex flex-col justify-center text-ellipsis m-6 items-left'>
+                                        {user}
+                                        <div className='flex flex-row text-ui-pruple items-stretch'>
+                                            <div className='flex flex-row mr-auto'>
+                                                <img className='h-4 w-4 my-auto mr-[1vw]' alt='' src='https://png.pngtree.com/png-clipart/20191121/original/pngtree-vector-location-icon-png-image_5159127.jpg'/>
+                                                <p className='text-gray'>Lorem Ipsum </p> 
+                                            </div>
+
+                                            <p className='text-gray mr-4'>--/--/---- </p>
+                                        </div>
+                                        {line}
+                                        <div className='relative flex-col h-[20vw] w-[45vw] overflow-hidden text-ellipsis '>
+                                            <p>
+                                                {product.description}
+                                            </p>
+                                            <div style={{ paddingTop: '50%' }}></div>
+                                        </div>
+                                        
+                                        
+                                        {line}
+                                        {/* DM */}
+                                        <div>
+                                            <Link to='/Market' /**Change it to correct form */ className='bg-ui-purple rounded-md text-white p-3 inline-block' key={product.id}/**Change it to correct id */>
+                                                DM {(product.seller).replace('@','')}
+                                            </Link>
+                                        </div>
+                                    </div>
                                 </div>
+                                
 
 
                             </div>

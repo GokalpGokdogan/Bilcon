@@ -76,29 +76,29 @@ function ProductComponent({productIn, type = 'Market'} /*{nameIn="Nameless", pri
     }
     else if(type.type === pages[3]){
         component = <Link to='/detailsPage' className='my-6 mx-6 w-60 h-60 bg-gray-light rounded-md' key={product.id}>
-        <div className='w-auto h-auto flex flex-col justify-center items-left m-6 items-stretch' style={{fontSize:'14px', height: '80%'}}>
-            <strong  className='text-ui-purple' style={{fontSize:'20px', overflowWrap: 'break-word'}}>{product.name}</strong>
-            <div className='flex flex-col mt-auto'>
-                
-                <strong>{(product.seller).replace('@','')}</strong>
-                <strong>Price: {product.price} TL/hour</strong>
-            </div>
-            {/* <div className='h-20'></div> */}
-            
-        </div>
-    </Link>
+                        <div className='w-auto h-auto flex flex-col justify-center items-left m-6 items-stretch' style={{fontSize:'14px', height: '80%'}}>
+                            <strong  className='text-ui-purple' style={{fontSize:'20px', overflowWrap: 'break-word'}}>{product.name}</strong>
+                            <div className='flex flex-col mt-auto'>
+                                
+                                <strong>{(product.seller).replace('@','')}</strong>
+                                <strong>Price: {product.price} TL/hour</strong>
+                            </div>
+                            {/* <div className='h-20'></div> */}
+                            
+                        </div>
+                    </Link>
     }
     else if(type.type === pages[4]){
-        component = <Link to='/detailsPage' className='my-6' key={product.id}>
-                        <img            
-                        className="h-40 w-32 rounded-md mx-6 my-2"
-                            alt=''
-                            src={`${product.img } `}
-                        />
-                        <div className='w-auto flex flex-col justify-center items-center text-ellipsis' style={{fontSize:'12px'}}>
-                            <strong>{product.name}</strong>
-                            <p>{(product.seller).replace('@','')}</p>
-                            <p>Price: {product.price}</p>
+        component = <Link to='/detailsPage' className='my-6 mx-6 w-60 h-60 bg-gray-light rounded-md' key={product.id}>
+                        <div className='w-auto h-auto flex flex-col justify-center items-left m-6 items-stretch' style={{fontSize:'14px', height: '80%'}}>
+                            <strong  className='text-ui-purple' style={{fontSize:'20px', overflowWrap: 'break-word'}}>{product.name}</strong>
+                            <div className='flex flex-col mt-auto'>
+                                
+                                <strong>{(product.seller).replace('@','')}</strong>
+                                <strong>Section: {product.price}</strong>
+                            </div>
+                            {/* <div className='h-20'></div> */}
+                            
                         </div>
                     </Link>
     }
