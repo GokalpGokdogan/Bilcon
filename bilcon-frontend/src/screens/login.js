@@ -30,7 +30,7 @@ function Login()
             </div>    
             <div>
                 <p className="font-sans text-blue font-bold text-sm py-2">Password</p>
-                <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="border border-gray text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-2.5 w-full" placeholder="Min. 8 characters" required=""></input>
+                <input value={password} minLength={6} maxLength={64} onChange={(e) => setPassword(e.target.value)} type="password" className="border border-gray text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-2.5 w-full" placeholder="Min. 8 characters" required=""></input>
             </div>
             <Link onClick={() => login(id, password)} 
                 type="submit" 
