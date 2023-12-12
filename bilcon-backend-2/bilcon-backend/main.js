@@ -1,4 +1,3 @@
-
 const express = require("express");
 const mongoose = require("mongoose");
 const UserController = require("./controller_classes/UserController");
@@ -17,12 +16,20 @@ const RentItem = require("./js_classes/RentItem");
 const ChatController = require("./controller_classes/ChatController");
 const MessageController = require("./controller_classes/MessageController");
 
+const app = express();
 
+const cors = require('cors');
+const corsOptions ={
+    origin:'http://localhost:3001', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
+}
+app.use(cors(corsOptions));
 let itemId = 0;
 
-const app = express();
+
 app.use(bodyParser.urlencoded({ extended: false }));
-const dbUrl = ""; //enter the link of mongo db cluster;
+const dbUrl = "mongodb://localhost:27017/UserDB"; //enter the link of mongo db cluster;
 
 /* 
 In order to test it, first the url should be entered above.
@@ -39,13 +46,10 @@ the body should be in the following format:
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 const options = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
+
   };
 app.use(express.json());
-mongoose.connect(dbUrl, options)
+mongoose.connect(dbUrl)
     .then((result) => {
         app.listen(3000);
         console.log("connected"); // this appears at the console when the connection to databse is done
@@ -113,7 +117,7 @@ app.post("/login", async(req,res)=>{
         req.session.save();
         console.log(req.session);        
         console.log("Login Successful");
-        res.redirect('/dashboard');
+        res.redirect("http://localhost:3001/home");
     }
     else {
         console.log("Invalid login credentials");
@@ -135,7 +139,7 @@ app.get('/verify/:token/:email', (req, res)=>{
         else { 
             let userController = new UserController();               
             userController.activateUser(email);
-            res.redirect("/login"); 
+            res.redirect("http://localhost:3001"); 
         } 
     }); 
     
@@ -147,10 +151,11 @@ app.get("/logout", (req,res)=>{
     req.session.destroy();    
     res.send("You are logged out.");
 });
-app.get('/dashboard', (req, res) => {
+app.get('/home', (req, res) => {
     const user = req.session.foundUser;
     if (user && Object.keys(user).length > 0) {
         // User is authenticated
+        
         const user = req.session.foundUser;
         res.send(`Welcome to the dashboard, ${user.mail} with student ID ${user.studentId}`);
     } else {
