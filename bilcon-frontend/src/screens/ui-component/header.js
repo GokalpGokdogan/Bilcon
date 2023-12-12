@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 
 
 function Header() 
 {
+
+    const [isOpen, setIsOpen] = useState(false);
+
     return(
-    <div className='flex flex-row p-4 w-full'>
-        <div className='w-2'>
+    <div className='flex flex-row p-2 px-4 w-full justify-between'>
+        <div className='w-[10vw]'>
             <Link to="/market" onMouseOver={(e) =>{
                 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 let repetitons = 0;
@@ -24,12 +27,22 @@ function Header()
                             clearInterval(interval)
                             
                         }
-                        repetitons+=4/5;
+                        repetitons+=3/4;
                     },30)
                 }} data-value="BILCON" className='font-inter font-extrabold text-3xl text-blue-dark'>BILCON</Link>
         </div>
-        
-        <input type="text" className="mx-auto border border-gray bg-gray-light text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-2.5 w-80 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Search for second-hand items, books and more!" required=""></input>
+        <div className='flex flex-row justify-center'>
+            <input type="text" className="mx-2 border border-gray bg-gray-light text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-2.5 w-80 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Search for second-hand items, books and more!" required=""></input>
+            <div className='relative'>
+                <button onClick={() => setIsOpen(!isOpen)} className="bg-ui-purple text-white py-2 px-4 rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Filter</button>
+                {isOpen && (
+                    <div className="bg-gray-blue w-[10vw] h-[10vw] z-10 absolute top-full left-0 border-ui-purple shadow-lg rounded-lg p-4 transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">
+                        {/* Your popup content goes here */}
+                        <div className="text-ui-purple text-center font-bold">Your Cool Content /**Your popup content goes here*/</div>
+                    </div>
+                )}
+            </div>
+        </div>
         <Link type="submit" to="/accountPage" className="w-32 my-auto text-white bg-ui-purple hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Account</Link>
     </div>);
 }
