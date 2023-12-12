@@ -13,7 +13,10 @@ function Register()
     const [conditionToShowAlert, setConditionToShowAlert] = useState(false);
 
     return(
-        <div className='flex flex-col bg-white justify-center items-center h-screen'>
+        <div className='flex flex-col bg-white items-center h-screen'>
+        <div className='flex flex-col bg-white items-center h-1/6'>
+            {/* Your content here */}
+        </div>
         <p className='font-inter font-extrabold text-7xl text-blue-dark'>BILCON</p>
         <p className='font-sans font-medium text-md text-gray mb-3'>Welcome to Bilcon!</p>
         <p className='font-sans font-bold text-lg text-gray justify-start mb-3'>Sign up to start.</p>

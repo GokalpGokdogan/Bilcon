@@ -4,7 +4,10 @@ import { Link } from 'react-router-dom';
 function forgotPassword() 
 {
     return(
-    <div className='flex flex-col bg-white justify-center items-center h-screen'>
+    <div className='flex flex-col bg-white items-center h-screen'>
+        <div className='flex flex-col bg-white items-center h-1/6'>
+            {/* Your content here */}
+        </div>
         <p className='font-inter font-extrabold text-7xl text-blue-dark'>BILCON</p>
         <p className='font-sans font-medium text-md text-gray'>Welcome to Bilcon!</p>
         <p className='mt-2 font-sans font-bold text-lg text-gray justify-start'>Please enter your school mail.</p>
