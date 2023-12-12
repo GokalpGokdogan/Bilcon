@@ -1,0 +1,10 @@
+https://online.visual-paradigm.com/share/book/registersequencediagram-1k170qx4z3
+
+Scenario of Sequence:
+
+Scenario name: register
+Participating actor instances: ilhamidayi:User
+Flow of events:
+1. ilhamidayi tries to enter the system
+2. ilhamidayi does not have an previous instance of account
+3. ilhamidayi enters ID, mail and password for his/her account

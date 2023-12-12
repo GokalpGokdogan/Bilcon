@@ -1,0 +1,1 @@
+Backedn with the capability of register, login, logout, post item, get items, search items and filtering items. Also, database models, item classes, user-poster-customer classes and controllers for all.

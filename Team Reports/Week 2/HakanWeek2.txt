@@ -1,0 +1,2 @@
+Added search, filter, post and get functionalities. Created
+the necessary db modules, classes and controllers for that.
