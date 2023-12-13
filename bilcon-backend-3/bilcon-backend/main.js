@@ -102,6 +102,7 @@ app.post("/login", async(req,res)=>{
     //console.log(foundUser);
     if (foundUser) {
         req.session.foundUser = {
+            name: foundUser.name,
             mail: foundUser.email,
             studentId: foundUser.studentId,
             userId: foundUser._id
@@ -110,7 +111,7 @@ app.post("/login", async(req,res)=>{
         req.session.save();
         console.log(req.session);        
         console.log("Login Successful");
-        res.redirect('/dashboard');
+        res.redirect("http://localhost:3001/home");
     }
     else {
         console.log("Invalid login credentials");
@@ -138,12 +139,75 @@ app.get('/verify/:token/:email', (req, res)=>{
     
 }); 
 
+app.get("/accountPage", (req,res)=>{
+    const user = req.session.foundUser;
+    if (user && Object.keys(user).length > 0) {
+        // User is authenticated
+        res.send(user);
+    } else {
+        // User is not authenticated
+        //console.log("Unauthorized. Session foundUser:", req.session.foundUser);
+        res.status(401).redirect("/login");
+    }
+});
+app.get("/newPassword/:token", (req,res)=>{
+    
+});
+app.patch("/newPassword/:token", (req,res)=>{
+    const user = req.session.foundUser;
+    if (user && Object.keys(user).length > 0) {
+        jwt.verify(req.params.token, 'ourSecretKey', function(err, decoded){
+                    // User is authenticated
+            
+            if (err) {
+                console.log(err); 
+                res.send("Email verification for password change failed, possibly the link is invalid or expired").redirect("/home");
+            } 
+            else{
+                const firstPassword = req.body.password1;
+                if(firstPassword == req.body.password2){
+                    let userController = new UserController();   
+                    userController.changePassword(user.mail, firstPassword);
+                    res.send(200);
+                }
+                else {
+                    console.log("Passwords do not match.");
+                }
+            }
+
+        });
+
+    } else {
+        // User is not authenticated
+        //console.log("Unauthorized. Session foundUser:", req.session.foundUser);
+        res.status(401).redirect("/login");
+    }
+});
+
+
+
 app.get("/logout", (req,res)=>{
     //console.log(req.session);
     //req.session = null;
     req.session.destroy();    
     res.send("You are logged out.");
 });
+
+app.get("/changePassword", (req,res)=>{
+    const user = req.session.foundUser;
+    if(user && Object.keys(user).length > 0){
+        let userController = new UserController();               
+        userController.sendMailForPassword(user.mail, user.name);  
+        
+    }else {
+        // User is not authenticated
+        //console.log("Unauthorized. Session foundUser:", req.session.foundUser);
+        res.status(401).redirect("/login");      
+    }
+ 
+});
+
+
 app.get('/dashboard', (req, res) => {
     const user = req.session.foundUser;
     if (user && Object.keys(user).length > 0) {

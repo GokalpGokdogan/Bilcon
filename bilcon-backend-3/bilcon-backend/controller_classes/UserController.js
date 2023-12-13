@@ -203,5 +203,39 @@ class UserController{
         });
 
     }
+
+    async changePassword(emailOfUser, newPassword){
+        bcrypt.hash(newPassword, saltRounds, async  (err, hash)=> {
+            const userDB = UserDB;
+            let updatedUser = await userDB.findOneAndUpdate({email: emailOfUser}, {password: hash});
+        })
+    }
+
+    async sendMailForPassword(userEmail, userName){
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'bilconwebapp@gmail.com',
+                pass: 'vnjt ydrm hqkn fpth'
+            }
+          });
+
+
+          const token = jwt.sign({ 
+            data: 'Token Data'  
+            }, 'ourSecretKey', { expiresIn: '15m' }   
+        ); 
+
+        await transporter.sendMail({
+            from: 'bilconwebapp@gmail.com',
+            to: userEmail,
+            subject: "Password Change Request",
+            html: `Hi ${userName} 👋, <br>Please follow <a href = http://localhost:3000/newPassword/${token}>this link </a> to change your password.
+            <br>Note: Activation link expires in 15 minutes.
+            <br><br>Thanks,
+            <br>Bilcon Web App Team` 
+        });
+        console.log(`Email sent to ${userEmail} (password change request)`);
+    }
 }
 module.exports = UserController;
