@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import FilterView from './filterView';
 
 
 function Header() 
@@ -36,10 +36,7 @@ function Header()
             <div className='relative'>
                 <button onClick={() => setIsOpen(!isOpen)} className="bg-ui-purple text-white py-2 px-4 rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Filter</button>
                 {isOpen && (
-                    <div className="bg-gray-blue w-[10vw] h-[10vw] z-10 absolute top-full left-0 border-ui-purple shadow-lg rounded-lg p-4 transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">
-                        {/* Your popup content goes here */}
-                        <div className="text-ui-purple text-center font-bold">Your Cool Content /**Your popup content goes here*/</div>
-                    </div>
+                    <FilterView type='Market' />
                 )}
             </div>
         </div>
