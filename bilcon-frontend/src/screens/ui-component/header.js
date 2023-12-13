@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import FilterView from './filterView';
 import FavPop from './favPop';
+import ChatsPop from './chatsPop';
 
 
 function Header(type='Market') 
@@ -9,7 +10,7 @@ function Header(type='Market')
 
     const [isOpenFilter, setIsOpenFilter] = useState(false);
     const [isOpenFav, setIsOpenFav] = useState(false);
-
+    const [isOpenChats, setIsOpenChats] = useState(false);
     return(
     <div className='flex flex-row p-2 px-4 w-full justify-between'>
         <div className='w-[10vw]'>
@@ -44,6 +45,14 @@ function Header(type='Market')
         </div>
         <div className='flex flex-row justify-center'>
             <div className='relative'>
+                <button onClick={() => setIsOpenChats(!isOpenChats)} className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Chats</button>
+                {isOpenChats && (
+                    <div className="absolute right-0 top-full">
+                        <ChatsPop type={type.type}/>
+                    </div>
+                )}
+            </div>
+            <div className='relative'>
                 <button onClick={() => setIsOpenFav(!isOpenFav)} className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Fav.</button>
                 {isOpenFav && (
                     <div className="absolute right-0 top-full">
@@ -51,7 +60,9 @@ function Header(type='Market')
                     </div>
                 )}
             </div>
-            <Link type="submit" to="/accountPage" className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Account</Link>
+            <div>
+                <Link type="submit" to="/accountPage" className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Account</Link>
+            </div>
 
         </div>
     </div>);
