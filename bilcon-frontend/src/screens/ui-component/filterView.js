@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 
 
-function FilterView({type = 'Course Trading', isOpen=false, setIsOpen} /*{nameIn="Nameless", priceIn=-1, sellerIn="@Gokalp", imgIn='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg', key="" }*/) 
+function FilterView({type = 'Course Trading', setIsOpen} /*{nameIn="Nameless", priceIn=-1, sellerIn="@Gokalp", imgIn='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg', key="" }*/) 
 {
     
     /**filter = database; */

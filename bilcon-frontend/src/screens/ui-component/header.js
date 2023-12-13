@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import FilterView from './filterView';
+import FavPop from './favPop';
 
 
 function Header(type='Market') 
 {
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpenFilter, setIsOpenFilter] = useState(false);
+    const [isOpenFav, setIsOpenFav] = useState(false);
 
     return(
     <div className='flex flex-row p-2 px-4 w-full justify-between'>
@@ -34,13 +36,24 @@ function Header(type='Market')
         <div className='flex flex-row justify-center'>
             <input type="text" className="mx-2 border border-gray bg-gray-light text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-2.5 w-80 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Search for second-hand items, books and more!" required=""></input>
             <div className='relative'>
-                <button onClick={() => setIsOpen(!isOpen)} className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Filter</button>
-                {isOpen && (
-                    <FilterView type={type.type} isOpen={isOpen} setIsOpen={setIsOpen}/>
+                <button onClick={() => setIsOpenFilter(!isOpenFilter)} className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Filter</button>
+                {isOpenFilter && (
+                    <FilterView type={type.type} isOpen={isOpenFilter} setIsOpen={setIsOpenFilter}/>
                 )}
             </div>
         </div>
-        <Link type="submit" to="/accountPage" className="w-32 my-auto text-white bg-ui-purple hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Account</Link>
+        <div className='flex flex-row justify-center'>
+            <div className='relative'>
+                <button onClick={() => setIsOpenFav(!isOpenFav)} className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Fav.</button>
+                {isOpenFav && (
+                    <div className="absolute right-0 top-full">
+                        <FavPop type={type.type}/>
+                    </div>
+                )}
+            </div>
+            <Link type="submit" to="/accountPage" className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Account</Link>
+
+        </div>
     </div>);
 }
 
