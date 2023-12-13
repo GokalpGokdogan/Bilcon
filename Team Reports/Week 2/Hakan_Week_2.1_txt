@@ -1,0 +1,2 @@
+I have added postItem, getItems, searchItems, filterItems, getItemsInFavoriteList, getItemsOfPoster, editPostedItem, deleteItem, addItemToFavoritesList and removeItemFromFavoritesList methods.
+Also, all necesaary classes, db modules and controllers for that purpose(I have done everything except login, logout, verify and register in bilcon-backend-3 folder)
