@@ -35,7 +35,9 @@ function ListHorizontal(title='Favorites')
 {
     const [isOpen, setIsOpen] = useState(false);
     const list = setList();
-    //let pageOffset = 0;
+    
+    const [pageOffset, setPageOffset] = useState(0);
+    const maxOffset = list.length/5 + (list.length%5===0 ? 0 : 1);
     const component = <div className='flex flex-row mx-auto justify-center items-center px-4 py-1 w-220'>
                             <div className='grid grid-cols-5 gap-4'>
                                 {list}
@@ -59,9 +61,19 @@ function ListHorizontal(title='Favorites')
             {isOpen && (
                 <div className='bg-gray-light p-5 rounded-lg'>
                     <div className='flex flex-row w-240 justify-center items-center'>
-                        <button className='flex flex-row justify-center items-center bg-gray-blue rounded-md px-4 py-1.5 text-ui-purple text-sm font-bold'>back</button>
+                        <button 
+                            onClick={()=>{if(pageOffset > 0){ setPageOffset(pageOffset - 1);}}} 
+                            disabled={pageOffset===0} 
+                            className={`flex flex-row justify-center items-center bg-gray-blue rounded-md px-4 py-1.5 text-ui-purple text-sm font-bold transition duration-200 ease-in-out ${
+                                pageOffset===0 ? 'text-gray-light bg-gray-light' : 'hover:bg-ui-purple hover:text-white'}`}
+                        >back</button>
                         {component}
-                        <button className='flex flex-row justify-center items-center bg-gray-blue rounded-md px-4 py-1.5 text-ui-purple text-sm font-bold'>next</button>
+                        <button 
+                            onClick={()=>{if(pageOffset < maxOffset){ setPageOffset(pageOffset + 1);}}} 
+                            disabled={pageOffset===maxOffset} 
+                            className={`flex flex-row justify-center items-center bg-gray-blue rounded-md px-4 py-1.5 text-ui-purple text-sm font-bold transition duration-200 ease-in-out ${
+                                pageOffset===maxOffset ? 'text-gray-light bg-gray-light' : 'hover:bg-ui-purple hover:text-white'}`}
+                        >next</button>
                     </div>
                 </div>
             )}

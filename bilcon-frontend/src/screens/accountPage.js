@@ -36,10 +36,10 @@ function AccountPage()
                 <div className='flex flex-col bg-white h-screen px-10'>
                     <p className='font-inter font-extrabold text-3xl text-ui-purple my-4'>Account</p>
                     
-                    <Link type="submit" to="/home" className={buttonClassAccount}>Notifications</Link>
+                    {/* <Link type="submit" to="/home" className={buttonClassAccount}>Notifications</Link>
                     {line}
                     <Link type="submit" to="/home" className={buttonClassAccount}>Security</Link>
-                    {line}
+                    {line} */}
                     {ListHorizontal('Favorites')}
                     {line}
                     {ListHorizontal('Purchases')}

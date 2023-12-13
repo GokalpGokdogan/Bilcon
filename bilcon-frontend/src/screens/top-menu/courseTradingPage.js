@@ -11,7 +11,7 @@ function CourseTrading()
         <div className='bg-white h-screen'>
             
            
-            <Header/>
+            <Header type='Course Trading'/>
             <NavMenu currPage='Course Trading' />
             <Feed  type='Course Trading'/>
        </div>
