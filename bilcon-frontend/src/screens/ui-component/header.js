@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import FilterView from './filterView';
 
 
-function Header() 
+function Header(type='Market') 
 {
 
     const [isOpen, setIsOpen] = useState(false);
@@ -34,9 +34,9 @@ function Header()
         <div className='flex flex-row justify-center'>
             <input type="text" className="mx-2 border border-gray bg-gray-light text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-2.5 w-80 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Search for second-hand items, books and more!" required=""></input>
             <div className='relative'>
-                <button onClick={() => setIsOpen(!isOpen)} className="bg-ui-purple text-white py-2 px-4 rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Filter</button>
+                <button onClick={() => setIsOpen(!isOpen)} className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Filter</button>
                 {isOpen && (
-                    <FilterView /*type='Market'*/ />
+                    <FilterView type={type.type} isOpen={isOpen} setIsOpen={setIsOpen}/>
                 )}
             </div>
         </div>

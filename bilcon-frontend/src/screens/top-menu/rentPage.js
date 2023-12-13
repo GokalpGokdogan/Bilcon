@@ -13,7 +13,7 @@ function Rent()
         <div className='bg-white h-screen'>
             
            
-            <Header/>
+            <Header type='Renting'/>
             <NavMenu currPage='Renting' />
             <Feed type='Renting'/>
        </div>

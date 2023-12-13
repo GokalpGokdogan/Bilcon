@@ -14,7 +14,7 @@ function Market()
         <div className='bg-white h-screen'>
             
            
-            <Header/>
+            <Header type='Market'/>
             <NavMenu currPage='Market' />
             <Feed type='Market'/> 
        </div>
