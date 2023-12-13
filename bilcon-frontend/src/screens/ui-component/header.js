@@ -36,7 +36,7 @@ function Header()
             <div className='relative'>
                 <button onClick={() => setIsOpen(!isOpen)} className="bg-ui-purple text-white py-2 px-4 rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Filter</button>
                 {isOpen && (
-                    <FilterView type='Market' />
+                    <FilterView /*type='Market'*/ />
                 )}
             </div>
         </div>
