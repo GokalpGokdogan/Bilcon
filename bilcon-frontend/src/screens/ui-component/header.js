@@ -7,10 +7,10 @@ import ChatsPop from './chatsPop';
 
 function Header(type='Market') 
 {
-
     const [isOpenFilter, setIsOpenFilter] = useState(false);
     const [isOpenFav, setIsOpenFav] = useState(false);
     const [isOpenChats, setIsOpenChats] = useState(false);
+    
     return(
     <div className='flex flex-row p-2 px-4 w-full justify-between'>
         <div className='w-[10vw]'>

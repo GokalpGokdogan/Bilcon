@@ -12,7 +12,7 @@ function ProductComponent({productIn, type = 'Market'} /*{nameIn="Nameless", pri
 
 
     const product = productIn || {};
-    const pages = ['Market', 'Renting', 'Lost & Found', 'Private Lessons', 'Course Trading'];
+    const pages = ['Market', 'Renting', 'LostandFound', 'PrivateLessons', 'CourseTrading'];
 
     let component;
     //console.log(productIn)

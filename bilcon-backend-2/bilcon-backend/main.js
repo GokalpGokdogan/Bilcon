@@ -258,7 +258,7 @@ When a customer first opens the page, there should be some items and for that, t
 } numberOfItems indicate how many items will be returned. Offset is for passing some number of items(for example, if the user want to see the second page, the 
     offset should be used in order to pass the items in the first page)
 */
-app.get("/getItems", async (req, res) => {
+/*app.get("/getItems", async (req, res) => {
     const user = req.session.foundUser;
     if(user && Object.keys(user).length > 0){
         let {numberOfItems, offset, itemType} = req.body;
@@ -334,6 +334,28 @@ app.get("/getItems", async (req, res) => {
         res.redirect("/login");
     }
 
+})*/
+
+app.get("/getItems", async (req, res) => {
+    const user = req.session.foundUser;
+    if(user && Object.keys(user).length > 0){
+        let {numberOfItems, offset, itemType} = req.body;
+        let userController = new UserController();
+        let customerId = await userController.getCustomerIdByUserId(req.session.foundUser.userId);
+        let customerController = new CustomerController(itemType, customerId);
+        let arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+
+        let arrayOfItems = await customerController.getItems(numberOfItems, offset);
+        let serializedArray = arrayOfItems.map((item) => {
+            return item.toJSON(arrayOfFavListItemIds);
+        });
+
+        let jsonString = JSON.stringify(serializedArray);
+        res.status(200).send(jsonString);
+    }
+    else{
+        res.redirect("/login");
+    }
 })
 
 

@@ -5,11 +5,8 @@ import Header from '../ui-component/header';
 
 function PrivateLessons() 
 {
-   
     return(
         <div className='bg-white h-screen'>
-            
-           
             <Header type='Private Lessons'/>
             <NavMenu currPage='Private Lessons' />
             <Feed type='Private Lessons'/> 

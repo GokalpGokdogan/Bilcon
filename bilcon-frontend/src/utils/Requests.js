@@ -31,3 +31,43 @@ export const login = async (id, password) => {
     console.log(res.data);
     return res.data
 }
+
+export const getItems = async (numberOfItems, offset, itemType) => {
+    const body = {'numberOfItems': numberOfItems, 'offset': offset, "itemType": itemType };
+    let res = await axios({
+        method: 'post',
+        url: `http://${API_HOST}/getItems`,
+        headers: {'Content-Type': 'application/json',},
+        data: body,
+        withCredentials: true
+    })
+    if (res.data) {
+        console.log(res.data);
+    }
+    return res.data;
+  };
+
+export const postItem = async (itemData) => {
+    const formData = new FormData();
+
+    // Append form data key-value pairs
+    Object.entries(itemData).forEach(([key, value]) => {
+        formData.append(key, value);
+    });
+
+    // Append the image file
+    const imageFile = document.getElementById('imageFileInput').files[0]; // Replace with your actual file input ID
+    formData.append('image', imageFile);
+
+    const res = await axios.post(`http://${API_HOST}/postItem`, formData, {
+        headers: {
+        'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
+    });
+
+    if (res.data) {
+        console.log(res.data);
+    }
+    return res.data;
+};

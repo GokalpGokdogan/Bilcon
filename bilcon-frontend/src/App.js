@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { getItems } from './utils/Requests';
 
 import Login from './screens/login';
 import Register from './screens/register';
@@ -13,14 +15,32 @@ import Rent from './screens/top-menu/rentPage';
 import LostFound from './screens/top-menu/lostFoundPage';
 import PrivateLessons from './screens/top-menu/privateLessonsPage';
 import CourseTrading from './screens/top-menu/courseTradingPage';
+import MarketItem from './screens/products/MarketItem';
+import RentingItem from './screens/products/RentingItem';
+import LostandFoundItem from './screens/products/LostandFoundItem';
+import PrivateLessonItem from './screens/products/PrivateLessonItem';
 
 export default function App() {
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        const numberOfItems = 10; // Set your desired values
+        const offset = 0; // Set your desired values
+        const itemType = 'yourItemType'; // Set your desired values
+  
+        const items = await getItems(numberOfItems, offset, itemType);
+        console.log('Items:', items);
+      };
+  
+      fetchData();
+    }, []);
+
   return (
     <div className="App">
-      <Routes>
+     <Routes>
         <Route path="" element={<Login/>} />
         <Route path="register" element={<Register/>} />
-        {/* home inactive till decided */}
+       {/* home inactive till decided */}
         <Route path="home" element={<Market/>} />
 
         <Route path="forgotPassword" element={<ForgotPassword/>} />
@@ -32,7 +52,11 @@ export default function App() {
         <Route path={`/${'Lost & Found'.toLowerCase()}`} element={<LostFound/>}/>
         <Route path={`/${'Private Lessons'.toLowerCase()}`} element={<PrivateLessons/>}/>
         <Route path={`/${'Course Trading'.toLowerCase()}`} element={<CourseTrading/>}/>
-      </Routes>
+      </Routes> 
+     {/*   <MarketItem/>
+      <RentingItem/>
+      <LostandFoundItem/>
+      <PrivateLessonItem/>*/}
     </div>
   );
 }

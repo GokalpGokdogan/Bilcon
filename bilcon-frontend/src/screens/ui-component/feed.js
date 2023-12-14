@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ProductComponent from './productComponent';
 import Product from '../../Classes/Product'
+import { getItems } from '../../utils/Requests';
 
 //gets product list and updates the feed
 function setList(prodType/*filter*/){
@@ -18,11 +19,30 @@ function setList(prodType/*filter*/){
     return list;
 }
 
-function Feed(type='Market') 
+
+function Feed({type='Market', filters, searchValue}) 
 {
     
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+        try {
+            const data = await getItems(10, 0, 'market'); // Adjust parameters as needed
+            if (data) {
+            setProducts(data); // Assuming the data is an array of items
+            console.log(data);
+            }
+        } catch (error) {
+            console.error('Error in fetching items:', error);
+        }
+        };
+
+        fetchData();
+    }, []); // Empty dependency array ensures the effect runs only once on component mount
+
     /**filter = database; */
-    let products = setList(type/*filter*/);
+   // let products = setList(type/*filter*/);
     const pages = ['Market', 'Renting', 'Lost & Found', 'Private Lessons', 'Course Trading'];
 
     let component;
@@ -31,7 +51,10 @@ function Feed(type='Market')
     if(type.type === pages[0]){
         component = <div className='flex flex-row mx-auto justify-center items-center py-10 w-220'>
                         <div className='grid grid-cols-5 gap-4'>
-                            {products}
+                        {products.map(item => (
+                            <div key={item.id}>{item.name}</div>
+                            // Adjust the properties based on the structure of your item object
+                        ))}
                         </div>
                     </div> 
     }

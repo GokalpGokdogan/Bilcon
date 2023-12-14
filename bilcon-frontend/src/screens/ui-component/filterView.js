@@ -32,7 +32,7 @@ function FilterView({type = 'Course Trading', setIsOpen} /*{nameIn="Nameless", p
         sortBy: 1
     });
 
-    const pages = ['Market', 'Renting', 'Lost & Found', 'Private Lessons', 'Course Trading'];
+    const pages = ['Market', 'Renting', 'LostandFound', 'PrivateLessons', 'CourseTrading'];
 
     const filterNames = {
         numberOfItems: 'Number Of Items',

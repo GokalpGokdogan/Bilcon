@@ -7,13 +7,8 @@ import Header from '../ui-component/header';
 
 function Market() 
 {
-    
-
-    
     return(
         <div className='bg-white h-screen'>
-            
-           
             <Header type='Market'/>
             <NavMenu currPage='Market' />
             <Feed type='Market'/> 

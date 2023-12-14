@@ -6,13 +6,8 @@ import Header from '../ui-component/header';
 
 function LostFound() 
 {
-    
-
-    
     return(
         <div className='bg-white h-screen'>
-            
-           
             <Header type='Lost & Found'/>
             <NavMenu currPage='Lost & Found' />
             <Feed type='Lost & Found'/>
