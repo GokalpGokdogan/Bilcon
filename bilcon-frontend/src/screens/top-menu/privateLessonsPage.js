@@ -10,7 +10,7 @@ function PrivateLessons()
         <div className='bg-white h-screen'>
             
            
-            <Header/>
+            <Header type='Private Lessons'/>
             <NavMenu currPage='Private Lessons' />
             <Feed type='Private Lessons'/> 
        </div>

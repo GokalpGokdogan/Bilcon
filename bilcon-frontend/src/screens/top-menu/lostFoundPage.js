@@ -13,7 +13,7 @@ function LostFound()
         <div className='bg-white h-screen'>
             
            
-            <Header/>
+            <Header type='Lost & Found'/>
             <NavMenu currPage='Lost & Found' />
             <Feed type='Lost & Found'/>
        </div>
