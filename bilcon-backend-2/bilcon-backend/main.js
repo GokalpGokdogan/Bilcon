@@ -20,7 +20,7 @@ const app = express();
 
 const cors = require('cors');
 const corsOptions ={
-    origin:'http://localhost:3001', 
+    origin: 'http://localhost:3001', 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
 }
@@ -117,7 +117,8 @@ app.post("/login", async(req,res)=>{
         req.session.save();
         console.log(req.session);        
         console.log("Login Successful");
-        res.redirect("http://localhost:3001/home");
+        res.status(200).json({ redirect: "http://localhost:3001/home" });
+
     }
     else {
         console.log("Invalid login credentials");

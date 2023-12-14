@@ -21,27 +21,13 @@ export const login = async (id, password) => {
         method: 'post',
         url: `http://${API_HOST}/login`,
         headers: {'Content-Type': 'application/json',},
-        data: body
+        data: body,
+        withCredentials: true
     })
+    if (res.data && res.data.redirect) {
+        // Manually handle the redirect
+        window.location.href = res.data.redirect;
+    }
     console.log(res.data);
     return res.data
 }
-
-/* axios.post('http://localhost:3000/register', {
-    "name": "öykü",
-    "email": "oykudemir2003@gmail.com",
-    "id": 128,
-    "password": "abc1234"
-}, {
-headers: {
-    'Content-Type': 'application/json',
-},
-})
-.then((response) => {
-    // Handle the response data
-    console.log(response.data);
-})
-.catch((error) => {
-    // Handle errors
-    console.error('Error:', error);
-}); */
