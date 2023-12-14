@@ -18,8 +18,16 @@ const RentItem = require("./js_classes/RentItem");
 let itemId = 0;
 
 const app = express();
+const cors = require('cors');
+const corsOptions ={
+    origin:'http://localhost:3001', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
+}
+app.use(cors(corsOptions));
+
 app.use(bodyParser.urlencoded({ extended: false }));
-const dbUrl = ""; //enter the link of mongo db cluster;
+const dbUrl = "mongodb://localhost:27017/UserDB"; //enter the link of mongo db cluster;
 
 /* 
 In order to test it, first the url should be entered above.
@@ -133,7 +141,7 @@ app.get('/verify/:token/:email', (req, res)=>{
         else { 
             let userController = new UserController();               
             userController.activateUser(email);
-            res.redirect("/login"); 
+            res.redirect("http://localhost:3001"); 
         } 
     }); 
     
