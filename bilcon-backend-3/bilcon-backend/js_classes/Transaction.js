@@ -5,18 +5,20 @@ class Transaction{
     #posterId;    
     #customerId;
     #isPostersTrans;
-    #isEnded;
+    #isEndedByPoster;
+    #isEndedByCust;
     #ratingGivenByCust;
     #ratingGivenByPoster;
 
 
-    constructor(itemId, itemName, posterId, customerId, isPostersTrans, isEnded, ratingGivenByCust, ratingGivenByPoster){
+    constructor(itemId, itemName, posterId, customerId, isPostersTrans,isEndedByPoster,isEndedByCust, ratingGivenByCust, ratingGivenByPoster){
         this.#itemId = itemId;
         this.#itemName = itemName;
         this.#posterId = posterId;        
         this.#customerId = customerId;
         this.#isPostersTrans = isPostersTrans;
-        this.#isEnded = isEnded;
+        this.#isEndedByPoster = isEndedByPoster;
+        this.#isEndedByCust = isEndedByCust;
         this.#ratingGivenByCust = ratingGivenByCust;
         this.#ratingGivenByPoster = ratingGivenByPoster;            
     }
@@ -26,8 +28,8 @@ class Transaction{
         return this.#itemId;
     }
 
-    set itemId(value) {
-        this.#itemId = value;
+    set itemId(itemId) {
+        this.#itemId = itemId;
     }
 
   // Getter and setter for #itemName
@@ -35,8 +37,8 @@ class Transaction{
         return this.#itemName;
     }
 
-    set itemName(value) {
-        this.#itemName = value;
+    set itemName(itemName) {
+        this.#itemName = itemName;
     }
 
   // Getter and setter for #posterId
@@ -44,8 +46,8 @@ class Transaction{
         return this.#posterId;
     }
 
-    set posterId(value) {
-        this.#posterId = value;
+    set posterId(posterId) {
+        this.#posterId = posterId;
     }
 
   // Getter and setter for #customerId
@@ -53,8 +55,8 @@ class Transaction{
         return this.#customerId;
     }
 
-    set customerId(value) {
-        this.#customerId = value;
+    set customerId(customerId) {
+        this.#customerId = customerId;
     }
 
   // Getter and setter for #isPostersTrans
@@ -62,17 +64,26 @@ class Transaction{
         return this.#isPostersTrans;
     }
 
-    set isPostersTrans(value) {
-        this.#isPostersTrans = value;
+    set isPostersTrans(isPostersTrans) {
+        this.#isPostersTrans = isPostersTrans;
     }
 
   // Getter and setter for #isEnded
-    get isEnded() {
-        return this.#isEnded;
+    get isEndedByCust() {
+        return this.#isEndedByCust;
     }
 
-    set isEnded(value) {
-        this.#isEnded = value;
+    set isEndedByCust(isEndedByCust) {
+        this.#isEndedByCust = isEndedByCust;
+    }
+
+      // Getter and setter for #isEnded
+    get isEndedByPoster() {
+        return this.#isEndedByPoster;
+    }
+
+    set isEndedByPoster(isEndedByPoster) {
+        this.#isEndedByPoster = isEndedByPoster;
     }
 
   // Getter and setter for #ratingGivenByCust
@@ -80,8 +91,8 @@ class Transaction{
         return this.#ratingGivenByCust;
    }
 
-    set ratingGivenByCust(value) {
-        this.#ratingGivenByCust = value;
+    set ratingGivenByCust(ratingGivenByCust) {
+        this.#ratingGivenByCust = ratingGivenByCust;
     }
 
   // Getter and setter for #ratingGivenByPoster
@@ -89,7 +100,7 @@ class Transaction{
         return this.#ratingGivenByPoster;
     }
 
-    set ratingGivenByPoster(value) {
-        this.#ratingGivenByPoster = value;
+    set ratingGivenByPoster(ratingGivenByPoster) {
+        this.#ratingGivenByPoster = ratingGivenByPoster;
     }
 }
