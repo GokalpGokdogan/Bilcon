@@ -16,6 +16,8 @@ module.exports = {
       'gray-light': '#F5F5F5',
       'gray-blue': '#EDEDF9',
       'ui-purple': '#5F6BDF',
+      'ig-blue': '#5851DB',
+      'ig-purple': '#833AB4',
     },
     fontFamily: {
       sans: 'DM Sans',
