@@ -27,7 +27,7 @@ export const login = async (id, password) => {
     })
     if (res.data && res.data.redirect) {
         // Manually handle the redirect
-       // window.location.href = res.data.redirect;
+        window.location.href = res.data.redirect;
     }
     console.log(res.data);
     return res.data
