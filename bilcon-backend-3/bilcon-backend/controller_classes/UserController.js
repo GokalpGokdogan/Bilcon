@@ -115,6 +115,14 @@ class UserController{
             return res.name;
         });
     }
+
+    async getEmailByUserId(userId){
+        const userDb = UserDB;
+        return userDb.findById(userId).then((res) => {
+            return res.email;
+        });
+    }
+
     async userExists(mail , id){        
         const userDB = UserDB;
         let exists = userDB.findOne({email: mail})
@@ -231,6 +239,50 @@ class UserController{
             to: userEmail,
             subject: "Password Change Request",
             html: `Hi ${userName} 👋, <br>Please follow <a href = http://localhost:3000/newPassword/${token}>this link </a> to change your password.
+            <br>Note: Activation link expires in 15 minutes.
+            <br><br>Thanks,
+            <br>Bilcon Web App Team` 
+        });
+        console.log(`Email sent to ${userEmail} (password change request)`);
+    }
+
+    async accessUserWhenForgotPassword(studentIdOfUser) {
+        try {
+            let doesExists = await this.userExistsID(studentIdOfUser);
+            if (doesExists) {
+                const userDB = UserDB;
+                const foundUser = await userDB.findOne({ studentId: studentIdOfUser });
+                return foundUser;
+            } else {
+                console.log("User with entered ID does not exist.");
+                return null;
+            }
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+
+    async sendMailForForgotPassword(userEmail, userName, userId){
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'bilconwebapp@gmail.com',
+                pass: 'vnjt ydrm hqkn fpth'
+            }
+          });
+
+
+          const token = jwt.sign({ 
+            data: 'Token Data'  
+            }, 'ourSecretKey', { expiresIn: '15m' }   
+        ); 
+
+        await transporter.sendMail({
+            from: 'bilconwebapp@gmail.com',
+            to: userEmail,
+            subject: "Password Reset Request",
+            html: `Hi ${userName} 👋, <br>Please follow <a href = http://localhost:3000/resetPassword/${token}/${userId}>this link </a> to reset your password.
             <br>Note: Activation link expires in 15 minutes.
             <br><br>Thanks,
             <br>Bilcon Web App Team` 

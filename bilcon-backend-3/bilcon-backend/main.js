@@ -216,6 +216,61 @@ app.get("/changePassword", (req,res)=>{
  
 });
 
+app.post("/forgotPassword", async(req,res)=>{
+    const studentIdOfUser = req.body.id;
+    let userController = new UserController();   
+    let foundUser = await userController.accessUserWhenForgotPassword(studentIdOfUser);
+
+    if (foundUser) {
+        let foundUserName = foundUser.name;
+        let foundUserEmail = foundUser.email;
+        userController.sendMailForForgotPassword(foundUserEmail, foundUserName, studentIdOfUser);  
+        console.log("Email sent to reset password");
+    }
+    else {
+        console.log("Invalid login credentials");
+    }
+});
+
+app.get("/resetPassword/:token/:id", (req,res)=>{
+    
+});
+app.patch("/resetPassword/:token/:id", async (req,res)=>{
+    const studentIdOfUser = req.params.id;
+    let userController = new UserController();   
+    let foundUser = await userController.accessUserWhenForgotPassword(studentIdOfUser);
+
+    if (foundUser) {
+        jwt.verify(req.params.token, 'ourSecretKey', function(err, decoded){
+            // User is authenticated
+            
+            if (err) {
+                console.log(err); 
+                res.send("Email verification for password reset failed, possibly the link is invalid or expired").redirect("/home");
+            } 
+            else{
+                const firstPassword = req.body.password1;
+                if(firstPassword == req.body.password2){
+                    let userController = new UserController();   
+                    userController.changePassword(foundUser.email, firstPassword);
+                    res.send(200);
+                }
+                else {
+                    console.log("Passwords do not match.");
+                }
+            }
+
+        });
+
+    } else {
+        // User is not authenticated
+        //console.log("Unauthorized. Session foundUser:", req.session.foundUser);
+        res.status(401).redirect("/login");
+    }
+});
+
+
+
 
 app.get('/dashboard', (req, res) => {
     const user = req.session.foundUser;
