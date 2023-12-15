@@ -13,7 +13,7 @@ function setList(/*type,pageOffset*/){
         
         
         list.push(
-            <Link to='/detailsPage' className='bg-gray-blue rounded-md' key={obj.id}>
+            <Link to='/chat' className='bg-gray-blue rounded-md' key={obj.id}>
                 <div className='m-1'>
                     
                     <div className='w-[28vw] flex flex-col justify-center items-left text-ellipsis border-ui-purple shadow-lg rounded-lg p-4 transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100' style={{fontSize:'12px'}}>

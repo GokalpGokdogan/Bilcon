@@ -8,9 +8,14 @@ function LostFound()
 {
     return(
         <div className='bg-white h-screen'>
-            <Header type='Lost & Found'/>
-            <NavMenu currPage='Lost & Found' />
-            <Feed type='Lost & Found'/>
+            <div className='fixed top-0 w-full bg-white pb-2'>
+                <Header type='Lost & Found'/>
+                <NavMenu currPage='Lost & Found' />
+            </div>
+            
+            <div className='mt-28'>
+                <Feed type='Lost & Found'/>
+            </div>
        </div>
     );
 }
