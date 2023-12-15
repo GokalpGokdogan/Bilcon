@@ -29,6 +29,14 @@ class ItemController{ // interface
     } // returns array of the favorites list-customer ids
     async getItemsByObjectIds(arrayOfObjectIds){
     } // returns an array of object ids
+    async getItemsExceptUsersItems(numberOfItems, offset, nameOfUser){
+    }
+    async searchItemsExceptUsersItems(searchQuery, numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, 
+    availabilityDuration, minDay,minMonth, minYear, maxDay, maxMonth, maxYear, nameOfUser){
+    }
+    async filterItemsExceptUsersItems(numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth,
+    minYear, maxDay, maxMonth, maxYear, sectionNo, wantToGive, sortBy, courseName, nameOfUser){
+    }
     getItemType(){
     }
 }
