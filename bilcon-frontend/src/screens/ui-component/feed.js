@@ -27,19 +27,21 @@ function Feed({type='Market', filters, searchValue})
 
     useEffect(() => {
         const fetchData = async () => {
-        try {
-            const data = await getItems(10, 0, 'market'); // Adjust parameters as needed
+          try {
+            const data = await getItems(1, 0, 'sale'); // Adjust parameters as needed
+    
             if (data) {
-            setProducts(data); // Assuming the data is an array of items
-            console.log(data);
+              setProducts(data); // Assuming the data is an array of items
+              console.log(data);
             }
-        } catch (error) {
+          } catch (error) {
             console.error('Error in fetching items:', error);
-        }
+            // Handle the error or set an appropriate state to indicate an error
+          }
         };
-
+    
         fetchData();
-    }, []); // Empty dependency array ensures the effect runs only once on component mount
+      }, []); 
 
     /**filter = database; */
    // let products = setList(type/*filter*/);

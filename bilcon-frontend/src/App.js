@@ -21,19 +21,6 @@ import LostandFoundItem from './screens/products/LostandFoundItem';
 import PrivateLessonItem from './screens/products/PrivateLessonItem';
 
 export default function App() {
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        const numberOfItems = 10; // Set your desired values
-        const offset = 0; // Set your desired values
-        const itemType = 'yourItemType'; // Set your desired values
-  
-        const items = await getItems(numberOfItems, offset, itemType);
-        console.log('Items:', items);
-      };
-  
-      fetchData();
-    }, []);
 
   return (
     <div className="App">

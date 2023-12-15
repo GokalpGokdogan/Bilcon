@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const API_HOST = "localhost:3000"
+axios.defaults.withCredentials = true;
 
 //Register
 export const register = async (name, email, id, password) => {
@@ -9,7 +10,7 @@ export const register = async (name, email, id, password) => {
         method: 'post',
         url: `http://${API_HOST}/register`,
         headers: {'Content-Type': 'application/json',},
-        data: body
+        data: body,
     })
     console.log(res.data);
     return res.data
@@ -26,25 +27,32 @@ export const login = async (id, password) => {
     })
     if (res.data && res.data.redirect) {
         // Manually handle the redirect
-        window.location.href = res.data.redirect;
+       // window.location.href = res.data.redirect;
     }
     console.log(res.data);
     return res.data
 }
 
 export const getItems = async (numberOfItems, offset, itemType) => {
-    const body = {'numberOfItems': numberOfItems, 'offset': offset, "itemType": itemType };
-    let res = await axios({
+    try {
+      const body = {'numberOfItems': numberOfItems, 'offset': offset, 'itemType': itemType };
+      const res = await axios({
         method: 'post',
         url: `http://${API_HOST}/getItems`,
-        headers: {'Content-Type': 'application/json',},
+        headers: { 'Content-Type': 'application/json' },
         data: body,
         withCredentials: true
-    })
-    if (res.data) {
+    });
+  
+      if (res.data) {
         console.log(res.data);
+      }
+  
+      return res.data;
+    } catch (error) {
+      console.error('Error in getItems:', error);
+      throw error; // Rethrow the error to handle it in the component
     }
-    return res.data;
   };
 
 export const postItem = async (itemData) => {
