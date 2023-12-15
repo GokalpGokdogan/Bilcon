@@ -17,7 +17,7 @@ function Chat({OtherId = '22222222'} /*{nameIn="Nameless", priceIn=-1, sellerIn=
     const [newText, setNewText] = useState('');
 
     const [isOpenEnd, setIsOpenEnd] = useState(false);
-    const [noStar, setNoStar] = useState(5);
+    const [noStar, setNoStar] = useState(-1);
 
     function loadList(){
         let list = [];
@@ -105,14 +105,14 @@ function Chat({OtherId = '22222222'} /*{nameIn="Nameless", priceIn=-1, sellerIn=
                     </div>
                 </div>
     
-    let pop = <div className={'bg-gray-blue w-[15vw] z-10 absolute top-full left-[-15vw] h-[10vw] border-ui-purple shadow-lg rounded-lg p-4'}>
+    let pop = <div className={'bg-gray-blue z-10 absolute top-full left-[-15vw] border-ui-purple shadow-lg rounded-lg p-4'}>
         <div className='flex flex-col justify-center items-center justify-between'>
             <strong className='text-ui-purple'> Please Rate User </strong>
             <div className='flex flex-row justify-center items-center justify-between'>
                 {starIconsSpecial}
             </div>
             
-            <button onClick={()=>{}} className="mt-4 bg-ui-purple text-white w-full py-2 rounded hover:bg-purple-700 transition duration-200 ease-in-out">
+            <button onClick={()=>{ /**rating fn to here */ setIsOpenEnd(!isOpenEnd)}} className="mt-4 bg-ui-purple text-white w-full py-2 rounded hover:bg-purple-700 transition duration-200 ease-in-out">
                 Submit
             </button>
         </div>
