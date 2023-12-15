@@ -184,6 +184,107 @@ class RentItemController extends ItemController{
         return "rent";
     }
 
+    async getItemsExceptUsersItems(numberOfItems, offset, nameOfUser){
+        const rentItemDb = RentItemDB;
+        return rentItemDb.find({posterName: {$ne: nameOfUser}}).sort({createdAt: -1}).skip(offset).limit(numberOfItems).then((rentItems) => {
+            return rentItems.map((itemData) => {
+                return new RentItem(itemData.name, itemData.definition, itemData.itemId, itemData.price, itemData.durationOfPrice, itemData.availabilityScalar,
+                itemData.availabilityDuration, itemData.photo, itemData.posterId, itemData.arrayOfFavoritesList, itemData.posterName);
+            });
+        });
+    }
+    async searchItemsExceptUsersItems(searchQuery, numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, 
+    availabilityDuration, minDay,minMonth, minYear, maxDay, maxMonth, maxYear, nameOfUser){
+        const rentItemDb = RentItemDB;
+        let arrayOfRentObjects = await rentItemDb.fuzzySearch(searchQuery, {
+            durationOfPrice: durationOfPrice,
+            availabilityDuration: availabilityDuration,
+            price: {
+                $gte: minPrice,
+                $lte: maxPrice
+            },
+            availabilityScalar: {
+                $gte: minAvailabilityScalar,
+                $lte: maxAvailabilityScalar
+            },
+            posterName: {
+                $ne: nameOfUser
+            }
+        }).skip(offset).limit(numberOfItems);
+        return arrayOfRentObjects.map((itemData) => {
+            return new RentItem(itemData.name, itemData.definition, itemData.itemId, itemData.price, itemData.durationOfPrice, itemData.availabilityScalar,
+                itemData.availabilityDuration, itemData.photo, itemData.posterId, itemData.arrayOfFavoritesList, itemData.posterName);
+        });
+    }
+    async filterItemsExceptUsersItems(numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth,
+    minYear, maxDay, maxMonth, maxYear, sectionNo, wantToGive, sortBy, courseName, nameOfUser){
+        const rentItemDb = RentItemDB;
+        let arrayOfRentObjects;
+        if(sortBy == -1){
+            arrayOfRentObjects = await rentItemDb.find({
+                durationOfPrice: durationOfPrice,
+                availabilityDuration: availabilityDuration,
+                price: {
+                    $gte: minPrice,
+                    $lte: maxPrice
+                },
+                availabilityScalar: {
+                    $gte: minAvailabilityScalar,
+                    $lte: maxAvailabilityScalar
+                },
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }).sort({price: -1}).skip(offset).limit(numberOfItems);
+            return arrayOfRentObjects.map((itemData) => {
+                return new RentItem(itemData.name, itemData.definition, itemData.itemId, itemData.price, itemData.durationOfPrice, itemData.availabilityScalar,
+                    itemData.availabilityDuration, itemData.photo, itemData.posterId, itemData.arrayOfFavoritesList, itemData.posterName);
+            });
+        }
+        else if(sortBy == 1){
+            arrayOfRentObjects = await rentItemDb.find({
+                durationOfPrice: durationOfPrice,
+                availabilityDuration: availabilityDuration,
+                price: {
+                    $gte: minPrice,
+                    $lte: maxPrice
+                },
+                availabilityScalar: {
+                    $gte: minAvailabilityScalar,
+                    $lte: maxAvailabilityScalar
+                },
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }).sort({price: 1}).skip(offset).limit(numberOfItems);
+            return arrayOfRentObjects.map((itemData) => {
+                return new RentItem(itemData.name, itemData.definition, itemData.itemId, itemData.price, itemData.durationOfPrice, itemData.availabilityScalar,
+                    itemData.availabilityDuration, itemData.photo, itemData.posterId, itemData.arrayOfFavoritesList, itemData.posterName);
+            });
+        }
+        else{
+            arrayOfRentObjects = await rentItemDb.find({
+                durationOfPrice: durationOfPrice,
+                availabilityDuration: availabilityDuration,
+                price: {
+                    $gte: minPrice,
+                    $lte: maxPrice
+                },
+                availabilityScalar: {
+                    $gte: minAvailabilityScalar,
+                    $lte: maxAvailabilityScalar
+                },
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }).skip(offset).limit(numberOfItems);
+            return arrayOfRentObjects.map((itemData) => {
+                return new RentItem(itemData.name, itemData.definition, itemData.itemId, itemData.price, itemData.durationOfPrice, itemData.availabilityScalar,
+                    itemData.availabilityDuration, itemData.photo, itemData.posterId, itemData.arrayOfFavoritesList, itemData.posterName);
+            });
+        }
+    }
+
 }
 
 module.exports = RentItemController;
