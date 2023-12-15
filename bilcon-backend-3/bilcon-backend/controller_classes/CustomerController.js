@@ -182,6 +182,34 @@ class CustomerController{
         }
     }
 
+    async searchItemsExceptUsersItems(searchQuery, numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, 
+    availabilityDuration, minDay,minMonth, minYear, maxDay, maxMonth, maxYear, nameOfUser){
+        let willReturn = await this.#itemController.searchItemsExceptUsersItems(searchQuery, numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, 
+            availabilityDuration, minDay,minMonth, minYear, maxDay, maxMonth, maxYear, nameOfUser);
+        if(willReturn == null || willReturn == undefined){
+            return [];
+        }
+        return willReturn;
+    }
+
+    async getItemsExceptUsersItems(numberOfItems, offset, nameOfUser){
+        let willReturn = await this.#itemController.getItemsExceptUsersItems(numberOfItems, offset, nameOfUser);
+        if(willReturn == null || willReturn == undefined){
+            return [];
+        }
+        return willReturn;
+    }
+
+    async filterItemsExceptUsersItems(numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth,
+        minYear, maxDay, maxMonth, maxYear, sectionNo, wantToGive, sortBy, courseName, nameOfUser){
+        let willReturn = await this.#itemController.filterItemsExceptUsersItems(numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth,
+            minYear, maxDay, maxMonth, maxYear, sectionNo, wantToGive, sortBy, courseName, nameOfUser);
+            if(willReturn == null || willReturn == undefined){
+                return [];
+            }
+            return willReturn;
+    }
+
 
 
 

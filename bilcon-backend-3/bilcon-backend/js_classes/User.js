@@ -8,7 +8,8 @@ class User{
     #customerId;
     #rating;
     #raterCount;
-    //#emailToken;
+    #boughtTransactions;
+    #soldTransactions;    
     constructor(name, email, studentId, password, isVerified, posterId, customerId, rating, raterCount){
         this.#name = name;
         this.#email = email;
@@ -18,7 +19,9 @@ class User{
         this.#posterId = posterId;
         this.#customerId = customerId;
         this.#rating = rating;
-        this.#raterCount = raterCount;      
+        this.#raterCount = raterCount;     
+        this.#boughtTransactions = []; 
+        this.#soldTransactions = [];
     }
 
     get name(){
@@ -56,6 +59,13 @@ class User{
     get raterCount(){
         return this.#raterCount;
     }
+    get boughtTransactions(){
+        return this.#boughtTransactions;
+    }
+    get soldTransactions(){
+        return this.#soldTransactions;
+    }
+
 
     set name(newName){
         this.#name = newName;
@@ -90,6 +100,12 @@ class User{
     set raterCount(newRaterCount){
        this.#raterCount = newRaterCount;
     }
+    set boughtTransactions(newBoughtTransactions){
+        this.#boughtTransactions = newBoughtTransactions;
+     }
+    set soldTransactions(newSoldTransactions){
+        this.#soldTransactions = newSoldTransactions;
+     }
 
 }
 
