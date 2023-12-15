@@ -13,9 +13,14 @@ function Rent()
         <div className='bg-white h-screen'>
             
            
-            <Header type='Renting'/>
-            <NavMenu currPage='Renting' />
-            <Feed type='Renting'/>
+            <div className='fixed top-0 w-full bg-white pb-2'>
+                <Header type='Renting'/>
+                <NavMenu currPage='Renting' />
+            </div>
+            
+            <div className='mt-28'>
+                <Feed type='Renting'/>
+            </div>
        </div>
     );
 }
