@@ -15,6 +15,8 @@ const SaleItem = require("./js_classes/SaleItem");
 const RentItem = require("./js_classes/RentItem");
 const ChatController = require("./controller_classes/ChatController");
 const MessageController = require("./controller_classes/MessageController");
+const TransactionController = require("./controller_classes/TransactionController");
+
 
 let itemId = 0;
 
@@ -269,7 +271,18 @@ app.patch("/resetPassword/:token/:id", async (req,res)=>{
     }
 });
 
+app.post("/submitTransaction/:ratedUserStudentId/:itemName", async(req,res)=>{
+    const user = req.session.foundUser;
+    if (user && Object.keys(user).length > 0) {
+        let transactionController = new TransactionController();   
+        transactionController.addTransactionToUser(user.studentId, req.params.ratedUserStudentId, req.params.itemName);
+        transactionController.addTransactionToRatedUser(user.studentId, req.params.ratedUserStudentId, req.params.itemName);
 
+    } else {
+        // User is not authenticated
+        res.status(401).redirect("/login");
+    }
+});
 
 
 app.get('/dashboard', (req, res) => {
