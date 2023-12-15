@@ -855,3 +855,72 @@ app.get("/getMessages/:chatId", (req, res)=>{
         })
 
 });
+
+// req and res are the same with getItems route
+app.post("/getItemsExceptUser", async (req, res) => {
+    const user = req.session.foundUser;
+    console.log("getPart");
+    if(user && Object.keys(user).length > 0){
+        let {numberOfItems, offset, itemType} = req.body;
+        let userController = new UserController();
+        let customerId = await userController.getCustomerIdByUserId(req.session.foundUser.userId);
+        let customerController = new CustomerController(itemType, customerId);
+        let arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+        let nameOfUser = await userController.getNameByUserId(req.session.foundUser.userId);
+        let arrayOfItems = await customerController.getItemsExceptUsersItems(numberOfItems, offset, nameOfUser);
+        let serializedArray = arrayOfItems.map((item) => {
+            return item.toJSON(arrayOfFavListItemIds);
+        });
+
+        let jsonString = JSON.stringify(serializedArray);
+        res.status(200).send(jsonString);
+    }
+    else{
+        res.redirect("/login");
+    }
+})
+// req and res are the same with searchItems route
+app.post("/searchItemsExceptUser", async (req, res) => {
+    const user = req.session.foundUser;
+    if(user && Object.keys(user).length > 0){
+        let userController = new UserController();
+        let customerId = await userController.getCustomerIdByUserId(req.session.foundUser.userId);
+        let {numberOfItems, offset, itemType, minPrice, maxPrice, minDay, minMonth, minYear, maxDay, maxMonth, maxYear, durationOfPrice
+            , minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, searchQuery} = req.body;
+        let nameOfUser = await userController.getNameByUserId(req.session.foundUser.userId);
+        let customerController = new CustomerController(itemType, customerId);
+        let arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+        let arrayOfItems = await customerController.searchItemsExceptUsersItems(searchQuery, numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar,
+            maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, maxDay, maxMonth, maxYear, nameOfUser);
+        let serializedArray = arrayOfItems.map((item) => {
+            return item.toJSON(arrayOfFavListItemIds);
+        });
+        res.status(200).send(JSON.stringify(serializedArray));
+    }
+    else{
+        res.redirect("login");
+    }
+})
+// req and res are the same with filterItems route
+app.post("/filterItemsExceptUser", async (req, res) => {
+    const user = req.session.foundUser;
+    if(user && Object.keys(user).length > 0){
+        let userController = new UserController();
+        let customerId = await userController.getCustomerIdByUserId(req.session.foundUser.userId);
+        let {numberOfItems, offset, itemType, minPrice, maxPrice, minDay, minMonth, minYear, maxDay, maxMonth, maxYear, durationOfPrice
+            , minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, courseName, sectionNo, wantToGive, sortBy} = req.body;
+        let nameOfUser = await userController.getNameByUserId(req.session.foundUser.userId);
+        let customerController = new CustomerController(itemType, customerId);
+        let arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+        console.log(arrayOfFavListItemIds)
+        let arrayOfItems = await customerController.filterItemsExceptUsersItems(numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar,
+            availabilityDuration, minDay, minMonth, minYear, maxDay, maxMonth, maxYear, sectionNo, wantToGive, sortBy, courseName, nameOfUser);
+        let serializedArray = arrayOfItems.map((item) => {
+            return item.toJSON(arrayOfFavListItemIds);
+        });
+        res.status(200).send(JSON.stringify(serializedArray));
+    }
+    else{
+        res.redirect("login");
+    }
+})

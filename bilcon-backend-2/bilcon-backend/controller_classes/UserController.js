@@ -155,7 +155,7 @@ class UserController{
     }
 
     async getCustomerIdByUserId(userId){
-        const userDb = UserDB;
+        let userDb = UserDB;
         return userDb = userDb.findById(userId).then((res) => {
             return res.customerId;
         });

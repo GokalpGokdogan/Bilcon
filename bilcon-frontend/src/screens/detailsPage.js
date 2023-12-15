@@ -1,13 +1,13 @@
-    import React from 'react';
-    import { Link } from 'react-router-dom';
-    import NavMenu from './ui-component/navMenu';
-    import Header from './ui-component/header';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import NavMenu from './ui-component/navMenu';
+import Header from './ui-component/header';
 import Product from '../Classes/Product';
 
     function detailsPage({productIn, type = 'Course Trading'}) 
     {
         const product = productIn || new Product();
-        const pages = ['Market', 'Renting', 'Lost & Found', 'Private Lessons', 'Course Trading'];
+        const pages = ['Market', 'Renting', 'LostandFound', 'PrivateLessons', 'CourseTrading'];
         const starIcons = Array.from({ length: 5 /**account.rating.ceil */ }, (_, i) => (
             <svg key={i} className='my-auto' width="1vw" height="1vw" viewBox="0 0 36 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 <title>Star</title>
