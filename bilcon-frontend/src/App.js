@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { getItems } from './utils/Requests';
 
 import Login from './screens/login';
 import Register from './screens/register';
@@ -14,14 +16,20 @@ import LostFound from './screens/top-menu/lostFoundPage';
 import PrivateLessons from './screens/top-menu/privateLessonsPage';
 import CourseTrading from './screens/top-menu/courseTradingPage';
 import Chat from './screens/chat';
+import MarketItem from './screens/products/MarketItem';
+import RentingItem from './screens/products/RentingItem';
+import LostandFoundItem from './screens/products/LostandFoundItem';
+import PrivateLessonItem from './screens/products/PrivateLessonItem';
+
 
 export default function App() {
+
   return (
     <div className="App">
-      <Routes>
+     <Routes>
         <Route path="" element={<Login/>} />
         <Route path="register" element={<Register/>} />
-        {/* home inactive till decided */}
+       {/* home inactive till decided */}
         <Route path="home" element={<Market/>} />
 
         <Route path="forgotPassword" element={<ForgotPassword/>} />
@@ -35,6 +43,12 @@ export default function App() {
         <Route path={`/${'Course Trading'.toLowerCase()}`} element={<CourseTrading/>}/>
         <Route path={`/${'Chat'.toLowerCase()}`} element={<Chat/>}/>
       </Routes>
+
+     {/*   <MarketItem/>
+      <RentingItem/>
+      <LostandFoundItem/>
+      <PrivateLessonItem/>*/}
+
     </div>
   );
 }

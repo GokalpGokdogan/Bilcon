@@ -143,6 +143,72 @@ class PrivateLessonItemController extends ItemController{
     getItemType(){
         return "lesson";
     }
+    async getItemsExceptUsersItems(numberOfItems, offset, nameOfUser){
+        const privateLessonItemDb = privateLessonItemDB;
+        return privateLessonItemDb.find({posterName: {$ne: nameOfUser}}).sort({createdAt: -1}).skip(offset).limit(numberOfItems).then((res) => {
+            return res.map((item) => {
+                return new PrivateLessonItem(item.name, item.definition, item.itemId, item.photo, item.price, item.posterId, item.arrayOfFavoritesListCustomerIds, item.posterName);
+            });
+        });
+    }
+    async searchItemsExceptUsersItems(searchQuery, numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, 
+    availabilityDuration, minDay,minMonth, minYear, maxDay, maxMonth, maxYear, nameOfUser){
+        const privateLessonItemDb = privateLessonItemDB;
+        let arrayOfPLObjects = await privateLessonItemDb.fuzzySearch(searchQuery, {
+            price: {
+                $lte: maxPrice,
+                $gte: minPrice
+            },
+            posterName: {
+                $ne: nameOfUser
+            }
+        }).skip(offset).limit(numberOfItems);
+
+        return arrayOfPLObjects.map((item) => {
+            return new PrivateLessonItem(item.name, item.definition, item.itemId, item.photo, item.price, item.posterId, item.arrayOfFavoritesListCustomerIds, item.posterName);
+        });
+    }
+    async filterItemsExceptUsersItems(numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth,
+    minYear, maxDay, maxMonth, maxYear, sectionNo, wantToGive, sortBy, courseName, nameOfUser){
+        const privateLessonItemDb = privateLessonItemDB;
+        let arrayOfPLObjects;
+        if(sortBy == -1){
+            arrayOfPLObjects = await privateLessonItemDb.find({
+                price: {
+                    $lte: maxPrice,
+                    $gte: minPrice
+                },
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }).sort({price: -1}).skip(offset).limit(numberOfItems);
+        }
+        else if(sortBy == 1){
+            arrayOfPLObjects = await privateLessonItemDb.find({
+                price: {
+                    $lte: maxPrice,
+                    $gte: minPrice
+                },
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }).sort({price: 1}).skip(offset).limit(numberOfItems);
+        }
+        else{
+            arrayOfPLObjects = await privateLessonItemDb.find({
+                price: {
+                    $lte: maxPrice,
+                    $gte: minPrice
+                },
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }).skip(offset).limit(numberOfItems);
+        }
+        return arrayOfPLObjects.map((item) => {
+            return new PrivateLessonItem(item.name, item.definition, item.itemId, item.photo, item.price, item.posterId, item.arrayOfFavoritesListCustomerIds, item.posterName);
+        });
+    }
 
 }
 

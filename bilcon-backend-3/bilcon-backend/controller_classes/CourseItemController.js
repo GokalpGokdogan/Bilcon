@@ -134,7 +134,57 @@ class CourseItemController extends ItemController{
         })
 
     }
-
+    async getItemsExceptUsersItems(numberOfItems, offset, nameOfUser){
+        const courseItemDb = CourseItemDB;
+        let arrayOfCourseItems = await courseItemDb.find({posterName: {$ne: nameOfUser}}).sort({createdAt: -1}).skip(offset).limit(numberOfItems).then((res) => {
+            return res.map((item) => {
+                return new CourseItem(item.name, item.definition, item.itemId, item.sectionNo, item.posterId, item.wantToGive, item.arrayOfFavoritesList, item.posterName);
+            });
+        });
+        return arrayOfCourseItems;
+    }
+    async searchItemsExceptUsersItems(searchQuery, numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, 
+    availabilityDuration, minDay,minMonth, minYear, maxDay, maxMonth, maxYear, nameOfUser){
+        return [];
+    }
+    async filterItemsExceptUsersItems(numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth,
+    minYear, maxDay, maxMonth, maxYear, sectionNo, wantToGive, sortBy, courseName, nameOfUser){
+        const courseItemDb = CourseItemDB;
+        let arrayOfCourseItems;
+        if(sortBy == -1){
+            arrayOfCourseItems = await courseItemDb.find({
+                name: courseName,
+                sectionNo: sectionNo,
+                wantToGive: wantToGive,
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }).sort({createdAt: -1}).skip(offset).limit(numberOfItems);
+        }
+        else if(sortBy == 1){
+            arrayOfCourseItems = await courseItemDb.find({
+                name: courseName,
+                sectionNo: sectionNo,
+                wantToGive: wantToGive,
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }).sort({createdAt: 1}).skip(offset).limit(numberOfItems);
+        }
+        else{
+            arrayOfCourseItems = await courseItemDb.find({
+                name: courseName,
+                sectionNo: sectionNo,
+                wantToGive: wantToGive,
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }).skip(offset).limit(numberOfItems);
+        }
+        return arrayOfCourseItems.map((item) => {
+            return new CourseItem(item.name, item.definition, item.itemId, item.sectionNo, item.posterId, item.wantToGive, item.arrayOfFavoritesList, item.posterName);
+        });
+    }
     getItemType(){
         return "course";
     }

@@ -7,12 +7,8 @@ import Header from '../ui-component/header';
 
 function Rent() 
 {
-    
-
     return(
         <div className='bg-white h-screen'>
-            
-           
             <div className='fixed top-0 w-full bg-white pb-2'>
                 <Header type='Renting'/>
                 <NavMenu currPage='Renting' />

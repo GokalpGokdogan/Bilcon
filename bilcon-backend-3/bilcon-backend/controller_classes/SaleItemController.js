@@ -142,7 +142,70 @@ class SaleItemController extends ItemController{
     getItemType(){
         return "sale";
     }
-
+    async getItemsExceptUsersItems(numberOfItems, offset, nameOfUser){
+        const saleItemDb = SaleItemDB;
+        return saleItemDb.find({posterName: {$ne: nameOfUser}}).sort({createdAt: -1}).skip(offset).limit(numberOfItems).then( (saleItems) => {
+            return saleItems.map((itemData) => {
+                return new SaleItem(itemData.name, itemData.definition, itemData.itemId, itemData.price, itemData.posterId, itemData.photo, itemData.arrayOfFavoritesList, itemData.posterName);
+            })
+        });
+    }
+    async searchItemsExceptUsersItems(searchQuery, numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, 
+    availabilityDuration, minDay,minMonth, minYear, maxDay, maxMonth, maxYear, nameOfUser){
+        const saleItemDb = SaleItemDB;
+        //let arrayOfDbObjects = await saleItemDb.fuzzySearch(searchQuery, {}, {
+            let arrayOfDbObjects = await saleItemDb.fuzzySearch(searchQuery, {
+            price: {
+                $gte: minPrice,
+                $lte: maxPrice
+            },
+            posterName: {$ne: nameOfUser}
+        }).skip(offset).limit(numberOfItems);
+        return arrayOfDbObjects.map((item) => {
+            return new SaleItem(item.name, item.definition, item.itemId, item.price, item.posterId, item.photo, item.arrayOfFavoritesList, item.posterName);
+        });
+    }
+    async filterItemsExceptUsersItems(numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth,
+    minYear, maxDay, maxMonth, maxYear, sectionNo, wantToGive, sortBy, courseName, nameOfUser){
+        const saleItemDb = SaleItemDB;
+        let arrayOfDbObjects;
+        if(sortBy == -1){ // descending
+            arrayOfDbObjects = await saleItemDb.find({
+                price: {
+                    $gte: minPrice,
+                    $lte: maxPrice
+                },
+                posterName: {$ne: nameOfUser}
+            }).sort({price: -1}).skip(offset).limit(numberOfItems);
+            return arrayOfDbObjects.map((item) => {
+                return new SaleItem(item.name, item.definition, item.itemId, item.price, item.posterId, item.photo, item.arrayOfFavoritesList, item.posterName);
+            });
+        }
+        else if(sortBy == 1){ // ascending
+            arrayOfDbObjects = await saleItemDb.find({
+                price: {
+                    $gte: minPrice,
+                    $lte: maxPrice
+                },
+                posterName: {$ne: nameOfUser}
+            }).sort({price: 1}).skip(offset).limit(numberOfItems);
+            return arrayOfDbObjects.map((item) => {
+                return new SaleItem(item.name, item.definition, item.itemId, item.price, item.posterId, item.photo, item.arrayOfFavoritesList, item.posterName);
+            });
+        }
+        else{
+            arrayOfDbObjects = await saleItemDb.find({
+                price: {
+                    $gte: minPrice,
+                    $lte: maxPrice
+                },
+                posterName: {$ne: nameOfUser}
+            }).skip(offset).limit(numberOfItems);
+            return arrayOfDbObjects.map((item) => {
+                return new SaleItem(item.name, item.definition, item.itemId, item.price, item.posterId, item.photo, item.arrayOfFavoritesList, item.posterName);
+            });
+        }
+    }
 
 
     

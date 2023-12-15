@@ -20,7 +20,7 @@ const app = express();
 
 const cors = require('cors');
 const corsOptions ={
-    origin:'http://localhost:3001', 
+    origin: 'http://localhost:3001', 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
 }
@@ -69,7 +69,8 @@ app.use(session({
         maxAge: 3600000,
         secure: false,
         httpOnly: true
-    }
+    },
+    credentials: true,
 }));
 
 app.get("/", (req,res)=>{
@@ -117,7 +118,8 @@ app.post("/login", async(req,res)=>{
         req.session.save();
         console.log(req.session);        
         console.log("Login Successful");
-        res.redirect("http://localhost:3001/home");
+        res.status(200).json({ redirect: "http://localhost:3001/home" });
+
     }
     else {
         console.log("Invalid login credentials");
@@ -257,7 +259,7 @@ When a customer first opens the page, there should be some items and for that, t
 } numberOfItems indicate how many items will be returned. Offset is for passing some number of items(for example, if the user want to see the second page, the 
     offset should be used in order to pass the items in the first page)
 */
-app.get("/getItems", async (req, res) => {
+app.post("/getItems", async (req, res) => {
     const user = req.session.foundUser;
     if(user && Object.keys(user).length > 0){
         let {numberOfItems, offset, itemType} = req.body;
@@ -335,6 +337,54 @@ app.get("/getItems", async (req, res) => {
 
 })
 
+/*app.post("/getItems", async (req, res) => {
+    const user = req.session.foundUser;
+    if(user && Object.keys(user).length > 0){
+        let {numberOfItems, offset, itemType} = req.body;
+        let userController = new UserController();
+        let customerId = await userController.getCustomerIdByUserId(req.session.foundUser.userId);
+        let customerController = new CustomerController(itemType, customerId);
+        let arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+
+        let arrayOfItems = await customerController.getItems(numberOfItems, offset);
+        let serializedArray = arrayOfItems.map((item) => {
+            return item.toJSON(arrayOfFavListItemIds);
+        });
+
+        let jsonString = JSON.stringify(serializedArray);
+        res.status(200).send(jsonString);
+    }
+    else{
+        res.redirect("/login");
+    }
+})*/
+
+/* app.post("/getItems", async (req, res) => {
+    const user = req.session.foundUser;
+
+    if (user && Object.keys(user).length > 0) {
+    {   
+        console.log(user);
+        const { numberOfItems, offset, itemType } = req.body; // Access parameters from query string
+        const userController = new UserController();
+        const customerId = await userController.getCustomerIdByUserId(req.session.foundUser.userId);
+        const customerController = new CustomerController(itemType, customerId);
+        const arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+
+        const arrayOfItems = await customerController.getItems(numberOfItems, offset);
+        const serializedArray = arrayOfItems.map((item) => {
+            return item.toJSON(arrayOfFavListItemIds);
+        });
+
+        const jsonString = JSON.stringify(serializedArray);
+        res.status(200).send(jsonString);
+        console.log(jsonString);
+    } else {
+        console.log("merhaba");
+        //res.redirect("/login");
+    }
+});
+ */
 
 /* 
 This is for searching items, also filtering. The req body is JSON:
