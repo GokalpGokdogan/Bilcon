@@ -15,6 +15,7 @@ import Rent from './screens/top-menu/rentPage';
 import LostFound from './screens/top-menu/lostFoundPage';
 import PrivateLessons from './screens/top-menu/privateLessonsPage';
 import CourseTrading from './screens/top-menu/courseTradingPage';
+import AddItem from './screens/addItem';
 import MarketItem from './screens/products/MarketItem';
 import RentingItem from './screens/products/RentingItem';
 import LostandFoundItem from './screens/products/LostandFoundItem';
@@ -45,7 +46,10 @@ export default function App() {
         <Route path={`/${'Lost & Found'.toLowerCase()}`} element={<LostFound/>}/>
         <Route path={`/${'Private Lessons'.toLowerCase()}`} element={<PrivateLessons/>}/>
         <Route path={`/${'Course Trading'.toLowerCase()}`} element={<CourseTrading/>}/>
-      </Routes> 
+
+        <Route path={`/${'Add-Item'.toLowerCase()}`} element={<AddItem/>}/>
+      </Routes>
+
      {/*   <MarketItem/>
       <RentingItem/>
       <LostandFoundItem/>
