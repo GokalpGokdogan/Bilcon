@@ -940,3 +940,247 @@ app.post("/filterItemsExceptUser", async (req, res) => {
         res.redirect("login");
     }
 })
+
+/* 
+Example JSON:
+{
+    "offset": 0,
+    "itemType": "found",
+    "onlyPostedByOthers": false
+}
+if onlyPostedByOthers is true, this do not retrieve the items posted by the same user, if it is false, it retrieves all items in the specified type.
+*/
+app.post("/getAllItems", async(req, res) => {
+    const user = req.session.foundUser;
+    if(user && Object.keys(user).length > 0){
+        let {offset, itemType, onlyPostedByOthers} = req.body;
+        let userController = new UserController();
+        let customerId = await userController.getCustomerIdByUserId(req.session.foundUser.userId);
+        let customerController = new CustomerController(itemType, customerId);
+        if(onlyPostedByOthers){
+            let nameOfUser = await userController.getNameByUserId(req.session.foundUser.userId);
+            let countOfItems = await customerController.getItemCount(nameOfUser);
+            let arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+
+            let arrayOfItems = await customerController.getItemsExceptUsersItems(countOfItems, offset, nameOfUser);
+            let serializedArray = arrayOfItems.map((item) => {
+                return item.toJSON(arrayOfFavListItemIds);
+            });
+
+            let jsonString = JSON.stringify(serializedArray);
+            res.status(200).send(jsonString);
+
+        }
+        else{
+            let nameOfUser = ".";
+            let countOfItems = await customerController.getItemCount(nameOfUser);
+            
+            let arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+
+            let arrayOfItems = await customerController.getItems(countOfItems, offset);
+            let serializedArray = arrayOfItems.map((item) => {
+                return item.toJSON(arrayOfFavListItemIds);
+            });
+
+            let jsonString = JSON.stringify(serializedArray);
+            res.status(200).send(jsonString);
+        }
+    }
+    else{
+        res.redirect("/login");
+    }
+})
+/* 
+Example JSON:
+{"offset": 0, 
+"itemType": "lost", 
+"minPrice": 0, 
+"maxPrice": 10000, 
+"minDay": 6, 
+"minMonth": 10, 
+"minYear": 2023, 
+"maxDay": 7, 
+"maxMonth": 10, 
+"maxYear": 2023, 
+"durationOfPrice": "week", 
+"minAvailabilityScalar": 0, 
+"maxAvailabilityScalar": 100, 
+"availabilityDuration": "month", 
+"searchQuery": "bookss",
+"onlyPostedByOthers": false}
+if onlyPostedByOthers is true, this do not retrieve the items posted by the same user, if it is false, it retrieves all items in the specified type.
+*/
+app.post("/searchAllItems", async(req, res) => {
+    const user = req.session.foundUser;
+    if(user && Object.keys(user).length > 0){
+        let userController = new UserController();
+        let customerId = await userController.getCustomerIdByUserId(req.session.foundUser.userId);
+        
+        let {offset, itemType, minPrice, maxPrice, minDay, minMonth, minYear, maxDay, maxMonth, maxYear, durationOfPrice
+            , minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, searchQuery, onlyPostedByOthers} = req.body;
+        let customerController = new CustomerController(itemType, customerId);
+        if(onlyPostedByOthers){
+            let nameOfUser = await userController.getNameByUserId(req.session.foundUser.userId);
+            let countOfItems = await customerController.getCountOfItemsByFilter(minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, 
+                maxDay, maxMonth, maxYear, -1, null, ".", nameOfUser);
+            let arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+
+            let arrayOfItems = await customerController.searchItemsExceptUsersItems(searchQuery, countOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, 
+                availabilityDuration, minDay,minMonth, minYear, maxDay, maxMonth, maxYear, nameOfUser);
+            let serializedArray = arrayOfItems.map((item) => {
+                return item.toJSON(arrayOfFavListItemIds);
+            });
+
+            let jsonString = JSON.stringify(serializedArray);
+            res.status(200).send(jsonString);
+        }
+        else{
+            let nameOfUser = ".";
+            
+            let countOfItems = await customerController.getCountOfItemsByFilter(minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, 
+                maxDay, maxMonth, maxYear, -1, null, ".", nameOfUser);
+            console.log(countOfItems);
+            let arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+
+            let arrayOfItems = await customerController.searchItem(searchQuery, countOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, 
+                availabilityDuration, minDay,minMonth, minYear, maxDay, maxMonth, maxYear);
+            let serializedArray = arrayOfItems.map((item) => {
+                return item.toJSON(arrayOfFavListItemIds);
+            });
+
+            let jsonString = JSON.stringify(serializedArray);
+            res.status(200).send(jsonString);
+        }
+    }
+    else{
+        res.redirect("/login");
+    }
+})
+
+/* 
+Example JSON
+{"offset": 0, 
+"itemType": "course", 
+"minPrice": 0, 
+"maxPrice": 10000, 
+"minDay": 1, 
+"minMonth": 1, 
+"minYear": 1, 
+"maxDay": 25, 
+"maxMonth": 12, 
+"maxYear": 2023, 
+"durationOfPrice": "week", 
+"minAvailabilityScalar": 0, 
+"maxAvailabilityScalar": 100, 
+"availabilityDuration": "month", 
+"courseName": "book",
+"sectionNo": 2,
+"wantToGive": true,
+"sortBy": 1,
+"onlyPostedByOthers": true}
+if onlyPostedByOthers is true, this do not retrieve the items posted by the same user, if it is false, it retrieves all items in the specified type.
+*/
+app.post("/filterAllItems", async(req, res) => {
+    const user = req.session.foundUser;
+    if(user && Object.keys(user).length > 0){
+        let userController = new UserController();
+        let customerId = await userController.getCustomerIdByUserId(req.session.foundUser.userId);
+        
+        let {offset, itemType, minPrice, maxPrice, minDay, minMonth, minYear, maxDay, maxMonth, maxYear, durationOfPrice
+            , minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, courseName, sectionNo, wantToGive, sortBy, onlyPostedByOthers} = req.body;
+        let customerController = new CustomerController(itemType, customerId);
+        if(onlyPostedByOthers){
+            let nameOfUser = await userController.getNameByUserId(req.session.foundUser.userId);
+            let countOfItems = await customerController.getCountOfItemsByFilter(minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, 
+                maxDay, maxMonth, maxYear, sectionNo, wantToGive, courseName, nameOfUser);
+            let arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+            let arrayOfItems = await customerController.filterItemsExceptUsersItems(countOfItems, offset, minPrice, maxPrice, durationOfPrice, 
+                minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, maxDay, maxMonth, maxYear, sectionNo, wantToGive, sortBy,
+                courseName, nameOfUser);
+            let serializedArray = arrayOfItems.map((item) => {
+                return item.toJSON(arrayOfFavListItemIds);
+            });
+
+            let jsonString = JSON.stringify(serializedArray);
+            res.status(200).send(jsonString);
+        }
+        else{
+            let nameOfUser = ".";
+            let countOfItems = await customerController.getCountOfItemsByFilter(minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, 
+                maxDay, maxMonth, maxYear, sectionNo, wantToGive, courseName, nameOfUser);
+            let arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+            let arrayOfItems = await customerController.filterItems(countOfItems, offset, minPrice, maxPrice, durationOfPrice, 
+                minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, maxDay, maxMonth, maxYear, sectionNo, wantToGive, sortBy,
+                courseName);
+            let serializedArray = arrayOfItems.map((item) => {
+                return item.toJSON(arrayOfFavListItemIds);
+            });
+
+            let jsonString = JSON.stringify(serializedArray);
+            res.status(200).send(jsonString);
+        }
+        
+    }
+    else{
+        res.redirect("/login");
+    }
+})
+
+/* 
+Example JSON:
+{
+    "offset": 0,
+    "itemType": "course"
+}
+*/
+app.post("/getAllItemsInFavoritesList", async (req, res) => {
+    const user = req.session.foundUser;
+    if(user && Object.keys(user).length > 0){
+        let userController = new UserController();
+        let customerId = await userController.getCustomerIdByUserId(req.session.foundUser.userId);
+        let {offset, itemType} = req.body;
+        let customerController = new CustomerController(itemType, customerId);
+        let arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+        let arrayOfItems = await customerController.getItemsInFavoritesList(offset, arrayOfFavListItemIds.length);
+        let serializedArray = arrayOfItems.map((item) => {
+            return item.toJSON(arrayOfFavListItemIds);
+        });
+        res.status(200).send(JSON.stringify(serializedArray));
+    }
+    else{
+        res.redirect("/login");
+    }
+})
+
+/* 
+Example JSON:
+{
+    "nameOfPoster": "hakan",
+    "itemType": "course",
+    "offset": 0
+}
+*/
+app.post("/getAllItemsOfPoster", async (req, res) => { // when a user clicks to another user's profile, the items posted by the user will appear-item type must be specified in the req
+    const user = req.session.foundUser;
+    if(user && Object.keys(user).length > 0){
+        let {nameOfPoster, itemType, offset} = req.body;
+        let userController = new UserController();
+        
+        let posterIdOfPoster = await userController.getPosterIdByName(nameOfPoster);
+        
+        let posterController = new PosterController(itemType, posterIdOfPoster);
+        let customerId = await userController.getCustomerIdByUserId(req.session.foundUser.userId);
+        let customerController = new CustomerController(itemType, customerId);
+        let arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+        let count = await posterController.getCountOfItems();
+        let arrayOfItems = await posterController.getItems(offset, count);
+        let serializedArray = arrayOfItems.map((item) => {
+            return item.toJSON(arrayOfFavListItemIds);
+        });
+        res.status(200).send(JSON.stringify(serializedArray));
+    }
+    else{
+        return res.redirect("/login");
+    }
+})
+
