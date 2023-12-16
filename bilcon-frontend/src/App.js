@@ -14,6 +14,7 @@ import LostFound from './screens/top-menu/lostFoundPage';
 import PrivateLessons from './screens/top-menu/privateLessonsPage';
 import CourseTrading from './screens/top-menu/courseTradingPage';
 import Chat from './screens/chat';
+import AddItem from './screens/addItem';
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
         <Route path={`/${'Private Lessons'.toLowerCase()}`} element={<PrivateLessons/>}/>
         <Route path={`/${'Course Trading'.toLowerCase()}`} element={<CourseTrading/>}/>
         <Route path={`/${'Chat'.toLowerCase()}`} element={<Chat/>}/>
+        <Route path={`/${'Add-Item'.toLowerCase()}`} element={<AddItem/>}/>
       </Routes>
     </div>
   );
