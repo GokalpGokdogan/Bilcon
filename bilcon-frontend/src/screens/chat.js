@@ -1,16 +1,18 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import { Link } from 'react-router-dom';
 import Message from './ui-component/message';
 import Header from './ui-component/header';
 import NavMenu from './ui-component/navMenu';  
-
-
+import { ChatContext } from '../context/ChatContext';
 
 
 
 function Chat({OtherId = '22222222'} /*{nameIn="Nameless", priceIn=-1, sellerIn="@Gokalp", imgIn='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg', key="" }*/) 
 {
     
+    const chatContext = useContext(ChatContext);
+
+    const {createChat } = chatContext;
 
     const [list, setList] = useState([]);
 
@@ -44,6 +46,7 @@ function Chat({OtherId = '22222222'} /*{nameIn="Nameless", priceIn=-1, sellerIn=
         );
         setList(prevList => [...prevList, newMessage]);
         setNewText('');
+        createChat({"first": "657c3d9453e88c291cb70aaf", "second": "657cdc55ad49a566f0d00109"});
     };
 
     useEffect(() => {

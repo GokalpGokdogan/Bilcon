@@ -112,8 +112,8 @@ function FilterView({type = 'Course Trading', setIsOpen} /*{nameIn="Nameless", p
     }                       
 
     if(type == pages[0]){
-        component=  <div className='text-ui-purple border-black'>
-                        <h1 className="text-2xl font-bold mb-4">Filter View</h1>
+        component=  <div className='text-ui-purple font-sans border-black'>
+                        <h1 className="text-2xl font-bold mb-4">Filters</h1>
                         {Object.keys(['numberOfItems', 'minPrice', 'maxPrice', 'offset', 'sortBy'].reduce((obj, key) => {
                             if (filters[key] !== undefined) {
                                 obj[key] = filters[key];
@@ -125,7 +125,7 @@ function FilterView({type = 'Course Trading', setIsOpen} /*{nameIn="Nameless", p
                     </div>
     }
     else if(type == pages[1]){
-        component=  <div className='text-ui-purple border-black'>
+        component=  <div className='text-ui-purple font-sans border-black'>
                         <h1 className="text-2xl font-bold mb-4">Filter View</h1>
                         {Object.keys(['numberOfItems', 'sortBy', 'minPrice', 'maxPrice', 'durationOfPrice', 'minAvailabilityScalar', 'maxAvailabilityScalar', 'availabilityDuration', 'offset'].reduce((obj, key) => {
                             if (filters[key] !== undefined) {
@@ -138,7 +138,7 @@ function FilterView({type = 'Course Trading', setIsOpen} /*{nameIn="Nameless", p
                     </div>
     }
     else if(type == pages[2]){
-        component=  <div className='text-ui-purple border-black'>
+        component=  <div className='text-ui-purple font-sans border-black'>
                         <h1 className="text-2xl font-bold mb-4">Filter View</h1>
                         {Object.keys(['minDay', 'minMonth', 'minYear', 'maxDay', 'maxMonth', 'maxYear', 'offset', 'numberOfItems', 'sortBy'].reduce((obj, key) => {
                             if (filters[key] !== undefined) {
@@ -151,7 +151,7 @@ function FilterView({type = 'Course Trading', setIsOpen} /*{nameIn="Nameless", p
                     </div>
     }
     else if(type == pages[3]){
-        component=  <div className='text-ui-purple border-black'>
+        component=  <div className='text-ui-purple font-sans border-black'>
                         <h1 className="text-2xl font-bold mb-4">Filter View</h1>
                         {Object.keys(['minPrice', 'maxPrice', 'offset', 'numberOfItems', 'sortBy'].reduce((obj, key) => {
                             if (filters[key] !== undefined) {
@@ -164,7 +164,7 @@ function FilterView({type = 'Course Trading', setIsOpen} /*{nameIn="Nameless", p
                     </div>
     }
     else if(type == pages[4]){
-        component=  <div className='text-ui-purple border-black'>
+        component=  <div className='text-ui-purple font-sans border-black'>
                         <h1 className="text-2xl font-bold mb-4">Filter View</h1>
                         {Object.keys(['numberOfItems', 'offset', 'sortBy', 'courseName', 'sectionNo', 'wantToGive'].reduce((obj, key) => {
                             if (filters[key] !== undefined) {
@@ -187,7 +187,7 @@ function FilterView({type = 'Course Trading', setIsOpen} /*{nameIn="Nameless", p
         <div className="bg-gray-blue w-[25vw] z-10 absolute top-full left-0 border-ui-purple shadow-lg rounded-lg p-4 transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">
             {/* Your popup content goes here */}
             {component} 
-            <button onClick={()=>{setIsOpen(false)}} className="mt-4 bg-ui-purple text-white w-full py-2 rounded hover:bg-purple-700 transition duration-200 ease-in-out">
+            <button onClick={()=>{setIsOpen(false)}} className="mt-4 bg-ui-purple font-sans text-white w-full py-2 rounded hover:bg-blue-dark transition duration-200 ease-in-out">
                 Submit
             </button>
         </div>

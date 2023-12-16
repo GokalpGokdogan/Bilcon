@@ -15,23 +15,27 @@ import Rent from './screens/top-menu/rentPage';
 import LostFound from './screens/top-menu/lostFoundPage';
 import PrivateLessons from './screens/top-menu/privateLessonsPage';
 import CourseTrading from './screens/top-menu/courseTradingPage';
-import Chat from './screens/chat';
 import MarketItem from './screens/products/MarketItem';
 import RentingItem from './screens/products/RentingItem';
 import LostandFoundItem from './screens/products/LostandFoundItem';
 import PrivateLessonItem from './screens/products/PrivateLessonItem';
+import { ChatContextProvider } from './context/ChatContext';
+import Chat from './screens/chat';
 
 
 export default function App() {
 
+  const user = {"_id" : "657c3d9453e88c291cb70aaf"};
+
   return (
+    <ChatContextProvider user={user}>
     <div className="App">
      <Routes>
         <Route path="" element={<Login/>} />
         <Route path="register" element={<Register/>} />
        {/* home inactive till decided */}
-        <Route path="home" element={<Market/>} />
-
+        <Route path="dashboard" element={<Market/>} />
+        <Route path="chat" element={<Chat />} />
         <Route path="forgotPassword" element={<ForgotPassword/>} />
         <Route path="verificationPage" element={<VerificationPage/>} />
         <Route path="accountPage" element={<AccountPage/>} />
@@ -41,14 +45,12 @@ export default function App() {
         <Route path={`/${'Lost & Found'.toLowerCase()}`} element={<LostFound/>}/>
         <Route path={`/${'Private Lessons'.toLowerCase()}`} element={<PrivateLessons/>}/>
         <Route path={`/${'Course Trading'.toLowerCase()}`} element={<CourseTrading/>}/>
-        <Route path={`/${'Chat'.toLowerCase()}`} element={<Chat/>}/>
-      </Routes>
-
+      </Routes> 
      {/*   <MarketItem/>
       <RentingItem/>
       <LostandFoundItem/>
       <PrivateLessonItem/>*/}
-
     </div>
+  </ChatContextProvider>
   );
 }

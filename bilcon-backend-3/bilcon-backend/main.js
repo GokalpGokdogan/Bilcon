@@ -23,7 +23,7 @@ let itemId = 0;
 const app = express();
 const cors = require('cors');
 const corsOptions ={
-    origin:'http://localhost:3001', 
+    origin: ['http://localhost:3001', 'http://localhost:3002'],
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
 }
@@ -124,7 +124,7 @@ app.post("/login", async(req,res)=>{
         req.session.save();
         console.log(req.session);        
         console.log("Login Successful");
-        res.redirect("http://localhost:3001/home");
+        res.status(200).json({ redirect: "http://localhost:3001/home" });
     }
     else {
         console.log("Invalid login credentials");
@@ -385,7 +385,7 @@ When a customer first opens the page, there should be some items and for that, t
     Possible item types: "sale", "rent", "lost", "found", "lesson", "course"
 */
 
-app.get("/getItems", async (req, res) => {
+app.post("/getItems", async (req, res) => {
     const user = req.session.foundUser;
     if(user && Object.keys(user).length > 0){
         let {numberOfItems, offset, itemType} = req.body;
