@@ -39,5 +39,10 @@ class ItemController{ // interface
     }
     getItemType(){
     }
+    async getItemCount(nameOfUser){
+    }
+    async getCountOfItemsByFilter(minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, 
+    maxDay, maxMonth, maxYear, sectionNo, wantToGive, courseName, nameOfUser){
+    }
 }
 module.exports = ItemController;
