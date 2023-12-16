@@ -92,7 +92,8 @@ class UserController{
                 posterId: " ",
                 customerId: " ",
                 rating: -1,
-                raterCount: 0
+                raterCount: 0,
+                totalRating: 0
             }).then(async (res) => {
                 let userId = res._id;
                 let posterController = new PosterController(" ", " ");

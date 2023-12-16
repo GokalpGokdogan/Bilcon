@@ -118,7 +118,8 @@ app.post("/login", async(req,res)=>{
             studentId: foundUser.studentId,
             userId: foundUser._id,
             boughtTransactions: foundUser.boughtTransactions,
-            soldTransactions: foundUser.soldTransactions
+            soldTransactions: foundUser.soldTransactions,
+            rating: foundUser.rating
         };
         
         req.session.save();
@@ -278,8 +279,8 @@ app.post("/submitTransaction/:ratedUserStudentId/:itemName/:isBought", async(req
     if (user && Object.keys(user).length > 0) {
         let transactionController = new TransactionController();   
         transactionController.addTransactionToUser(user.studentId, req.params.ratedUserStudentId, req.params.itemName, req.params.isBought);
-        transactionController.updateRating(req.params.ratedUserStudentId, req.body.newRating);
-        transactionController.updateRaterCount(req.params.ratedUserStudentId);
+        await transactionController.updateRating(req.params.ratedUserStudentId, req.body.newRating);
+        //await transactionController.updateRaterCount(req.params.ratedUserStudentId);
     } else {
         // User is not authenticated
         res.status(401).redirect("/login");

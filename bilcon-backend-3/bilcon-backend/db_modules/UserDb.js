@@ -52,6 +52,10 @@ const userSchema = new Schema({
         required: true,
         default: []        
     },
+    totalRating: {
+        type: Number,
+        required: true
+    }
 },
 
 {timestamps: false});

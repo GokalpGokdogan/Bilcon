@@ -70,17 +70,26 @@ class TransactionController{
                 const foundUser = await userDB.findOne({ studentId: studentIdOfRatedUser });
                 let userRating = foundUser.rating;
                 let userRaterCount = foundUser.raterCount;
-
+                
                 //calculate rating
                 if (userRating == -1){
                     userRating = newRating;
+                    await userDB.findOneAndUpdate({ studentId: studentIdOfRatedUser }, {totalRating: newRating })
                 }
                 else {
-                    userRating = ((userRating * userRaterCount) + newRating ) / (userRaterCount + 1);
+                    await userDB.findOneAndUpdate({ studentId: studentIdOfRatedUser }, {$inc:{totalRating: newRating }})
+                    const foundUser2 = await userDB.findOne({ studentId: studentIdOfRatedUser });                    
+                    userRating = foundUser2.totalRating / (userRaterCount + 1);                                      
                 }
+                
+                userRaterCount++;
 
-                //update rating
-                let updatedUser = await userDB.findOneAndUpdate({studentId: studentIdOfRatedUser}, {rating: userRating});
+                // Update the user with the new rating and incremented raterCount
+                let updatedUser = await userDB.findByIdAndUpdate(
+                    foundUser._id,
+                    { $set: { rating: userRating, raterCount: userRaterCount} },
+                    { new: true } // This option returns the modified document
+                );
                 
             } else {
                 console.log("User with entered ID does not exist.");
