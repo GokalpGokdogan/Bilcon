@@ -76,7 +76,7 @@ class TransactionController{
                     userRating = newRating;
                 }
                 else {
-                    userRating = ((userRating * userRaterCount) + newRating ) / (raterCount + 1)
+                    userRating = ((userRating * userRaterCount) + newRating ) / (userRaterCount + 1);
                 }
 
                 //update rating
