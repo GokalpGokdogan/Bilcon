@@ -1,5 +1,4 @@
-import React,{useState} from 'react';
-import { Link } from 'react-router-dom';
+import React,{useState, useEffect} from 'react';
 import NavMenu from './ui-component/navMenu';
 import Header from './ui-component/header';
 import { Upload, message, Select, Switch } from 'antd';
@@ -8,65 +7,32 @@ import { PlusOutlined } from '@ant-design/icons';
     function AddItem() 
     {
         const pages = ['Market', 'Renting', 'Lost & Found', 'Private Lessons', 'Course Trading'];
-        const [noStar, setNoStar] = useState(-1);
-        const [type, setType] = useState(pages[0]);
+        const [type, setType] = useState('Market');
         const [imageUrl, setImageUrl] = useState(null);
-        const [img, setImg] = useState(null);
+
+        const [item, setItem] = useState(null);
+
+        //name, definition, price, durationOfPrice, availabilityScalar, availabilityDuration, place, day, month, year, sectionNo, wantToGive, itemType
+        const [name, setName] = useState('');
+        const [description, setDescription] = useState('');
+        const [price, setPrice] = useState(0);
+        const [availabilityScalar, setAvailabilityScalar] = useState(0);
+        const [availabilityDuration, setAvailabilityDuration] = useState('hour');
+        const [place, setPlace] = useState('');
+        const [day, setDay] = useState(1);
+        const [month, setMonth] = useState(1);
+        const [year, setYear] = useState(2000);
+        const [section, setSection] = useState(0);
+        const [wantToGive, setWantToGive ] = useState(true);
+        const [posterId, setPosterId] = useState('22222222');
+        const [itemType, setItemType] = useState('Market');
 
         //ant design
         const { Option } = Select;
 
-        let seller = {name:'@Gokalp',img:'https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg',rating:4.5}
-    
-        const starIcons = Array.from({ length: Math.ceil(seller.rating)  }, (_, i) => (
-            <svg key={i} className='my-auto' width="2vw" height="2vw" viewBox="0 0 36 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                <title>Star</title>
-                <desc>Created with Sketch.</desc>
-                <defs></defs>
-                <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <g id="Profile-nav" transform="translate(-11.000000, -4.000000)" fill="#F8E71C" stroke="none" stroke-width="2">
-                        <g id="Group-2" transform="translate(0.000000, -1.000000)">
-                            <polygon id="Star" points="29 32.8753882 19.595436 38 21.3915479 27.145898 13.7830957 19.4589803 24.297718 17.8753882 29 8 33.702242 17.8753882 44.2169043 19.4589803 36.6084521 27.145898 38.404564 38"></polygon>
-                        </g>
-                    </g>
-                </g>
-            </svg>
-        ));
-        const product = {name:'Bilcon',img:'https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg',description:'Lorem ipsum',price:100,seller:'@Gokalp',negotiable:true,rentDurationNumber:1,rentDurationType:'day'}
-    
-        const starIconsSpecial = Array.from({ length: 5  }, (_, i) => (
-            <button key={i} onClick={() => { setNoStar(i) }}>
-                <svg className='my-auto' width="2vw" height="2vw" viewBox="0 0 36 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                    <title>Star</title>
-                    <desc>Created with Sketch.</desc>
-                    <defs></defs>
-                    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                        <g id="Profile-nav" transform="translate(-11.000000, -4.000000)" fill={ (noStar<i)?"#979797":"#F8E71C"} stroke="none" stroke-width="2">
-                            <g id="Group-2" transform="translate(0.000000, -1.000000)">
-                                <polygon id="Star" points="29 32.8753882 19.595436 38 21.3915479 27.145898 13.7830957 19.4589803 24.297718 17.8753882 29 8 33.702242 17.8753882 44.2169043 19.4589803 36.6084521 27.145898 38.404564 38"></polygon>
-                            </g>
-                        </g>
-                    </g>
-                </svg>
-            </button>
-        ));
+        
         const line = <hr className='border-gray border-1 w-100 my-[1vw]'/>
-        const user = <div className='flex flex-row items-center'>
-                        <img
-                            className="h-[36px] w-[36px] rounded-full my-auto mr-[1vw]"
-                            alt=''
-                            src={`${seller.img } `}
-                        />
-                        <div className=' flex flex-row'>
-                            <div className='flex items-center mr-[1vw]'>
-                                <strong className='text-[24px]'>{(seller.name).replace('@','')}</strong>
-                            </div>
-                            <div className='flex flex-row'>
-                                {starIcons}
-                            </div>
-                        </div>
-                    </div>
-
+        
         let component;
 
         const beforeUpload = (file) => {
@@ -80,6 +46,7 @@ import { PlusOutlined } from '@ant-design/icons';
         const handleChange = (info) => {
             if (info && info.file) {
                 if (info.file.status === 'done') {
+                    console.log(info.file.response.url)
                     setImageUrl(info.file.response.url); // Here you should update the imageUrl with the URL of the image returned from the server
                 }
             }
@@ -87,7 +54,7 @@ import { PlusOutlined } from '@ant-design/icons';
 
         const handleUpload = ({ file, onSuccess }) => {
             console.log(file);
-            setImg(file);
+            //setImg(file);
             setTimeout(() => {
                 onSuccess("ok");
             }, 2000);
@@ -100,20 +67,38 @@ import { PlusOutlined } from '@ant-design/icons';
             </div>
         );
 
+        const pageValues = ['sale', 'rent', 'lost & found', 'lesson', 'course'];
+
         const typeSelect =  <div>                                    
                                 <p className='text-gray font-bold'>Type</p>
-                                <Select defaultValue={type} style={{ width: 180 }} onChange={(e) => { setType(e); handleChange(); /*setType(selectedType)*/}}>
-                                    {pages.map(page => <Option key={page} value={page} >{page}</Option>)}
+                                <Select defaultValue={type} style={{ width: 180 }} onChange={(value) => { if(value !== 'Lost & Found'){setItemType(value)}; setType(pages[pageValues.indexOf(value)]);/*handleChange(); /*setType(selectedType)*/}}>
+                                    {pages.map((page,index) => <Option key={page} value={pageValues[index]} >{page}</Option>)}
                                 </Select>
                             </div>
 
         const dateSelect =  <div className='flex flex-row'>
-                                <input min={1} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-xs rounded-xl p-1.5 w-1/5" required={true} type='number' placeholder='Number of' onChange={(e)=>{/**availabilityScalar */}}/>
-                                <Select  defaultValue={'day'} style={{ width: 90 }} onChange={(e) => { /**availabilityDuration */ }}>
+                                <input min={1} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-xs rounded-xl p-1.5 w-1/5" required={true} type='number' placeholder='Number of' onChange={(e)=>{setAvailabilityScalar(e.target.value)/**availabilityScalar */}}/>
+                                <Select  defaultValue={'day'} style={{ width: 90 }} onChange={(e) => { setAvailabilityDuration(e.target.value)/**availabilityDuration */ }}>
                                     {['hour', 'day', 'week', 'month', 'year'].map(page => <Option key={page} value={page} >{page}</Option>)}
                                 </Select>
                             </div>
 
+        useEffect(() => {
+            // This effect will run every time the 'item' state is updated
+            console.log(item, type, itemType);
+            
+        }, [item]);
+
+        const handleSubmit = (event) => {
+            event.preventDefault();
+            console.log(name, description, price, availabilityScalar, availabilityDuration, place, day, month, year, section, wantToGive, posterId);
+        };
+        const submit =  <button type="submit" className="bg-ui-purple hover:bg-ig-purple text-white font-bold py-2 px-4 rounded transition duration-200 ease-in-out transform transition-transform scale-95 hover:scale-100" onClick={() => {
+                                        setItem({name:name, description:description, price:price, availabilityScalar:availabilityScalar, availabilityDuration:availabilityDuration, place:place, day:day, month:month, year:year, sectionNo:section, wantToGive:wantToGive, itemType:itemType, posterId:posterId});
+                                        console.log(item);
+                                        }}>
+                            Submit
+                        </button>
         
         if (type === pages[0]) {
             component = <div className='flex flex-row '>
@@ -146,12 +131,12 @@ import { PlusOutlined } from '@ant-design/icons';
                                 {/* Name */}
                                 <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
                                     <p className='text-gray font-bold'>Name</p>
-                                    <input className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/2" required={true} type='text' placeholder='Name' onChange={()=>{}}/>
+                                    <input className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/2" required={true} type='text' placeholder='Name' onChange={(e)=>{setName(e.target.value)}}/>
                                 </div>
                                 {/* Description */}
                                 <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
                                     <p className='text-gray font-bold'>Description</p>
-                                    <textarea className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-full" required={false} type='text' placeholder='Description' onChange={()=>{}}/>
+                                    <textarea className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-full" required={false} type='text' placeholder='Description' onChange={(e)=>{setDescription(e.target.value)}}/>
                                 </div>
                                 {/* Price */}
                                 <div className='flex flex-row'>
@@ -159,14 +144,14 @@ import { PlusOutlined } from '@ant-design/icons';
                                     <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
                                         <p className='text-gray font-bold'>Price</p>
                                         <div className='flex flex-row'>
-                                            <input min={0} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-2/5" required={true} type='number' placeholder='Price' onChange={()=>{}}/>
+                                            <input min={0} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-2/5" required={true} type='number' placeholder='Price' onChange={(e)=>{setPrice(e.target.value)}}/>
                                             <p className='text-gray my-auto mx-2'>TL</p>    
                                         </div>
                                     </div>
 
 
                                 </div>
-                                
+                                {submit}
                             </div>
                         </div>
                          
@@ -201,12 +186,12 @@ import { PlusOutlined } from '@ant-design/icons';
                                 {/* Name */}
                                 <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
                                     <p className='text-gray font-bold'>Name</p>
-                                    <input className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/2" required={true} type='text' placeholder='Name' onChange={()=>{}}/>
+                                    <input className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/2" required={true} type='text' placeholder='Name' onChange={(e)=>{setName(e.target.value)}}/>
                                 </div>
                                 {/* Description */}
                                 <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
                                     <p className='text-gray font-bold'>Description</p>
-                                    <textarea className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-full" required={false} type='text' placeholder='Description' onChange={()=>{}}/>
+                                    <textarea className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-full" required={false} type='text' placeholder='Description' onChange={(e)=>{setDescription(e.target.value)}}/>
                                 </div>
                                 {/* Price */}
                                 <div className='flex flex-row'>
@@ -214,7 +199,7 @@ import { PlusOutlined } from '@ant-design/icons';
                                     <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
                                         <p className='text-gray font-bold'>Price</p>
                                         <div className='flex flex-row'>
-                                            <input min={0} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-2/5" required={true} type='number' placeholder='Price' onChange={()=>{}}/>
+                                            <input min={0} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-2/5" required={true} type='number' placeholder='Price' onChange={(e)=>{setPrice(e.target.value)}}/>
                                             <p className='text-gray my-auto mx-2'>TL</p>    
                                         </div>            
                                     </div>
@@ -226,7 +211,7 @@ import { PlusOutlined } from '@ant-design/icons';
                                     
 
                                 </div>
-                                
+                                {submit}
                             </div>
                         </div>
                     
@@ -259,7 +244,7 @@ import { PlusOutlined } from '@ant-design/icons';
                                     {typeSelect}
                                     <div className='ml-auto'>                                    
                                         <p className='text-gray font-bold'>Lost or Found</p>
-                                        <Select defaultValue={'lost'} style={{ width: 120 }} onChange={(e) => {}}>
+                                        <Select defaultValue={'lost'} style={{ width: 120 }} onChange={(value) => {console.log(value);setItemType(value)}}>
                                             {['lost','found'].map(page => <Option key={page} value={page} >{page}</Option>)}
                                         </Select>
                                     </div>
@@ -267,12 +252,12 @@ import { PlusOutlined } from '@ant-design/icons';
                                 {/* Name */}
                                 <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
                                     <p className='text-gray font-bold'>Name</p>
-                                    <input className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/2" required={true} type='text' placeholder='Name' onChange={()=>{}}/>
+                                    <input className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/2" required={true} type='text' placeholder='Name' onChange={(e)=>{setName(e.target.value)}}/>
                                 </div>
                                 {/* Description */}
                                 <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
                                     <p className='text-gray font-bold'>Description</p>
-                                    <textarea className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-full" required={false} type='text' placeholder='Description' onChange={()=>{}}/>
+                                    <textarea className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-full" required={false} type='text' placeholder='Description' onChange={(e)=>{setDescription(e.target.value)}}/>
                                 </div>
                                 {/* Info */}
                                 <p className='text-gray font-bold'>Info</p>
@@ -282,7 +267,7 @@ import { PlusOutlined } from '@ant-design/icons';
                                     <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
                                         <p className='text-gray font-bold'>Location</p>
                                         <div className='flex flex-row'>
-                                            <input min={0} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-2/5" required={true} type='Text' placeholder='Location' onChange={()=>{}}/>
+                                            <input min={0} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-2/5" required={true} type='Text' placeholder='Location' onChange={(e)=>{setPlace(e.target.value)}}/>
                                              
                                         </div>            
                                     </div>
@@ -290,18 +275,18 @@ import { PlusOutlined } from '@ant-design/icons';
                                     <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
                                         <p className='text-gray font-bold'>Date</p>
                                         <div className='flex flex-row'>
-                                            <input min={0} max={31} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/5" required={true} type='Text' placeholder='DD' onChange={()=>{}}/>
+                                            <input min={0} max={31} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/5" required={true} type='Text' placeholder='DD' onChange={(e)=>{setDay(e.target.value)}}/>
                                             <p className='text-gray my-auto mx-2'>/</p>
-                                            <input min={0} max={12} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/5" required={true} type='Text' placeholder='MM' onChange={()=>{}}/>
+                                            <input min={0} max={12} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/5" required={true} type='Text' placeholder='MM' onChange={(e)=>{setMonth(e.target.value)}}/>
                                             <p className='text-gray my-auto mx-2'>/</p>
-                                            <input min={2000    } className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/5" required={true} type='Text' placeholder='YYYY' onChange={()=>{}}/>
+                                            <input min={2000    } className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/5" required={true} type='Text' placeholder='YYYY' onChange={(e)=>{setYear(e.target.value)}}/>
                                             
                                         </div>            
                                     </div>
                                     
 
                                 </div>
-                                
+                                {submit}
                             </div>
                         </div>
                     
@@ -336,12 +321,12 @@ import { PlusOutlined } from '@ant-design/icons';
                                 {/* Name */}
                                 <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
                                     <p className='text-gray font-bold'>Name</p>
-                                    <input className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/2" required={true} type='text' placeholder='Name' onChange={()=>{}}/>
+                                    <input className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/2" required={true} type='text' placeholder='Name' onChange={(e)=>{setName(e.target.value)}}/>
                                 </div>
                                 {/* Description */}
                                 <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
                                     <p className='text-gray font-bold'>Description</p>
-                                    <textarea className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-full" required={false} type='text' placeholder='Description' onChange={()=>{}}/>
+                                    <textarea className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-full" required={false} type='text' placeholder='Description' onChange={(e)=>{setDescription(e.target.value)}}/>
                                 </div>
                                 {/* Price */}
                                 <div className='flex flex-row'>
@@ -349,7 +334,7 @@ import { PlusOutlined } from '@ant-design/icons';
                                     <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
                                         <p className='text-gray font-bold'>Price</p>
                                         <div className='flex flex-row'>
-                                            <input min={0} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-2/5" required={true} type='number' placeholder='Price' onChange={()=>{}}/>
+                                            <input min={0} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-2/5" required={true} type='number' placeholder='Price' onChange={(e)=>{setPrice(e.target.value)}}/>
                                             <p className='text-gray my-auto mx-2'>TL/hour</p>    
                                         </div>            
                                     </div>
@@ -365,7 +350,7 @@ import { PlusOutlined } from '@ant-design/icons';
 
 
                                 </div>
-                                
+                                {submit}
                             </div>
                         </div>
            } else if (type === pages[4]) {
@@ -399,17 +384,17 @@ import { PlusOutlined } from '@ant-design/icons';
                                 {/* Name */}
                                 <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
                                     <p className='text-gray font-bold'>Name</p>
-                                    <input className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/2" required={true} type='text' placeholder='Name' onChange={()=>{}}/>
+                                    <input className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/2" required={true} type='text' placeholder='Name' onChange={(e)=>{setName(e.target.value)}}/>
                                 </div>
                                 {/* Description */}
                                 <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
                                     <p className='text-gray font-bold'>Description</p>
-                                    <textarea className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-full" required={false} type='text' placeholder='Description' onChange={()=>{}}/>
+                                    <textarea className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-full" required={false} type='text' placeholder='Description' onChange={(e)=>{setDescription(e.target.value)}}/>
                                 </div>
                                 {line}
                                 {/* Price */}
                                 <div className='flex flex-row m-1 items-left w-4/5'>
-                                    <div className='flex flex-col text-ellipsis w-1/3'>
+                                    {/* <div className='flex flex-col text-ellipsis w-1/3'>
                                         <p className='text-gray font-bold'>Departmant</p>
                                         <div className='flex flex-row'>
                                             <input className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-5/6" required={true} type='text' placeholder='CS' onChange={()=>{}}/>
@@ -421,23 +406,23 @@ import { PlusOutlined } from '@ant-design/icons';
                                             <input min={0} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-5/6" required={true} type='number' placeholder='319' onChange={()=>{}}/>
                                             
                                         </div>            
-                                    </div>
+                                    </div> */}
                                     <div className='flex flex-col text-ellipsis w-1/3'>
                                         <p className='text-gray font-bold'>Section</p>
                                         <div className='flex flex-row'>
-                                            <input min={1} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-5/6" required={true} type='number' placeholder='2' onChange={()=>{}}/>
+                                            <input min={1} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-5/6" required={true} type='number' placeholder='2' onChange={(e)=>{setSection(e.target.value)}}/>
                                         </div>            
                                     </div>
                                     
                                     <div className='flex flex-col items-center text-ellipsis w-1/2'>
                                         <p className='text-gray font-bold'>Wants or Gives</p>
                                         <div className='flex flex-row justify-center items-center m-auto'>
-                                            <Switch size='default' checkedChildren="Wants" unCheckedChildren="Gives" defaultChecked onChange={(e)=>{console.log(e)}} />
+                                            <Switch size='default' className='bg-gray text-white' checkedChildren="Wants" unCheckedChildren="Gives" defaultChecked onChange={(value)=>{setWantToGive(value);console.log(value)}} />
                                         </div>            
                                     </div>
                                 </div>
 
-                                
+                                {submit}
                             </div>
                         </div>
         } else {
@@ -453,9 +438,12 @@ import { PlusOutlined } from '@ant-design/icons';
                 <NavMenu currPage="Add-Items"/>
                 <div className='flex flex-col bg-white justify-center items-center'>
                     <h1 className='font-inter font-extrabold text-3xl text-ui-purple my-2'>Post {type} Item</h1>
-                    <div className='flex flex-row bg-gray-light rounded-xl'>
-                        {component}
-                    </div>
+                    <form onSubmit={handleSubmit}>
+                        <div className='flex flex-row bg-gray-light rounded-xl'>
+                            {component}
+                        </div>
+                    </form>
+                    
                 </div>
             </div>
             
