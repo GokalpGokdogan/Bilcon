@@ -159,11 +159,29 @@ app.get('/verify/:token/:email', (req, res)=>{
     
 }); 
 
-app.get("/accountPage", (req,res)=>{
+app.get("/accountPage", async (req,res)=>{
     const user = req.session.foundUser;
     if (user && Object.keys(user).length > 0) {
         // User is authenticated
-        res.send(user);
+
+        let userController = new UserController();   
+        let updatedUser = await userController.accessUserWithId(user.studentId);
+
+        // Update the session information
+        req.session.foundUser = {
+            name: updatedUser.name,
+            mail: updatedUser.email,
+            studentId: updatedUser.studentId,
+            userId: updatedUser._id,
+            boughtTransactions: updatedUser.boughtTransactions,
+            soldTransactions: updatedUser.soldTransactions,
+            rating: updatedUser.rating
+        };
+        // Save the updated session
+        req.session.save();
+        const sentUser = req.session.foundUser;
+        res.send(sentUser);
+        
     } else {
         // User is not authenticated
         //console.log("Unauthorized. Session foundUser:", req.session.foundUser);
@@ -286,23 +304,6 @@ app.post("/submitTransaction/:ratedUserStudentId/:itemName/:isBought", async(req
         let transactionController = new TransactionController();   
         transactionController.addTransactionToUser(user.studentId, req.params.ratedUserStudentId, req.params.itemName, req.params.isBought);
         await transactionController.updateRating(req.params.ratedUserStudentId, req.body.newRating);
-
-        let userController = new UserController();   
-        let updatedUser = await userController.accessUserWithId(studentIdOfUser);
-
-            // Update the session information
-            req.session.foundUser = {
-                name: updatedUser.name,
-                mail: updatedUser.email,
-                studentId: updatedUser.studentId,
-                userId: updatedUser._id,
-                boughtTransactions: updatedUser.boughtTransactions,
-                soldTransactions: updatedUser.soldTransactions,
-                rating: updatedUser.rating
-            };
-
-            // Save the updated session
-            req.session.save();
 
     } else {
         // User is not authenticated
