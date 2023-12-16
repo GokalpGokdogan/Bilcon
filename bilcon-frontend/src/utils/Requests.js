@@ -79,3 +79,27 @@ export const postItem = async (itemData) => {
     }
     return res.data;
 };
+
+export const findUserChats = async (userId) => {
+  try {
+    const params = {userId};
+    const res = await axios({
+      method: 'get',
+      url: `http://${API_HOST}/findUserChats`,
+      headers: { 'Content-Type': 'application/json' },
+      params,
+      withCredentials: true
+  });
+
+    if (res.data) {
+      console.log(res.data);
+    }
+
+    return res.data;
+  } catch (error) {
+    console.error('Error in getItems:', error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+

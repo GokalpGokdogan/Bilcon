@@ -14,10 +14,12 @@ module.exports = {
       'gray-dark': '#273444',
       'gray': '#979797',
       'gray-light': '#F5F5F5',
+      'gray-mid': '#e8e8e8',
       'gray-blue': '#EDEDF9',
       'ui-purple': '#5F6BDF',
       'ig-blue': '#5851DB',
       'ig-purple': '#833AB4',
+      'red': '#e61042',
     },
     fontFamily: {
       sans: 'DM Sans',
