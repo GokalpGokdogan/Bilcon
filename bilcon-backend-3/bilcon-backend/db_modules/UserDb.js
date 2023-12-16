@@ -39,7 +39,7 @@ const userSchema = new Schema({
         required: true
     },
     raterCount: {
-        type: String,
+        type: Number,
         required: true
     },
     boughtTransactions: {
