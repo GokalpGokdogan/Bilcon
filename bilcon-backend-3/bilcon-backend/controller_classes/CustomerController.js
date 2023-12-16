@@ -210,7 +210,14 @@ class CustomerController{
             return willReturn;
     }
 
-
+    async getItemCount(nameOfUser){
+        return await this.itemController.getItemCount(nameOfUser);
+    }
+    async getCountOfItemsByFilter(minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, 
+        maxDay, maxMonth, maxYear, sectionNo, wantToGive, courseName, nameOfUser){
+        return await this.itemController.getCountOfItemsByFilter(minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, 
+            maxDay, maxMonth, maxYear, sectionNo, wantToGive, courseName, nameOfUser);
+    }
 
 
 
