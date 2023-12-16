@@ -43,16 +43,18 @@ const userSchema = new Schema({
         required: true
     },
     boughtTransactions: {
-        type: [String], 
+        type: [{ itemName: String, from: Number }], 
         required: true,
-        default: []
+        default: []        
     },
     soldTransactions: {
-        type: [String], 
+        type: [{ itemName: String, to: Number }], 
         required: true,
-        default: []
+        default: []        
     },
-}, {timestamps: false});
+},
+
+{timestamps: false});
 
 
 

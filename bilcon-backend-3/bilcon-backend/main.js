@@ -116,7 +116,9 @@ app.post("/login", async(req,res)=>{
             name: foundUser.name,
             mail: foundUser.email,
             studentId: foundUser.studentId,
-            userId: foundUser._id
+            userId: foundUser._id,
+            boughtTransactions: foundUser.boughtTransactions,
+            soldTransactions: foundUser.soldTransactions
         };
         
         req.session.save();
@@ -271,13 +273,11 @@ app.patch("/resetPassword/:token/:id", async (req,res)=>{
     }
 });
 
-app.post("/submitTransaction/:ratedUserStudentId/:itemName", async(req,res)=>{
+app.post("/submitTransaction/:ratedUserStudentId/:itemName/:isBought", async(req,res)=>{
     const user = req.session.foundUser;
     if (user && Object.keys(user).length > 0) {
         let transactionController = new TransactionController();   
-        transactionController.addTransactionToUser(user.studentId, req.params.ratedUserStudentId, req.params.itemName);
-        transactionController.addTransactionToRatedUser(user.studentId, req.params.ratedUserStudentId, req.params.itemName);
-
+        transactionController.addTransactionToUser(user.studentId, req.params.ratedUserStudentId, req.params.itemName, req.params.isBought);
     } else {
         // User is not authenticated
         res.status(401).redirect("/login");

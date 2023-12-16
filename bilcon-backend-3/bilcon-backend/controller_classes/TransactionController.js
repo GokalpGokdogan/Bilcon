@@ -12,7 +12,7 @@ class TransactionController{
         
     }
 
-    async addTransactionToUser(studentIdOfUser, studentIdOfRatedUser, itemName) {
+    async addTransactionToUser(studentIdOfUser, studentIdOfRatedUser, itemName, isBought) {
         let userController = new UserController();   
         try {
             let doesRatedUserExists = await userController.userExistsID(studentIdOfRatedUser);
@@ -21,10 +21,14 @@ class TransactionController{
                 //add transaction to user
                 const transactionDB = TransactionDB;
                 
-
-                const foundUser = await userDB.findOneAndUpdate({ studentId: studentIdOfUser }, { $push: { boughtTransactions: itemName } },
-                { new: true });
-                
+                if(isBought === "true"){
+                    const foundUser = await userDB.findOneAndUpdate({ studentId: studentIdOfUser }, { $push: { boughtTransactions: {itemName: itemName , from:studentIdOfRatedUser} } },
+                    { new: true });
+                }
+                else{
+                    const foundUser = await userDB.findOneAndUpdate({ studentId: studentIdOfUser }, { $push: { soldTransactions: {itemName:itemName , to:studentIdOfRatedUser}} },
+                    { new: true });                  
+                }             
                 
             } else {
                 console.log("User with entered ID does not exist.");
@@ -36,16 +40,21 @@ class TransactionController{
         }
     }
 
-    async addTransactionToRatedUser(studentIdOfUser, studentIdOfRatedUser, itemName) {
+    /*async addTransactionToRatedUser(studentIdOfUser, studentIdOfRatedUser, itemName, isBought) {
         let userController = new UserController();   
         try {
             let doesRatedUserExists = await userController.userExistsID(studentIdOfRatedUser);
             if (doesRatedUserExists) {
                 const userDB = UserDB;
                 
-                //add transaction to rated user
-                const foundRatedUser = await userDB.findOneAndUpdate({ studentId: studentIdOfRatedUser }, { $push: { soldTransactions: itemName } },
-                { new: true });
+                if(isBought ===  "true"){
+                    const foundUser = await userDB.findOneAndUpdate({ studentId: studentIdOfUser }, { $push: { boughtTransactions: itemName } },
+                    { new: true });
+                }
+                else{
+                    const foundUser = await userDB.findOneAndUpdate({ studentId: studentIdOfUser }, { $push: { soldTransactions: itemName } },
+                    { new: true });                  
+                }
                 
             } else {
                 console.log("User with entered ID does not exist.");
@@ -55,7 +64,7 @@ class TransactionController{
             console.log(error);
             
         }
-    }
+    }*/
     
     
 }
