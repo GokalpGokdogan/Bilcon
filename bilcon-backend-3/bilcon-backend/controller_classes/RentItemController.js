@@ -284,6 +284,35 @@ class RentItemController extends ItemController{
             });
         }
     }
+    async getItemCount(nameOfUser){
+        const rentItemDb = RentItemDB;
+        let itemCount = await rentItemDb.countDocuments({posterName: {$ne: nameOfUser}}, (err, count) => {
+            return count;
+        });
+        return itemCount;
+
+    }
+    async getCountOfItemsByFilter(minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, 
+        maxDay, maxMonth, maxYear, sectionNo, wantToGive, courseName, nameOfUser){
+            const rentItemDb = RentItemDB;
+            let itemCount = await rentItemDb.countDocuments({durationOfPrice: durationOfPrice,
+                availabilityDuration: availabilityDuration,
+                price: {
+                    $gte: minPrice,
+                    $lte: maxPrice
+                },
+                availabilityScalar: {
+                    $gte: minAvailabilityScalar,
+                    $lte: maxAvailabilityScalar
+                },
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }, (err, count) => {
+                return count;
+            });
+            return itemCount;
+    }
 
 }
 
