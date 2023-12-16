@@ -207,6 +207,28 @@ class SaleItemController extends ItemController{
         }
     }
 
+    async getItemCount(nameOfUser){
+        const saleItemDb = SaleItemDB;
+        let itemCount = await saleItemDb.countDocuments({posterName: {$ne: nameOfUser}}, (err, count) => {
+            return count;
+        });
+        return itemCount;
+
+    }
+    async getCountOfItemsByFilter(minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, 
+    maxDay, maxMonth, maxYear, sectionNo, wantToGive, courseName, nameOfUser){
+        const saleItemDb = SaleItemDB;
+        let itemCount = await saleItemDb.countDocuments({price: {
+            $gte: minPrice,
+            $lte: maxPrice
+        },
+        posterName: {$ne: nameOfUser}
+        }, (err, count) => {
+            return count;
+        });
+        return itemCount;
+    }
+
 
     
 
