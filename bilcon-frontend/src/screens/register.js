@@ -31,7 +31,7 @@ function Register()
                 </div>   
                 <div>
                     <p className="font-sans text-blue font-bold text-sm py-2">Bilkent Mail</p>
-                    <input value={email} onChange={(e) => setEmail(e.target.value)} onBlur={(e) => {const value = e.target.value; if (!(value=="")&!value.match(/@(ug.bilkent.edu.tr|bilkent.edu.tr)$/)) { alert("Email must end with @ug.bilkent.edu.tr or @bilkent.edu.tr"); }}}  type="email" className="border border-gray text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-2.5 w-full" placeholder="user@bilkent.edu.tr" required=""></input>
+                    <input value={email} onChange={(e) => setEmail(e.target.value)} onBlur={(e) => {const value = e.target.value;}} /* if (!(value=="")&!value.match(/@(ug.bilkent.edu.tr|bilkent.edu.tr)$/)) { alert("Email must end with @ug.bilkent.edu.tr or @bilkent.edu.tr"); }}} */  type="email" className="border border-gray text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-2.5 w-full" placeholder="user@bilkent.edu.tr" required=""></input>
                 </div>    
                 <div>
                     <p className="font-sans text-blue font-bold text-sm py-2">Password</p>

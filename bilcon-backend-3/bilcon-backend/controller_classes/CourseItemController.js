@@ -188,6 +188,31 @@ class CourseItemController extends ItemController{
     getItemType(){
         return "course";
     }
+
+    async getItemCount(nameOfUser){
+        const courseItemDb = CourseItemDB;
+        let itemCount = await courseItemDb.countDocuments({posterName: {$ne: nameOfUser}}, (err, count) => {
+            return count;
+        });
+        return itemCount;
+
+    }
+    async getCountOfItemsByFilter(minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, 
+        maxDay, maxMonth, maxYear, sectionNo, wantToGive, courseName, nameOfUser){
+            const courseItemDb = CourseItemDB;
+            
+            let itemCount = await courseItemDb.countDocuments({
+                name: courseName,
+                sectionNo: sectionNo,
+                wantToGive: wantToGive,
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }, (err, count) => {
+                return count;
+            });
+            return itemCount;
+    }
 }
 
 module.exports = CourseItemController;

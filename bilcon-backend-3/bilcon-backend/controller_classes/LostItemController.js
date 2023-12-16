@@ -31,7 +31,7 @@ class LostItemController extends ItemController{
         const lostItemDb = LostItemDB;
         return await lostItemDb.find({}).sort({date: -1}).skip(offset).limit(numberOfLostItems).then((res) => {
             return res.map((itemData) => {
-                return new LostItem(itemData.name, itemData.definition, itemData.itemId, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getYear(), itemData.posterId, itemData.posterName);
+                return new LostItem(itemData.name, itemData.definition, itemData.itemId, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getFullYear(), itemData.posterId, itemData.posterName);
             });
         });
     }
@@ -71,7 +71,7 @@ class LostItemController extends ItemController{
             }
         }).skip(offset).limit(numberOfItems);
         return arrayOfLostObjects.map((item) => {
-            return new LostItem(item.name, item.definition, item.itemId, item.place, item.date.getDate(), item.date.getMonth(), item.date.getYear(), item.posterId, item.posterName);
+            return new LostItem(item.name, item.definition, item.itemId, item.place, item.date.getDate(), item.date.getMonth(), item.date.getFullYear(), item.posterId, item.posterName);
         });
     }
 
@@ -114,7 +114,7 @@ class LostItemController extends ItemController{
         }
 
         return arrayOfItems.map((item) => {
-            return new LostItem(item.name, item.definition, item.itemId, item.place, item.date.getDate(), item.date.getMonth(), item.date.getYear(), item.posterId, item.posterName);
+            return new LostItem(item.name, item.definition, item.itemId, item.place, item.date.getDate(), item.date.getMonth(), item.date.getFullYear(), item.posterId, item.posterName);
         });
     }
 
@@ -144,7 +144,7 @@ class LostItemController extends ItemController{
                 return [];
             }
             return res.map((item) => {
-                return new LostItem(item.name, item.definition, item.itemId, item.place, item.date.getDate(), item.date.getMonth(), item.date.getYear(), item.posterId, item.posterName);
+                return new LostItem(item.name, item.definition, item.itemId, item.place, item.date.getDate(), item.date.getMonth(), item.date.getFullYear(), item.posterId, item.posterName);
             });
         });
 
@@ -157,7 +157,7 @@ class LostItemController extends ItemController{
         const lostItemDb = LostItemDB;
         return await lostItemDb.find({posterName: {$ne: nameOfUser}}).sort({date: -1}).skip(offset).limit(numberOfItems).then((res) => {
             return res.map((itemData) => {
-                return new LostItem(itemData.name, itemData.definition, itemData.itemId, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getYear(), itemData.posterId, itemData.posterName);
+                return new LostItem(itemData.name, itemData.definition, itemData.itemId, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getFullYear(), itemData.posterId, itemData.posterName);
             });
         });
     }
@@ -180,7 +180,7 @@ class LostItemController extends ItemController{
             }
         }).skip(offset).limit(numberOfItems);
         return arrayOfLostObjects.map((item) => {
-            return new LostItem(item.name, item.definition, item.itemId, item.place, item.date.getDate(), item.date.getMonth(), item.date.getYear(), item.posterId, item.posterName);
+            return new LostItem(item.name, item.definition, item.itemId, item.place, item.date.getDate(), item.date.getMonth(), item.date.getFullYear(), item.posterId, item.posterName);
         });
     }
     async filterItemsExceptUsersItems(numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth,
@@ -231,8 +231,39 @@ class LostItemController extends ItemController{
         }
 
         return arrayOfItems.map((item) => {
-            return new LostItem(item.name, item.definition, item.itemId, item.place, item.date.getDate(), item.date.getMonth(), item.date.getYear(), item.posterId, item.posterName);
+            return new LostItem(item.name, item.definition, item.itemId, item.place, item.date.getDate(), item.date.getMonth(), item.date.getFullYear(), item.posterId, item.posterName);
         });
+    }
+
+    async getItemCount(nameOfUser){
+        const lostItemDb = LostItemDB;
+        let itemCount = await lostItemDb.countDocuments({posterName: {$ne: nameOfUser}}, (err, count) => {
+            return count;
+        });
+        return itemCount;
+
+    }
+    async getCountOfItemsByFilter(minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, 
+        maxDay, maxMonth, maxYear, sectionNo, wantToGive, courseName, nameOfUser){
+            const lostItemDb = LostItemDB;
+            let minDate = new Date();
+            minDate.setHours(11, 0, 0, 0);
+            minDate.setFullYear(minYear, minMonth, minDay);
+            let maxDate = new Date();
+            maxDate.setHours(13, 0, 0, 0);
+            maxDate.setFullYear(maxYear, maxMonth, maxDay);
+            let itemCount = await lostItemDb.countDocuments({
+                date: {
+                    $lte: maxDate,
+                    $gte: minDate
+                },
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }, (err, count) => {
+                return count;
+            });
+            return itemCount;
     }
 }
 module.exports = LostItemController;

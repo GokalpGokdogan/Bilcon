@@ -58,6 +58,13 @@ class CustomerController{
         return this.#customerId;
     }
 
+    set itemController(newItemController){
+        this.#itemController = newItemController;
+    }
+    get itemController(){
+        return this.#itemController;
+    }
+
     async createCustomerInDb(userId){
         let customer = new Customer(userId, [], [], [], [], []);
         const customerDb = customerDB;
@@ -210,7 +217,14 @@ class CustomerController{
             return willReturn;
     }
 
-
+    async getItemCount(nameOfUser){
+        return await this.itemController.getItemCount(nameOfUser);
+    }
+    async getCountOfItemsByFilter(minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, 
+        maxDay, maxMonth, maxYear, sectionNo, wantToGive, courseName, nameOfUser){
+        return await this.itemController.getCountOfItemsByFilter(minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, 
+            maxDay, maxMonth, maxYear, sectionNo, wantToGive, courseName, nameOfUser);
+    }
 
 
 

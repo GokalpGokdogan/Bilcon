@@ -3,69 +3,95 @@ import { Link } from 'react-router-dom';
 import FilterView from './filterView';
 import FavPop from './favPop';
 import ChatsPop from './chatsPop';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import SearchIcon from '@mui/icons-material/Search';
+import SendIcon from '@mui/icons-material/Send';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-
-function Header(type='Market') 
-{
+function Header(type = 'Market') {
     const [isOpenFilter, setIsOpenFilter] = useState(false);
     const [isOpenFav, setIsOpenFav] = useState(false);
     const [isOpenChats, setIsOpenChats] = useState(false);
-    
-    return(
-    <div className='flex flex-row p-2 px-4 w-full justify-between'>
-        <div className='w-[10vw]'>
-            <Link to="/market" onMouseOver={(e) =>{
-                const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                let repetitons = 0;
-                const interval = setInterval(
-                    () => {
-                        e.target.innerText = e.target.innerText.split('').map((letter, index) => {
-                            if(index<repetitons){
-                                return e.target.dataset.value[index]
+    const [searchValue, setSearchValue] = useState("");
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            setSearchValue(searchValue);
+            console.log(searchValue);
+        }
+    };
+
+    return (
+        <div className='flex flex-row p-2 px-4 w-full justify-between'>
+            <div className='w-[10vw]'>
+                <Link to="/market" onMouseOver={(e) => {
+                    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    let repetitons = 0;
+                    const interval = setInterval(
+                        () => {
+                            e.target.innerText = e.target.innerText.split('').map((letter, index) => {
+                                if (index < repetitons) {
+                                    return e.target.dataset.value[index]
+                                }
+                                return letters[Math.floor(Math.random() * letters.length)]
+
+                            }).join('')
+                            if (repetitons >= e.target.dataset.value.length) {
+                                clearInterval(interval)
+
                             }
-                            return letters[Math.floor(Math.random() * letters.length)]
-                    
-                        }).join('')
-                        if(repetitons>=e.target.dataset.value.length){
-                            clearInterval(interval)
-                            
-                        }
-                        repetitons+=3/4;
-                    },30)
+                            repetitons += 3 / 4;
+                        }, 30)
                 }} data-value="BILCON" className='font-inter font-extrabold text-3xl text-blue-dark'>BILCON</Link>
-        </div>
-        <div className='flex flex-row justify-center'>
-            <input type="text" className="mx-2 border border-gray bg-gray-light text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-2.5 w-80" placeholder="Search for second-hand items, books and more!" required=""></input>
-            <div className='relative'>
-                <button onClick={() => setIsOpenFilter(!isOpenFilter)} className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Filter</button>
-                {isOpenFilter && (
-                    <FilterView type={type.type} isOpen={isOpenFilter} setIsOpen={setIsOpenFilter}/>
-                )}
             </div>
-        </div>
-        <div className='flex flex-row justify-center'>
-            <div className='relative'>
-                <button onClick={() => setIsOpenChats(!isOpenChats)} className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Chats</button>
-                {isOpenChats && (
-                    <div className="absolute right-0 top-full">
-                        <ChatsPop type={type.type}/>
+            <div className='flex flex-row justify-center'>
+                <div className='relative flex items-center'>
+                    <input
+                        onKeyDown={handleKeyDown}
+                        type="text"
+                        className="mx-1 bg-gray-light text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-lg p-2.5 w-96 pl-10 pr-10" // Add pl-10 and pr-10 for left and right padding
+                        placeholder="Search for second-hand items, books and more!"
+                        value={searchValue}
+                        onChange={(e) => setSearchValue(e.target.value)}
+                    />
+                    <div className='absolute left-3 top-1/2 transform -translate-y-1/2'>
+                        <FilterListIcon onClick={() => setIsOpenFilter(!isOpenFilter)} className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100" />
                     </div>
-                )}
-            </div>
-            <div className='relative'>
-                <button onClick={() => setIsOpenFav(!isOpenFav)} className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Fav.</button>
-                {isOpenFav && (
-                    <div className="absolute right-0 top-full">
-                        <FavPop type={type.type}/>
+                    {isOpenFilter && (
+                        <FilterView type={type.type} isOpen={isOpenFilter} setIsOpen={setIsOpenFilter} />
+                    )}
+                    <div className='absolute right-3 top-1/2 transform -translate-y-1/2'>
+                        <SearchIcon /* onClick={() => search}  */ className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100" />
                     </div>
-                )}
-            </div>
-            <div>
-                <Link type="submit" to="/accountPage" className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Account</Link>
+                </div>
             </div>
 
-        </div>
-    </div>);
+            <div className='flex flex-row items-center'>
+                <div className='flex relative'>
+                    {/* <button onClick={() => setIsOpenChats(!isOpenChats)} className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Chats</button> */}
+                    <SendIcon onClick={() => setIsOpenChats(!isOpenChats)} className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100 mr-2" />
+                    {isOpenChats && (
+                        <div className="absolute right-0 top-full">
+                            <ChatsPop type={type.type} />
+                        </div>
+                    )}
+                </div>
+                <div className='relative'>
+                    {/* <button onClick={() => setIsOpenFav(!isOpenFav)} className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Fav.</button> */}
+                    <FavoriteBorderIcon onClick={() => setIsOpenFav(!isOpenFav)}  className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100 mr-2" />
+                    {isOpenFav && (
+                        <div className="absolute right-0 top-full">
+                            <FavPop type={type.type} />
+                        </div>
+                    )}
+                </div>
+                <div>
+                    <Link type="submit" to="/accountPage"><AccountCircleIcon className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100" /></Link>
+                </div>
+
+            </div>
+        </div>);
 }
 
 export default Header;

@@ -210,6 +210,32 @@ class PrivateLessonItemController extends ItemController{
         });
     }
 
+    async getItemCount(nameOfUser){
+        const privateLessonItemDb = privateLessonItemDB;
+        let itemCount = await privateLessonItemDb.countDocuments({posterName: {$ne: nameOfUser}}, (err, count) => {
+            return count;
+        });
+        return itemCount;
+
+    }
+    async getCountOfItemsByFilter(minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, 
+        maxDay, maxMonth, maxYear, sectionNo, wantToGive, courseName, nameOfUser){
+            const privateLessonItemDb = privateLessonItemDB;
+            
+            let itemCount = await privateLessonItemDb.countDocuments({
+                price: {
+                    $lte: maxPrice,
+                    $gte: minPrice
+                },
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }, (err, count) => {
+                return count;
+            });
+            return itemCount;
+    }
+
 }
 
 module.exports = PrivateLessonItemController;

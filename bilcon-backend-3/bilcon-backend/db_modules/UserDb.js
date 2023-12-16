@@ -39,10 +39,26 @@ const userSchema = new Schema({
         required: true
     },
     raterCount: {
-        type: String,
+        type: Number,
         required: true
     },
-}, {timestamps: false});
+    boughtTransactions: {
+        type: [{ itemName: String, from: Number }], 
+        required: true,
+        default: []        
+    },
+    soldTransactions: {
+        type: [{ itemName: String, to: Number }], 
+        required: true,
+        default: []        
+    },
+    totalRating: {
+        type: Number,
+        required: true
+    }
+},
+
+{timestamps: false});
 
 
 

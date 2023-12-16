@@ -32,7 +32,7 @@ class FoundItemController extends ItemController{
         const foundItemDb = FoundItemDB;
         return await foundItemDb.find({}).sort({date: -1}).skip(offset).limit(numberOfFoundItems).then((res) => {
             return res.map((itemData) => {
-                return new FoundItem(itemData.name, itemData.definition, itemData.itemId, itemData.photo, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getYear(), itemData.posterId, itemData.posterName);
+                return new FoundItem(itemData.name, itemData.definition, itemData.itemId, itemData.photo, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getFullYear(), itemData.posterId, itemData.posterName);
             });
         });
     }
@@ -72,7 +72,7 @@ class FoundItemController extends ItemController{
             }
         }).skip(offset).limit(numberOfItems);
         return arrayOfFoundObjects.map((itemData) => {
-            return new FoundItem(itemData.name, itemData.definition, itemData.itemId, itemData.photo, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getYear(), itemData.posterId, itemData.posterName);
+            return new FoundItem(itemData.name, itemData.definition, itemData.itemId, itemData.photo, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getFullYear(), itemData.posterId, itemData.posterName);
         });
     }
 
@@ -114,7 +114,7 @@ class FoundItemController extends ItemController{
         }
 
         return arrayOfItems.map((itemData) => {
-            return new FoundItem(itemData.name, itemData.definition, itemData.itemId, itemData.photo, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getYear(), itemData.posterId, itemData.posterName);
+            return new FoundItem(itemData.name, itemData.definition, itemData.itemId, itemData.photo, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getFullYear(), itemData.posterId, itemData.posterName);
         });
     }
 
@@ -144,7 +144,7 @@ class FoundItemController extends ItemController{
                 return [];
             }
             return res.map((itemData) => {
-                return new FoundItem(itemData.name, itemData.definition, itemData.itemId, itemData.photo, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getYear(), itemData.posterId, itemData.posterName);
+                return new FoundItem(itemData.name, itemData.definition, itemData.itemId, itemData.photo, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getFullYear(), itemData.posterId, itemData.posterName);
             });
         })
 
@@ -157,7 +157,7 @@ class FoundItemController extends ItemController{
         const foundItemDb = FoundItemDB;
         return await foundItemDb.find({posterName: {$ne: nameOfUser}}).sort({date: -1}).skip(offset).limit(numberOfItems).then((res) => {
             return res.map((itemData) => {
-                return new FoundItem(itemData.name, itemData.definition, itemData.itemId, itemData.photo, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getYear(), itemData.posterId, itemData.posterName);
+                return new FoundItem(itemData.name, itemData.definition, itemData.itemId, itemData.photo, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getFullYear(), itemData.posterId, itemData.posterName);
             });
         });
     }
@@ -180,7 +180,7 @@ class FoundItemController extends ItemController{
             }
         }).skip(offset).limit(numberOfItems);
         return arrayOfFoundObjects.map((itemData) => {
-            return new FoundItem(itemData.name, itemData.definition, itemData.itemId, itemData.photo, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getYear(), itemData.posterId, itemData.posterName);
+            return new FoundItem(itemData.name, itemData.definition, itemData.itemId, itemData.photo, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getFullYear(), itemData.posterId, itemData.posterName);
         });
     }
     async filterItemsExceptUsersItems(numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth,
@@ -230,8 +230,39 @@ class FoundItemController extends ItemController{
         }
 
         return arrayOfItems.map((itemData) => {
-            return new FoundItem(itemData.name, itemData.definition, itemData.itemId, itemData.photo, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getYear(), itemData.posterId, itemData.posterName);
+            return new FoundItem(itemData.name, itemData.definition, itemData.itemId, itemData.photo, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getFullYear(), itemData.posterId, itemData.posterName);
         });
+    }
+
+    async getItemCount(nameOfUser){
+        const foundItemDb = FoundItemDB;
+        let itemCount = await foundItemDb.countDocuments({posterName: {$ne: nameOfUser}}, (err, count) => {
+            return count;
+        });
+        return itemCount;
+
+    }
+    async getCountOfItemsByFilter(minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, 
+        maxDay, maxMonth, maxYear, sectionNo, wantToGive, courseName, nameOfUser){
+            const foundItemDb = FoundItemDB;
+            let minDate = new Date();
+            minDate.setHours(11, 0, 0, 0);
+            minDate.setFullYear(minYear, minMonth, minDay);
+            let maxDate = new Date();
+            maxDate.setHours(13, 0, 0, 0);
+            maxDate.setFullYear(maxYear, maxMonth, maxDay);
+            let itemCount = await foundItemDb.countDocuments({
+                date: {
+                    $lte: maxDate,
+                    $gte: minDate
+                },
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }, (err, count) => {
+                return count;
+            });
+            return itemCount;
     }
 
 }
