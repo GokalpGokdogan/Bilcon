@@ -234,5 +234,36 @@ class LostItemController extends ItemController{
             return new LostItem(item.name, item.definition, item.itemId, item.place, item.date.getDate(), item.date.getMonth(), item.date.getYear(), item.posterId, item.posterName);
         });
     }
+
+    async getItemCount(nameOfUser){
+        const lostItemDb = LostItemDB;
+        let itemCount = await lostItemDb.countDocuments({posterName: {$ne: nameOfUser}}, (err, count) => {
+            return count;
+        });
+        return itemCount;
+
+    }
+    async getCountOfItemsByFilter(minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, 
+        maxDay, maxMonth, maxYear, sectionNo, wantToGive, courseName, nameOfUser){
+            const lostItemDb = LostItemDB;
+            let minDate = new Date();
+            minDate.setHours(11, 0, 0, 0);
+            minDate.setFullYear(minYear, minMonth, minDay);
+            let maxDate = new Date();
+            maxDate.setHours(13, 0, 0, 0);
+            maxDate.setFullYear(maxYear, maxMonth, maxDay);
+            let itemCount = await lostItemDb.countDocuments({
+                date: {
+                    $lte: maxDate,
+                    $gte: minDate
+                },
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }, (err, count) => {
+                return count;
+            });
+            return itemCount;
+    }
 }
 module.exports = LostItemController;
