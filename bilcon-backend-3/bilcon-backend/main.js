@@ -1,4 +1,3 @@
-
 const express = require("express");
 const mongoose = require("mongoose");
 const UserController = require("./controller_classes/UserController");
@@ -14,12 +13,22 @@ const archiver = require('archiver');
 const { Readable } = require('stream');
 const SaleItem = require("./js_classes/SaleItem");
 const RentItem = require("./js_classes/RentItem");
+const ChatController = require("./controller_classes/ChatController");
+const MessageController = require("./controller_classes/MessageController");
 
 let itemId = 0;
 
 const app = express();
+const cors = require('cors');
+const corsOptions ={
+    origin:'http://localhost:3001', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
+}
+app.use(cors(corsOptions));
+
 app.use(bodyParser.urlencoded({ extended: false }));
-const dbUrl = ""; //enter the link of mongo db cluster;
+const dbUrl = "mongodb://localhost:27017/UserDB"; //enter the link of mongo db cluster;
 
 /* 
 In order to test it, first the url should be entered above.
@@ -133,7 +142,7 @@ app.get('/verify/:token/:email', (req, res)=>{
         else { 
             let userController = new UserController();               
             userController.activateUser(email);
-            res.redirect("/login"); 
+            res.redirect("http://localhost:3001"); 
         } 
     }); 
     
@@ -206,6 +215,61 @@ app.get("/changePassword", (req,res)=>{
     }
  
 });
+
+app.post("/forgotPassword", async(req,res)=>{
+    const studentIdOfUser = req.body.id;
+    let userController = new UserController();   
+    let foundUser = await userController.accessUserWhenForgotPassword(studentIdOfUser);
+
+    if (foundUser) {
+        let foundUserName = foundUser.name;
+        let foundUserEmail = foundUser.email;
+        userController.sendMailForForgotPassword(foundUserEmail, foundUserName, studentIdOfUser);  
+        console.log("Email sent to reset password");
+    }
+    else {
+        console.log("Invalid login credentials");
+    }
+});
+
+app.get("/resetPassword/:token/:id", (req,res)=>{
+    
+});
+app.patch("/resetPassword/:token/:id", async (req,res)=>{
+    const studentIdOfUser = req.params.id;
+    let userController = new UserController();   
+    let foundUser = await userController.accessUserWhenForgotPassword(studentIdOfUser);
+
+    if (foundUser) {
+        jwt.verify(req.params.token, 'ourSecretKey', function(err, decoded){
+            // User is authenticated
+            
+            if (err) {
+                console.log(err); 
+                res.send("Email verification for password reset failed, possibly the link is invalid or expired").redirect("/home");
+            } 
+            else{
+                const firstPassword = req.body.password1;
+                if(firstPassword == req.body.password2){
+                    let userController = new UserController();   
+                    userController.changePassword(foundUser.email, firstPassword);
+                    res.send(200);
+                }
+                else {
+                    console.log("Passwords do not match.");
+                }
+            }
+
+        });
+
+    } else {
+        // User is not authenticated
+        //console.log("Unauthorized. Session foundUser:", req.session.foundUser);
+        res.status(401).redirect("/login");
+    }
+});
+
+
 
 
 app.get('/dashboard', (req, res) => {
@@ -654,3 +718,209 @@ app.post("/removeItemFromFavoritesList", async (req, res) => {
     }
 })
 
+
+
+app.post("/createChat", (req, res) => {
+   
+    const {firstId, secondId} = req.body;
+
+    let chatController = new ChatController();
+
+    chatController.createChat(firstId, secondId)
+        .then((result) =>{
+            if(result){
+                res.status(200).json(result);
+            }
+            else{
+                res.status(500);
+            }
+        })
+
+
+});
+
+
+/*
+
+    Returns all chats of a user.
+    The user id of the given user is given as a PARAMETER in the request endpoint.
+
+*/
+ 
+
+app.get("/findUserChats/:userId", (req, res) => {
+
+        const userId = req.params.userId;
+
+        let chatController = new ChatController();
+
+        chatController.findUserChats(userId)
+        .then((result) =>{
+
+            if(result){
+                res.status(200).json(result);
+            }else{
+                res.status(500);
+            }
+
+
+        });
+
+});
+
+/*
+    Returns the specific chat between two users.
+    The user id's of the two users is given as parameters within the endpoint.
+
+    TODO:
+        Make the chats not tied between two users, but also between two different items.
+        That is, create different chats for different items.
+
+*/
+
+
+app.get("/find/:firstId/:secondId", (req, res) => {
+    
+
+    const {firstId, secondId} = req.params;
+    let chatController = new ChatController();
+
+    chatController.findChat(firstId, secondId)
+        .then((result) => {
+
+            if(result){
+                res.status(200).json(result);
+            }else{
+                res.status(500);
+            }
+        });
+
+});
+
+
+/*
+
+    Creates the message that the user wants to send to the other user, and ties it to the given chat.
+    For this, chatId, senderId, and the content of the message should be given within the request body.
+
+    The format of request:
+
+    {
+     "chatId" : "65737167ce518188d397f5b5",
+     "senderId" : "abc123",
+     "text" : "hello"
+    }
+
+*/
+
+app.post("/createMessage", (req, res) => {
+
+    const {chatId, senderId, text} = req.body;
+
+    let messageController = new MessageController();
+
+    messageController.createMessage(chatId, senderId, text)
+        .then((result) => {
+            if(result){     
+                res.status(200).json(result);
+            }else{
+                res.status(500);
+            }
+        });
+
+
+});
+
+/*
+
+   Returns all the messages of a given chat between two users.
+   For this, the chatId must be given within the request paramaters.
+
+*/
+
+
+app.get("/getMessages/:chatId", (req, res)=>{
+
+    const chatId = req.params.chatId;
+
+    let messageController = new MessageController();
+
+    messageController.getMessages(chatId)
+        .then((result) =>{
+            if(result){
+                res.status(200).json(result);
+            }else{
+                res.status(500);
+            }
+        })
+
+});
+
+// req and res are the same with getItems route
+app.post("/getItemsExceptUser", async (req, res) => {
+    const user = req.session.foundUser;
+    console.log("getPart");
+    if(user && Object.keys(user).length > 0){
+        let {numberOfItems, offset, itemType} = req.body;
+        let userController = new UserController();
+        let customerId = await userController.getCustomerIdByUserId(req.session.foundUser.userId);
+        let customerController = new CustomerController(itemType, customerId);
+        let arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+        let nameOfUser = await userController.getNameByUserId(req.session.foundUser.userId);
+        let arrayOfItems = await customerController.getItemsExceptUsersItems(numberOfItems, offset, nameOfUser);
+        let serializedArray = arrayOfItems.map((item) => {
+            return item.toJSON(arrayOfFavListItemIds);
+        });
+
+        let jsonString = JSON.stringify(serializedArray);
+        res.status(200).send(jsonString);
+    }
+    else{
+        res.redirect("/login");
+    }
+})
+// req and res are the same with searchItems route
+app.post("/searchItemsExceptUser", async (req, res) => {
+    const user = req.session.foundUser;
+    if(user && Object.keys(user).length > 0){
+        let userController = new UserController();
+        let customerId = await userController.getCustomerIdByUserId(req.session.foundUser.userId);
+        let {numberOfItems, offset, itemType, minPrice, maxPrice, minDay, minMonth, minYear, maxDay, maxMonth, maxYear, durationOfPrice
+            , minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, searchQuery} = req.body;
+        let nameOfUser = await userController.getNameByUserId(req.session.foundUser.userId);
+        let customerController = new CustomerController(itemType, customerId);
+        let arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+        let arrayOfItems = await customerController.searchItemsExceptUsersItems(searchQuery, numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar,
+            maxAvailabilityScalar, availabilityDuration, minDay, minMonth, minYear, maxDay, maxMonth, maxYear, nameOfUser);
+        let serializedArray = arrayOfItems.map((item) => {
+            return item.toJSON(arrayOfFavListItemIds);
+        });
+        res.status(200).send(JSON.stringify(serializedArray));
+    }
+    else{
+        res.redirect("login");
+    }
+})
+// req and res are the same with filterItems route
+app.post("/filterItemsExceptUser", async (req, res) => {
+    const user = req.session.foundUser;
+    if(user && Object.keys(user).length > 0){
+        let userController = new UserController();
+        let customerId = await userController.getCustomerIdByUserId(req.session.foundUser.userId);
+        let {numberOfItems, offset, itemType, minPrice, maxPrice, minDay, minMonth, minYear, maxDay, maxMonth, maxYear, durationOfPrice
+            , minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, courseName, sectionNo, wantToGive, sortBy} = req.body;
+        let nameOfUser = await userController.getNameByUserId(req.session.foundUser.userId);
+        let customerController = new CustomerController(itemType, customerId);
+        let arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+        console.log(arrayOfFavListItemIds)
+        let arrayOfItems = await customerController.filterItemsExceptUsersItems(numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar,
+            availabilityDuration, minDay, minMonth, minYear, maxDay, maxMonth, maxYear, sectionNo, wantToGive, sortBy, courseName, nameOfUser);
+        let serializedArray = arrayOfItems.map((item) => {
+            return item.toJSON(arrayOfFavListItemIds);
+        });
+        res.status(200).send(JSON.stringify(serializedArray));
+    }
+    else{
+        res.redirect("login");
+    }
+})

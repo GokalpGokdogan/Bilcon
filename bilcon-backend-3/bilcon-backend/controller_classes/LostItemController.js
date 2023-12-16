@@ -153,5 +153,86 @@ class LostItemController extends ItemController{
     getItemType(){
         return "lost";
     }
+    async getItemsExceptUsersItems(numberOfItems, offset, nameOfUser){
+        const lostItemDb = LostItemDB;
+        return await lostItemDb.find({posterName: {$ne: nameOfUser}}).sort({date: -1}).skip(offset).limit(numberOfItems).then((res) => {
+            return res.map((itemData) => {
+                return new LostItem(itemData.name, itemData.definition, itemData.itemId, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getYear(), itemData.posterId, itemData.posterName);
+            });
+        });
+    }
+    async searchItemsExceptUsersItems(searchQuery, numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, 
+    availabilityDuration, minDay,minMonth, minYear, maxDay, maxMonth, maxYear, nameOfUser){
+        const lostItemDb = LostItemDB;
+        let minDate = new Date();
+        minDate.setHours(11, 0, 0, 0);
+        minDate.setFullYear(minYear, minMonth, minDay);
+        let maxDate = new Date();
+        maxDate.setHours(13, 0, 0, 0);
+        maxDate.setFullYear(maxYear, maxMonth, maxDay);
+        let arrayOfLostObjects = await lostItemDb.fuzzySearch(searchQuery, {
+            date: {
+                $gte: minDate,
+                $lte: maxDate
+            },
+            posterName: {
+                $ne: nameOfUser
+            }
+        }).skip(offset).limit(numberOfItems);
+        return arrayOfLostObjects.map((item) => {
+            return new LostItem(item.name, item.definition, item.itemId, item.place, item.date.getDate(), item.date.getMonth(), item.date.getYear(), item.posterId, item.posterName);
+        });
+    }
+    async filterItemsExceptUsersItems(numberOfItems, offset, minPrice, maxPrice, durationOfPrice, minAvailabilityScalar, maxAvailabilityScalar, availabilityDuration, minDay, minMonth,
+    minYear, maxDay, maxMonth, maxYear, sectionNo, wantToGive, sortBy, courseName, nameOfUser){
+        const lostItemDb = LostItemDB;
+        let minDate = new Date();
+        minDate.setHours(11, 0, 0, 0);
+        minDate.setFullYear(minYear, minMonth, minDay);
+        let maxDate = new Date();
+        maxDate.setHours(13, 0, 0, 0);
+        maxDate.setFullYear(maxYear, maxMonth, maxDay);
+
+
+        let arrayOfItems;
+
+        if(sortBy == -1){
+            arrayOfItems = await lostItemDb.find({
+                date: {
+                    $lte: maxDate,
+                    $gte: minDate
+                },
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }).sort({date: -1}).skip(offset).limit(numberOfItems);
+        }
+        else if(sortBy == 1){
+            arrayOfItems = await lostItemDb.find({
+                date: {
+                    $lte: maxDate,
+                    $gte: minDate
+                },
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }).sort({date: 1}).skip(offset).limit(numberOfItems);
+        }
+        else{
+            arrayOfItems = await lostItemDb.find({
+                date: {
+                    $lte: maxDate,
+                    $gte: minDate
+                },
+                posterName: {
+                    $ne: nameOfUser
+                }
+            }).skip(offset).limit(numberOfItems);
+        }
+
+        return arrayOfItems.map((item) => {
+            return new LostItem(item.name, item.definition, item.itemId, item.place, item.date.getDate(), item.date.getMonth(), item.date.getYear(), item.posterId, item.posterName);
+        });
+    }
 }
 module.exports = LostItemController;

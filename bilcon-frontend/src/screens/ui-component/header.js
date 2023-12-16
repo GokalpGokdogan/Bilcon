@@ -7,10 +7,10 @@ import ChatsPop from './chatsPop';
 
 function Header(type='Market') 
 {
-
     const [isOpenFilter, setIsOpenFilter] = useState(false);
     const [isOpenFav, setIsOpenFav] = useState(false);
     const [isOpenChats, setIsOpenChats] = useState(false);
+    
     return(
     <div className='flex flex-row p-2 px-4 w-full justify-between'>
         <div className='w-[10vw]'>
@@ -35,7 +35,7 @@ function Header(type='Market')
                 }} data-value="BILCON" className='font-inter font-extrabold text-3xl text-blue-dark'>BILCON</Link>
         </div>
         <div className='flex flex-row justify-center'>
-            <input type="text" className="mx-2 border border-gray bg-gray-light text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-2.5 w-80 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Search for second-hand items, books and more!" required=""></input>
+            <input type="text" className="mx-2 border border-gray bg-gray-light text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-2.5 w-80" placeholder="Search for second-hand items, books and more!" required=""></input>
             <div className='relative'>
                 <button onClick={() => setIsOpenFilter(!isOpenFilter)} className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Filter</button>
                 {isOpenFilter && (

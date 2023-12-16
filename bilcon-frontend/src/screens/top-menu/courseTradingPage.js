@@ -4,13 +4,9 @@ import Feed from '../ui-component/feed';
 import Header from '../ui-component/header';
 
 function CourseTrading() 
-{
-
-    
+{ 
     return(
         <div className='bg-white h-screen'>
-            
-           
             <div className='fixed top-0 w-full bg-white pb-2'>
                 <Header type='Course Trading'/>
                 <NavMenu currPage='Course Trading' />

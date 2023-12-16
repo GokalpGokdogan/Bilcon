@@ -4,12 +4,9 @@ import MenuItem from '@mui/material/MenuItem';
 
 function Home() 
 {
-
-    
-    const pages = ['Market', 'Renting', 'Lost & Found', 'Private Lessons', 'Course Trading'];
+    const pages = ['Market', 'Renting', 'LostandFound', 'PrivateLessons', 'CourseTrading'];
     let products = [];
     for (let i = 0; i < 5; i++) {
-        
         products.push(
             <Link to='/detailsPage'>
                 <img
