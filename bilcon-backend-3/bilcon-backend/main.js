@@ -127,6 +127,9 @@ app.post("/login", async(req,res)=>{
         console.log("Login Successful");
         res.status(200).json({ redirect: "http://localhost:3001/home" });
     }
+    else if (foundUser === false){
+        console.log("User is not activated. Please check your mail");
+    }
     else {
         console.log("Invalid login credentials");
     }
