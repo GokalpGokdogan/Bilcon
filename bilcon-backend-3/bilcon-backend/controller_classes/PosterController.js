@@ -145,7 +145,18 @@ class PosterController{
         let objectId = await this.#itemController.getObjectId(itemId);
         return await this.#itemController.editItem(name, definition, price, durationOfPrice, availabilityScalar, availabilityDuration, place, day, month, year, sectionNo, wantToGive, this.posterId, photo, objectId)
     }
-
+    async getCountOfItems(){
+        const posterDb = posterDB;
+        return posterDb.findById(this.posterId).then((res) => {
+            let array = res[this.relatedArray];
+            if(array == null || array == undefined || array.length == 0){
+                return 0;
+            }
+            else{
+                return array.length;
+            }
+        })
+    }
     async addTransaction(){
 
     }
