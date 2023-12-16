@@ -247,7 +247,7 @@ class UserController{
         console.log(`Email sent to ${userEmail} (password change request)`);
     }
 
-    async accessUserWhenForgotPassword(studentIdOfUser) {
+    async accessUserWithId(studentIdOfUser) {
         try {
             let doesExists = await this.userExistsID(studentIdOfUser);
             if (doesExists) {

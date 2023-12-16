@@ -123,7 +123,7 @@ app.post("/login", async(req,res)=>{
         };
         
         req.session.save();
-        console.log(req.session);        
+        //console.log(req.session);        
         console.log("Login Successful");
         res.status(200).json({ redirect: "http://localhost:3001/home" });
     }
@@ -131,6 +131,12 @@ app.post("/login", async(req,res)=>{
         console.log("Invalid login credentials");
     }
     });
+
+
+/* 
+
+
+*/
 
 app.get('/verify/:token/:email', (req, res)=>{ 
     const token = req.params.token; 
@@ -224,7 +230,7 @@ app.get("/changePassword", (req,res)=>{
 app.post("/forgotPassword", async(req,res)=>{
     const studentIdOfUser = req.body.id;
     let userController = new UserController();   
-    let foundUser = await userController.accessUserWhenForgotPassword(studentIdOfUser);
+    let foundUser = await userController.accessUserWithId(studentIdOfUser);
 
     if (foundUser) {
         let foundUserName = foundUser.name;
@@ -243,7 +249,7 @@ app.get("/resetPassword/:token/:id", (req,res)=>{
 app.patch("/resetPassword/:token/:id", async (req,res)=>{
     const studentIdOfUser = req.params.id;
     let userController = new UserController();   
-    let foundUser = await userController.accessUserWhenForgotPassword(studentIdOfUser);
+    let foundUser = await userController.accessUserWithId(studentIdOfUser);
 
     if (foundUser) {
         jwt.verify(req.params.token, 'ourSecretKey', function(err, decoded){
@@ -280,7 +286,24 @@ app.post("/submitTransaction/:ratedUserStudentId/:itemName/:isBought", async(req
         let transactionController = new TransactionController();   
         transactionController.addTransactionToUser(user.studentId, req.params.ratedUserStudentId, req.params.itemName, req.params.isBought);
         await transactionController.updateRating(req.params.ratedUserStudentId, req.body.newRating);
-        //await transactionController.updateRaterCount(req.params.ratedUserStudentId);
+
+        let userController = new UserController();   
+        let updatedUser = await userController.accessUserWithId(studentIdOfUser);
+
+            // Update the session information
+            req.session.foundUser = {
+                name: updatedUser.name,
+                mail: updatedUser.email,
+                studentId: updatedUser.studentId,
+                userId: updatedUser._id,
+                boughtTransactions: updatedUser.boughtTransactions,
+                soldTransactions: updatedUser.soldTransactions,
+                rating: updatedUser.rating
+            };
+
+            // Save the updated session
+            req.session.save();
+
     } else {
         // User is not authenticated
         res.status(401).redirect("/login");
