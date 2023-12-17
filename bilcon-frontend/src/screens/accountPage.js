@@ -4,23 +4,46 @@ import Header from './ui-component/header';
 import ListHorizontal from './ui-component/listHorizontal';
 import { Upload, Button, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { getAllItemsInFavoritesList } from '../utils/Requests';
+import { getAllItemsInFavoritesList, getItemsOfPoster, getAllItemsOfPoster,  } from '../utils/Requests';
 
 
 function AccountPage() 
 {
-    const [data, setData] = useState([]);
+    const [dataFav, setDataFav] = useState([]);
+    const [ dataOfPoster, setDataOfPoster] = useState([]);
+    const [allItemsOfPoster, setAllItemsOfPoster] = useState([]);
+
+
+
 
     const handleFavoritesSale = async () => {
         let curr = await getAllItemsInFavoritesList(0, "sale");
         console.log(curr);
         if (curr) {
-            setData(curr);
+            setDataFav(curr);
+        }
+    };
+
+    const handleDataOfPoster = async () => {
+        let curr = await getItemsOfPoster("sale", 4, 0);
+        console.log(curr);
+        if (curr) {
+            setDataOfPoster(curr);
+        }
+    };
+
+    const handleAllDataOfPoster = async () => {
+        let curr = await getAllItemsOfPoster("sale", 4, 0);
+        console.log(curr);
+        if (curr) {
+            setAllItemsOfPoster(curr);
         }
     };
     
     useEffect(() => {
         handleFavoritesSale();
+        handleDataOfPoster();
+        handleAllDataOfPoster();
     }, []); // <-- Dependency array should be inside the parentheses
     
     
@@ -114,11 +137,12 @@ function AccountPage()
                         )}
                     </div>
                     {line}
-                    {<ListHorizontal title='Favorites' products={data}/>}
-                  {/*   {line}
-                    {ListHorizontal('Purchases')}
+                    {<ListHorizontal title='Favorites' products={dataFav}/>}
                     {line}
-                    {ListHorizontal('Sold Items')} */}
+                    <ListHorizontal title='Purchases' products={dataOfPoster}/>
+                    
+                    {line}
+                    <ListHorizontal title='Sold Items' products={allItemsOfPoster}/>
                     {line}
                     <div className='flex flex-row justify-start ml-9'>
                         {starIcons}
