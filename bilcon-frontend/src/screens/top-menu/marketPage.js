@@ -10,7 +10,7 @@ import { searchAllItems } from '../../utils/Requests';
 
 function Market() {
     const [searchValue, setSearchValue] = useState("");
-
+    const [filterValue, setFilterValue] = useState({});
     const handleSearch = async () => {
         try {
             const data = await searchAllItems({"offset": 0, 
@@ -40,7 +40,7 @@ function Market() {
     return (
         <div className='bg-gray-light flex flex-col gap-3 h-full'>
             <div className='fixed top-0 w-full bg-white z-10'>
-                <Header type='Market' setSearchValue={setSearchValue} searchValue={searchValue} handleSearch={handleSearch}/>
+                <Header type='Market' setSearchValue={setSearchValue} searchValue={searchValue} filterValue={filterValue} setFilterValue={setFilterValue}/>
                 <NavMenu currPage='Market' />
             </div>
             <FloatButton

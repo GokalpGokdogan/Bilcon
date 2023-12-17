@@ -1,8 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import ProductComponent from './productComponent';
 import Product from '../../Classes/Product'
 import { Link } from 'react-router-dom';
+import ProductList from './ProductList';
+import { searchAllItems, filterAllItems } from '../../utils/Requests';
 
+
+
+
+    
 //gets product list and updates the feed
 function setList(/*type,pageOffset*/){
     let list = [];
@@ -33,22 +39,46 @@ function setList(/*type,pageOffset*/){
 
 function ListHorizontal(title='Favorites') 
 {
-    const [isOpen, setIsOpen] = useState(false);
+
+    const [lists, setLists] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);    
+    const handleSearch = async () => {
+        let data = await filterAllItems( 0, 
+            "sale", 
+             0, 
+            5, 
+             6, 
+            10, 
+            2023, 
+            7, 
+            10, 
+            2023, 
+            "week", 
+            0, 
+            100, 
+            "month",
+            "book", 2, true, 1 , false
+           );
+        setLists(data);
+    }
     const list = setList();
-    
     const [pageOffset, setPageOffset] = useState(0);
-    const maxOffset = list.length/5 + (list.length%5===0 ? 0 : 1);
+    const maxOffset = lists.length/5 + (lists.length%5===0 ? 0 : 1);
     const component = <div className='flex flex-row mx-auto justify-center items-center px-4 py-1 w-220'>
                             <div className='grid grid-cols-5 gap-4'>
-                                {list}
+                                {/* //{list} */}
+                                <ProductList products={lists} type={"Market"} />
                             </div>
                         </div> 
     
 
+    useEffect(() => {
+        handleSearch();
+
+    },[]);
 
 
-
-
+    
 
     
     return(

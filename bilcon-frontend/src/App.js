@@ -12,13 +12,11 @@ import AccountPage from './screens/accountPage'
 import DetailsPage from './screens/Details'
 import Market from './screens/top-menu/marketPage';
 import Rent from './screens/top-menu/rentPage';
-import LostFound from './screens/top-menu/lostFoundPage';
 import PrivateLessons from './screens/top-menu/privateLessonsPage';
 import CourseTrading from './screens/top-menu/courseTradingPage';
 import AddItem from './screens/addItem';
 import MarketItem from './screens/products/MarketItem';
 import RentingItem from './screens/products/RentingItem';
-import LostandFoundItem from './screens/products/LostandFoundItem';
 import PrivateLessonItem from './screens/products/PrivateLessonItem';
 import { ChatContextProvider } from './context/ChatContext';
 import Chat from './screens/chat';
@@ -34,7 +32,7 @@ export default function App() {
     <ChatContextProvider user={user}>
     <div className="bg-gray-light min-h-screen">
      <Routes>
-     <Route path="/itemType/:itemId" element={<DetailsPage />} />
+     <Route path="/details/:itemType/:itemId" element={<DetailsPage />} />
         <Route path="" element={<Login/>} />
         <Route path="register" element={<Register/>} />
        {/* home inactive till decided */}
@@ -46,7 +44,6 @@ export default function App() {
        {/* // <Route path='detailsPage' element={<DetailsPage/>}/> */}
         <Route path={`/${'Market'.toLowerCase()}`} element={<Market/>}/>
         <Route path={`/${'Renting'.toLowerCase()}`} element={<Rent/>}/>
-        <Route path={`/${'LostandFound'.toLowerCase()}`} element={<LostFound/>}/>
         <Route path={`/${'lostitems'.toLowerCase()}`} element={<LostItems/>}/>
         <Route path={`/${'founditems'.toLowerCase()}`} element={<FoundItems/>}/>
         <Route path={`/${'PrivateLessons'.toLowerCase()}`} element={<PrivateLessons/>}/>
@@ -54,11 +51,6 @@ export default function App() {
 
         <Route path={`/${'Add-Item'.toLowerCase()}`} element={<AddItem/>}/>
       </Routes>
-
-     {/*   <MarketItem/>
-      <RentingItem/>
-      <LostandFoundItem/>
-      <PrivateLessonItem/>*/}
     </div>
   </ChatContextProvider>
   );
