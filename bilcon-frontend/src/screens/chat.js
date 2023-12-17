@@ -64,8 +64,8 @@ import { ChatContext } from '../context/ChatContext';
         
     Example Scenario:
 
-    1) User looks at a post, and clicks on a designated button that creates a chat with the owner of the post. (The button must contain the id of the user for future use.)
-    2) The button calls the /createConversation endpoint, request body is the concatanated string of the current user's id and the poster's owner id in sorted order. E.g: currentUserID = "22", posterOwnerId = "33", then, 
+    1) User looks at a post, and clicks on a designated button that creates a chat with the owner of the post. (The button must contain the id of the post owner for future use.)
+    2) The button calls the /createConversation endpoint, request body is the string array of the current user's id and the poster's owner id in sorted order. E.g: currentUserID = "22", posterOwnerId = "33", then, 
     request body is: {"participants" : ["22", "33"]}.
 
     3) Assumption: The button changes the page to the chatBox page
