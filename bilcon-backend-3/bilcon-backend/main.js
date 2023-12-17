@@ -614,7 +614,6 @@ the customer can look at the poster's profile and specifically, posted items, th
 
 Example JSON:
 {
-"nameOfPoster": "hakan",
 "itemType": "course",
 "numberOfItems": 2,
 "offset": 1
@@ -627,8 +626,8 @@ app.post("/getItemsOfPoster", async (req, res) => { // when a user clicks to ano
         let {nameOfPoster, itemType, numberOfItems, offset} = req.body;
         let userController = new UserController();
         
-        let posterIdOfPoster = await userController.getPosterIdByName(nameOfPoster);
-        
+        //let posterIdOfPoster = await userController.getPosterIdByName(nameOfPoster);
+        let posterIdOfPoster = await userController.getPosterIdByUserId(req.session.foundUser.userId);
         let posterController = new PosterController(itemType, posterIdOfPoster);
         let customerId = await userController.getCustomerIdByUserId(req.session.foundUser.userId);
         let customerController = new CustomerController(itemType, customerId);
@@ -1185,7 +1184,6 @@ app.post("/getAllItemsInFavoritesList", async (req, res) => {
 /* 
 Example JSON:
 {
-    "nameOfPoster": "hakan",
     "itemType": "course",
     "offset": 0
 }
@@ -1196,8 +1194,8 @@ app.post("/getAllItemsOfPoster", async (req, res) => { // when a user clicks to 
         let {nameOfPoster, itemType, offset} = req.body;
         let userController = new UserController();
         
-        let posterIdOfPoster = await userController.getPosterIdByName(nameOfPoster);
-        
+        //let posterIdOfPoster = await userController.getPosterIdByName(nameOfPoster);
+        let posterIdOfPoster = await userController.getPosterIdByUserId(req.session.foundUser.userId);
         let posterController = new PosterController(itemType, posterIdOfPoster);
         let customerId = await userController.getCustomerIdByUserId(req.session.foundUser.userId);
         let customerController = new CustomerController(itemType, customerId);
@@ -1240,6 +1238,19 @@ app.post("/getItemWithItemId", async (req, res) => {
             res.status(200).send(JSON.stringify(item));
         }
         
+    }
+    else{
+        return res.redirect("/login");
+    }
+})
+
+app.post("/getUserIdOfPosterId", async (req, res) => {
+    const user = req.session.foundUser;
+    if(user && Object.keys(user).length > 0){
+        let {posterId} = req.body;
+        let userController = new UserController();
+        let userId = await userController.getUserObjectIdByPosterId(posterId);
+        res.status(200).send(userId);
     }
     else{
         return res.redirect("/login");
