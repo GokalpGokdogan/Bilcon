@@ -226,7 +226,9 @@ class CustomerController{
             maxDay, maxMonth, maxYear, sectionNo, wantToGive, courseName, nameOfUser);
     }
 
-
+    async getItemWithItemId(itemId){
+        return await this.itemController.getItemWithItemId(itemId);
+    }
 
 
     
