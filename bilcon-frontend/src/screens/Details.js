@@ -4,22 +4,31 @@ import { Link, useParams } from 'react-router-dom';
 import Header from './ui-component/header';
 import NavMenu from './ui-component/navMenu';
 import Product from '../Classes/Product';
+import { getItemWithItemId } from '../utils/Requests';
 
 
 
 const DetailsPage = ({ match }) => {
     const {itemType, itemId } = useParams();
   //const itemId = match.params.itemId; // Access the item ID from the URL parameter
+    const [product, setProduct] = useState({});
 
-  useEffect(() => {
-    // Fetch details for the item using the itemId
-    // Your API call or data fetching logic goes here
-    console.log(`Fetching details for item with ID: ${itemId}`);
-  }, [itemId]);
+    const handleFavoritesSale = async () => {
+        let curr = await getItemWithItemId(itemId, itemType);
+        console.log(curr);
+        if (curr) {
+            setProduct(curr);
+        }
+    };
+    
+    useEffect(() => {
+        handleFavoritesSale();
+    }, []); // <-- Dependency array should be inside the parentheses
+    
+  //const [type, setType] = useState(itemType);
 
-  const [type, setType] = useState(itemType);
   console.log(itemType);
-  const product = {
+  /* const product = {
     name: "Product Name",
     definition: "Product Definition",
     price: 10.99,
@@ -34,8 +43,8 @@ const DetailsPage = ({ match }) => {
     wantToGive: true,
     itemType: "sale",
     img: "https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg",
-  }
-  const [otherUser, setOtherUser] = useState({
+  } */
+/*   const [otherUser, setOtherUser] = useState({
     name: "Goki Gokdog",
     email: "goki@example.com",
     studentId: "123456789",
@@ -43,9 +52,10 @@ const DetailsPage = ({ match }) => {
     isVerified: true,
     posterId: "poster123",
     customerId: "customer456",
+
     rating: 3.5,
     raterCount: 10
-  });
+  }); */
   //"rent", "lost", "found", "lesson", "course"
       const pages = ['sale', 'rent', 'lost', 'lesson','course', 'found'];
       const starIcons = Array.from({ length: 5 /**account.rating.ceil */ }, (_, i) => (
@@ -69,7 +79,7 @@ const DetailsPage = ({ match }) => {
               <desc>Created with Sketch.</desc>
               <defs></defs>
               <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                  <g id="Profile-nav" transform="translate(-11.000000, -4.000000)" fill={ (Math.ceil(otherUser.rating )-1<i)?"#979797":"#F8E71C"} stroke="none" stroke-width="2">
+                  <g id="Profile-nav" transform="translate(-11.000000, -4.000000)" fill={ (Math.ceil(5)-1<i)?"#979797":"#F8E71C"} stroke="none" stroke-width="2">
                       <g id="Group-2" transform="translate(0.000000, -1.000000)">
                           <polygon id="Star" points="29 32.8753882 19.595436 38 21.3915479 27.145898 13.7830957 19.4589803 24.297718 17.8753882 29 8 33.702242 17.8753882 44.2169043 19.4589803 36.6084521 27.145898 38.404564 38"></polygon>
                       </g>
@@ -86,7 +96,7 @@ const DetailsPage = ({ match }) => {
                       />
                       <div className='mt-0 flex flex-row'>
                           <div className='mr-[1vw]'>
-                            <strong className='text-[14px] mt-0'>{(otherUser.name)}</strong>
+                            <strong className='text-[14px] mt-0'>{product.posterName}</strong>
                           </div>
                           <div className='flex flex-row mt-0'>
                               {/* {starIcons} */}
@@ -96,7 +106,7 @@ const DetailsPage = ({ match }) => {
                   </div>
       let component;
       console.log(product)
-      if (type === pages[0]) {
+      if (itemType == "sale") {
           component = <div className='flex flex-col bg-white justify-center items-center'>
 
                           <Header/>
@@ -105,9 +115,9 @@ const DetailsPage = ({ match }) => {
                           <div className='flex flex-row bg-gray-light rounded-xl'>
                               <div>
                                   <img
-                                      className="h-[32vw] w-[24vw] rounded-md m-[2vw]"
+                                      className="h-[32vw] w-[24vw] rounded-md m-[2vw] object-contain"
                                       alt=''
-                                      src={`${product.img } `}
+                                      src={`data:image/jpeg;base64,${product.photo} `}
                                   />
                               </div>
                               <div className='block h-[20vw] w-[50vw]'>
@@ -127,15 +137,15 @@ const DetailsPage = ({ match }) => {
                                       {line}
                                       {/* DM */}
                                       <div>
-                                          <Link to='/Market' /**Change it to correct form */ className='bg-ui-purple rounded-md text-white p-3 inline-block' key={product.id}/**Change it to correct id */>
+                                      {/*     <Link to='/Market' /**Change it to correct form className='bg-ui-purple rounded-md text-white p-3 inline-block' key={product.id}/**Change it to correct id >
                                               DM {(otherUser.name)}
-                                          </Link>
+                                          </Link> */}
                                       </div>
                                   </div>
                               </div>
                           </div>
                       </div>  
-      } else if (type === pages[1]) {
+      } else if (itemType == "rent") {
           component = <div className='flex flex-col bg-white justify-center items-center'>
 
                           <Header/>
@@ -143,10 +153,10 @@ const DetailsPage = ({ match }) => {
                           <h1 className='font-inter font-extrabold text-3xl text-ui-purple my-2'>{product.name}</h1>
                           <div className='flex flex-row bg-gray-light rounded-xl'>
                               <div>
-                                  <img
-                                      className="h-[32vw] w-[24vw] rounded-md m-[2vw]"
+                              <img
+                                      className="h-[32vw] w-[24vw] rounded-md m-[2vw] object-contain"
                                       alt=''
-                                      src={`${product.img } `}
+                                      src={`data:image/jpeg;base64,${product.photo} `}
                                   />
                               </div>
                               <div className='block h-[20vw] w-[50vw]'>
@@ -167,27 +177,20 @@ const DetailsPage = ({ match }) => {
                                       {/* DM */}
                                       <div>
                                           <Link to='/Market' /**Change it to correct form */ className='bg-ui-purple rounded-md text-white p-3 inline-block' key={product.id}/**Change it to correct id */>
-                                              DM {(otherUser.name)}
+                                              DM {product.posterName}
                                           </Link>
                                       </div>
                                   </div>
                               </div>
                           </div>
                       </div>  
-      } else if (type === pages[2]) {
+      } else if (itemType == "lost") {
           component = <div className='flex flex-col bg-white justify-center items-center'>
 
                           <Header/>
                           <NavMenu currPage="Details Page"/>
                           <h1 className='font-inter font-extrabold text-3xl text-ui-purple my-2'>{product.name}</h1>
                           <div className='flex flex-row bg-gray-light rounded-xl'>
-                              <div>
-                                  <img
-                                      className="h-[32vw] w-[24vw] rounded-md m-[2vw]"
-                                      alt=''
-                                      src={`${product.img } `}
-                                  />
-                              </div>
                               <div className='block h-[20vw] w-[50vw]'>
                                   <div className='flex flex-col justify-center text-ellipsis m-6 items-left'>
                                       {user}
@@ -212,7 +215,7 @@ const DetailsPage = ({ match }) => {
                                       {/* DM */}
                                       <div>
                                           <Link to='/Market' /**Change it to correct form */ className='bg-ui-purple rounded-md text-white p-3 inline-block' key={product.id}/**Change it to correct id */>
-                                              DM {(otherUser.name)}
+                                              DM {product.posterName}
                                           </Link>
                                       </div>
                                   </div>
@@ -223,7 +226,7 @@ const DetailsPage = ({ match }) => {
                           </div>
                           
                       </div>
-      } else if (type === pages[3]) {
+      } else if (itemType == "found") {
           component = <div className='flex flex-col bg-white justify-center items-center'>
 
                           <Header/>
@@ -231,10 +234,10 @@ const DetailsPage = ({ match }) => {
                           <h1 className='font-inter font-extrabold text-3xl text-ui-purple my-2'>{product.name}</h1>
                           <div className='flex flex-row bg-gray-light rounded-xl'>
                               <div className="flex h-[34vw] w-[32vw] items-center justify-center">
-                                  <img
-                                      className="h-[32vw] w-[24vw] rounded-md m-[1vw]"
+                                <img
+                                      className="h-[32vw] w-[24vw] rounded-md m-[2vw] object-contain"
                                       alt=''
-                                      src={`${product.img } `}
+                                      src={`data:image/jpeg;base64,${product.photo} `}
                                   />
                               </div>
                               <div className='block h-[20vw] w-[50vw]'>
@@ -264,7 +267,7 @@ const DetailsPage = ({ match }) => {
                                       {/* DM */}
                                       <div>
                                           <Link to='/Market' /**Change it to correct form */ className='bg-ui-purple rounded-md text-white p-3 inline-block' key={product.id}/**Change it to correct id */>
-                                              DM {(otherUser.name)}
+                                              DM {product.posterName}
                                           </Link>
                                       </div>
                                   </div>
@@ -275,7 +278,7 @@ const DetailsPage = ({ match }) => {
                           </div>
                           
                       </div>
-          } else if (type === pages[4]) {
+          } else if (itemType == "lesson") {
           component = <div className='flex flex-col bg-white justify-center items-center'>
 
                           <Header/>
@@ -283,10 +286,10 @@ const DetailsPage = ({ match }) => {
                           <h1 className='font-inter font-extrabold text-3xl text-ui-purple my-1'>{product.name}~{product.sectionNo}</h1>
                           <div className='flex flex-row bg-gray-light rounded-xl'>
                               <div>
-                                  <img
-                                      className="h-[32vw] w-[24vw] rounded-md m-[2vw]"
+                              <img
+                                      className="h-[32vw] w-[24vw] rounded-md m-[2vw] object-contain"
                                       alt=''
-                                      src={`${product.img } `}
+                                      src={`data:image/jpeg;base64,${product.photo} `}
                                   />
                               </div>
                               <div className='block h-[20vw] w-[50vw]'>
@@ -316,7 +319,7 @@ const DetailsPage = ({ match }) => {
                                       {/* DM */}
                                       <div>
                                           <Link to='/Market' /**Change it to correct form */ className='bg-ui-purple rounded-md text-white p-3 inline-block' key={product.id}/**Change it to correct id */>
-                                              DM {(otherUser.name)}
+                                              DM {product.posterName}
                                           </Link>
                                       </div>
                                   </div>
@@ -327,7 +330,7 @@ const DetailsPage = ({ match }) => {
                           </div>
                           
                       </div>
-      } else if (type === pages[5]) {
+      } else if (itemType == "course") {
         component = <div className='flex flex-col bg-white justify-center items-center'>
 
                         <Header/>
@@ -335,11 +338,11 @@ const DetailsPage = ({ match }) => {
                         <h1 className='font-inter font-extrabold text-3xl text-ui-purple my-2'>{product.name}</h1>
                         <div className='flex flex-row bg-gray-light rounded-xl'>
                             <div>
-                                <img
-                                    className="h-[32vw] w-[24vw] rounded-md m-[2vw]"
-                                    alt=''
-                                    src={`${product.img } `}
-                                />
+                                 <img
+                                      className="h-[32vw] w-[24vw] rounded-md m-[2vw] object-contain"
+                                      alt=''
+                                      src={`data:image/jpeg;base64,${product.photo} `}
+                                  />
                             </div>
                             <div className='block h-[20vw] w-[50vw]'>
                                 <div className='flex flex-col justify-center text-ellipsis m-6 items-left'>
@@ -365,7 +368,7 @@ const DetailsPage = ({ match }) => {
                                     {/* DM */}
                                     <div>
                                         <Link to='/Market' /**Change it to correct form */ className='bg-ui-purple rounded-md text-white p-3 inline-block' key={product.id}/**Change it to correct id */>
-                                            DM {(otherUser.name)}
+                                            DM {product.posterName}
                                         </Link>
                                     </div>
                                 </div>

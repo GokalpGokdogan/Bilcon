@@ -285,3 +285,28 @@ export const getAllItemsInFavoritesList = async (offset, itemType) => {
     throw error; // Rethrow the error to handle it in the component
   }
 };
+
+export const getItemWithItemId = async (itemId, itemType) => {
+  try {
+    const body = {'itemId': itemId, 'itemType': itemType };
+    const res = await axios({
+      method: 'post',
+      url: `http://${API_HOST}/getItemWithItemId`,
+      headers: { 'Content-Type': 'application/json' },
+      data: body,
+      withCredentials: true
+  });
+
+    if (res.data && res.data.redirect) {
+      // Manually handle the redirect
+      window.location.href = res.data.redirect;
+    }
+    if (res.data) {
+      console.log(res.data);
+    }
+    return res.data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};

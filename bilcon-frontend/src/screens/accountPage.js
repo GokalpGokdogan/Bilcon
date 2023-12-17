@@ -1,14 +1,30 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import NavMenu from './ui-component/navMenu';
 import Header from './ui-component/header';
 import ListHorizontal from './ui-component/listHorizontal';
 import { Upload, Button, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import { getAllItemsInFavoritesList } from '../utils/Requests';
 
 
 function AccountPage() 
 {
+    const [data, setData] = useState([]);
+
+    const handleFavoritesSale = async () => {
+        let curr = await getAllItemsInFavoritesList(0, "sale");
+        console.log(curr);
+        if (curr) {
+            setData(curr);
+        }
+    };
     
+    useEffect(() => {
+        handleFavoritesSale();
+    }, []); // <-- Dependency array should be inside the parentheses
+    
+    
+
     const buttonClassAccount = "w-64 my-1.5 text-ui-purple bg-gray-blue hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
     
     const [isOpenSettings, setIsOpenSettings] = useState(false);
@@ -98,11 +114,11 @@ function AccountPage()
                         )}
                     </div>
                     {line}
-                    {ListHorizontal('Favorites')}
-                    {line}
+                    {<ListHorizontal title='Favorites' products={data}/>}
+                  {/*   {line}
                     {ListHorizontal('Purchases')}
                     {line}
-                    {ListHorizontal('Sold Items')}
+                    {ListHorizontal('Sold Items')} */}
                     {line}
                     <div className='flex flex-row justify-start ml-9'>
                         {starIcons}

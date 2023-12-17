@@ -24,6 +24,7 @@ function Feed({ type = 'Market', searchValue, filterValue }) {
                     {
                         data = await searchAllItems(0, 'sale', 0, 10000000, 0, 0, 0, 1000000, 1000000, 1000000, 
                         "", 0, 0, "", searchValue, false);
+                        console.log(searchValue);
                     }
                     else if(Object.keys(filterValue).length > 0)
                     {
@@ -43,7 +44,7 @@ function Feed({ type = 'Market', searchValue, filterValue }) {
                     if(searchValue)
                     {
                         data = await searchAllItems(0, 'rent', 0, 10000000, 0, 0, 0, 1000000, 1000000, 1000000, 
-                        "week", 0, 100000, "week", searchValue, false);
+                        "week", 0, 100000, "month", searchValue, false);
                     }
                     else if(Object.keys(filterValue).length > 0)
                     {

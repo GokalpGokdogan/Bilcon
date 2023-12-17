@@ -41,25 +41,15 @@ function setList(/*type,pageOffset*/){
 
 
 
-function ListHorizontal(title='Favorites') 
+function ListHorizontal({title='Favorites', products}) 
 {
-    useEffect(() => {
-        handleFavoritesSale();
-    },[]);
-
-    const handleFavoritesSale = async () => {
-        let data = await getAllItemsInFavoritesList( 0, "sale");
-        console.log(data);
-        setFavorites(data);
-    }
 
     const [favorites, setFavorites] = useState([]);
     const [isOpen, setIsOpen] = useState(false);    
     const list = setList();
     const [pageOffset, setPageOffset] = useState(0);
-    const maxOffset = favorites.length/5 + (favorites.length%5===0 ? 0 : 1);
-    const component = <ProductList products={favorites} type={"Market"} />
-
+    const maxOffset = products.length/5 + (products.length%5===0 ? 0 : 1);
+    const component = <ProductList products={products} type={"Market"} />
 
     return(
         <div>
