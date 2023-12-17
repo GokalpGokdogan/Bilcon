@@ -463,29 +463,29 @@ export const forgotPassword = async (studentIdOfUser) => {
   }
 };
 
-export const getItemsOfPoster = async (nameOfPoster, itemType, numberOfItems, offset) => {
-  try {
-    const body = { 'nameOfPoster':nameOfPoster, 'itemType':itemType, 'numberOfItems': numberOfItems, 'offset': offset };
-    const res = await axios({
-      method: 'post',
-      url: `http://${API_HOST}/getItemsOfPoster`,
-      headers: { 'Content-Type': 'application/json' },
-      data: body,
-      withCredentials: true
-    });
+// export const getItemsOfPoster = async (nameOfPoster, itemType, numberOfItems, offset) => {
+//   try {
+//     const body = { 'nameOfPoster':nameOfPoster, 'itemType':itemType, 'numberOfItems': numberOfItems, 'offset': offset };
+//     const res = await axios({
+//       method: 'post',
+//       url: `http://${API_HOST}/getItemsOfPoster`,
+//       headers: { 'Content-Type': 'application/json' },
+//       data: body,
+//       withCredentials: true
+//     });
 
-    if (res.data && res.data.redirect) {
-      // Manually handle the redirect
-      window.location.href = res.data.redirect;
-    }
-    if (res.data) {
-      console.log(res.data);
-    }
-    return res.data;
-  } catch (error) {
-    console.error('Error:', error);
-    throw error; // Rethrow the error to handle it in the component
-  }
-};
+//     if (res.data && res.data.redirect) {
+//       // Manually handle the redirect
+//       window.location.href = res.data.redirect;
+//     }
+//     if (res.data) {
+//       console.log(res.data);
+//     }
+//     return res.data;
+//   } catch (error) {
+//     console.error('Error:', error);
+//     throw error; // Rethrow the error to handle it in the component
+//   }
+// };
 
 
