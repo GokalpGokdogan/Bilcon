@@ -59,10 +59,10 @@ function Header({type = 'Market', setSearchValue, searchValue, filterValue, setF
                         <FilterListIcon onClick={() => setIsOpenFilter(!isOpenFilter)} className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100" />
                     </div>
                     {isOpenFilter && (
-                        <FilterView type={type.type} isOpen={isOpenFilter} setIsOpen={setIsOpenFilter} setFilterValue={setFilterValue} filterValue={filterValue} />
+                        <FilterView type={type.type} isOpen={isOpenFilter} setIsOpen={setIsOpenFilter} filterValue={filterValue} setFilterValue={setFilterValue}/>
                     )}
                     <div className='absolute right-3 top-1/2 transform -translate-y-1/2'>
-                        <SearchIcon onClick={console.log(searchValue)} className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100" />
+                        <SearchIcon onClick={setSearchValue(searchValue)} className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100" />
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import NavMenu from '../ui-component/navMenu';
 import Feed from '../ui-component/feed';
 import Header from '../ui-component/header';
@@ -7,10 +7,13 @@ import { PlusOutlined } from '@ant-design/icons';
 
 function PrivateLessons() 
 {
+    const [searchValue, setSearchValue] = useState("");
+    const [filterValue, setFilterValue] = useState({});
+
     return(
         <div className='bg-gray-light flex flex-col gap-3 h-full'>
             <div className='fixed top-0 w-full bg-white z-10'>
-                <Header type='PrivateLessons' />
+                <Header type='PrivateLessons' setSearchValue={setSearchValue} searchValue={searchValue} filterValue={filterValue} setFilterValue={setFilterValue}/>
                 <NavMenu currPage='PrivateLessons' />
             </div>
              <FloatButton
@@ -23,7 +26,7 @@ function PrivateLessons()
             />
             <div className=' mt-28 flex justify-center h-full' >
             <div className='w-full max-w-screen-lg h-full'>
-                    <Feed type='PrivateLessons' />
+                    <Feed type='PrivateLessons' searchValue={searchValue} filterValue={filterValue}/>
                 </div>
            
             </div>

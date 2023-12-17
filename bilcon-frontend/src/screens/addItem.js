@@ -6,7 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 
     function AddItem() 
     {
-        const pages = ['Market', 'Renting', 'Lost & Found', 'Private Lessons', 'Course Trading'];
+        const pages = ['Market', 'Renting', 'LostItems', 'FoundItems','PrivateLessons', 'CourseTrading'];
         const [type, setType] = useState('Market');
         const [imageUrl, setImageUrl] = useState(null);
 
@@ -36,9 +36,9 @@ import { PlusOutlined } from '@ant-design/icons';
         let component;
 
         const beforeUpload = (file) => {
-            const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+            const isJpgOrPng = file.type === 'image/jpg';
             if (!isJpgOrPng) {
-                message.error('You can only upload JPG/PNG file!');
+                message.error('You can only upload JPG file!');
             }
             return isJpgOrPng;
         }
@@ -62,12 +62,12 @@ import { PlusOutlined } from '@ant-design/icons';
     
         const uploadButton = (
             <div>
-                <PlusOutlined />
-                <div style={{ marginTop: 8 }}>Upload</div>
+                <PlusOutlined style={{color: "blue"}} />
+                <div className="mt-8 font-sans text-blue-dark font-bold text-md" style={{ marginTop: 8 }}>Upload</div>
             </div>
         );
 
-        const pageValues = ['sale', 'rent', 'lost & found', 'lesson', 'course'];
+        const pageValues = ['sale', 'rent', 'lost', 'found', 'lesson', 'course'];
 
         const typeSelect =  <div>                                    
                                 <p className='text-gray font-bold'>Type</p>
@@ -77,8 +77,8 @@ import { PlusOutlined } from '@ant-design/icons';
                             </div>
 
         const dateSelect =  <div className='flex flex-row'>
-                                <input min={1} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-xs rounded-xl p-1.5 w-1/5" required={true} type='number' placeholder='Number of' onChange={(e)=>{setAvailabilityScalar(e.target.value)/**availabilityScalar */}}/>
-                                <Select  defaultValue={'day'} style={{ width: 90 }} onChange={(e) => { setAvailabilityDuration(e.target.value)/**availabilityDuration */ }}>
+                                <input min={1} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-xs rounded-xl p-1.5 w-1/5" required={true} type='number' placeholder='Number of' onChange={(e)=>{setAvailabilityScalar(e)/**availabilityScalar */}}/>
+                                <Select  defaultValue={'day'} style={{ width: 90 }} onChange={(e) => { setAvailabilityDuration(e)/**availabilityDuration */ }}>
                                     {['hour', 'day', 'week', 'month', 'year'].map(page => <Option key={page} value={page} >{page}</Option>)}
                                 </Select>
                             </div>
@@ -93,6 +93,7 @@ import { PlusOutlined } from '@ant-design/icons';
             event.preventDefault();
             console.log(name, description, price, availabilityScalar, availabilityDuration, place, day, month, year, section, wantToGive, posterId);
         };
+
         const submit =  <button type="submit" className="bg-ui-purple hover:bg-ig-purple text-white font-bold py-2 px-4 rounded transition duration-200 ease-in-out transform transition-transform scale-95 hover:scale-100" onClick={() => {
                                         setItem({name:name, description:description, price:price, availabilityScalar:availabilityScalar, availabilityDuration:availabilityDuration, place:place, day:day, month:month, year:year, sectionNo:section, wantToGive:wantToGive, itemType:itemType, posterId:posterId});
                                         console.log(item);
@@ -102,8 +103,6 @@ import { PlusOutlined } from '@ant-design/icons';
         
         if (type === pages[0]) {
             component = <div className='flex flex-row '>
-
-                            
                             <div className='h-[32vw] w-[24vw] flex justify-center items-center'>
                                 <div>
                                     <Upload
@@ -434,7 +433,7 @@ import { PlusOutlined } from '@ant-design/icons';
     
         return(
             <div>
-                <Header/>
+                <Header type={type}/>
                 <NavMenu currPage="Add-Items"/>
                 <div className='flex flex-col bg-white justify-center items-center'>
                     <h1 className='font-inter font-extrabold text-3xl text-ui-purple my-2'>Post {type} Item</h1>

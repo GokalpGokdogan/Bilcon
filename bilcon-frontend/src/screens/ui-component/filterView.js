@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 
 
 
-function FilterView({type = 'Course Trading', setIsOpen, setFilterValue, filterValue } ) 
+function FilterView({type = 'Course Trading', setIsOpen, filterValue, setFilterValue} ) 
 {
     
     /**filter = database; */
@@ -11,7 +11,6 @@ function FilterView({type = 'Course Trading', setIsOpen, setFilterValue, filterV
     // console.log(productIn.productIn)
 
     const [filters, setFilters] = useState({
-        numberOfItems: 2,
         offset: 0,
         itemType: 'course',
         minPrice: 0,
@@ -26,16 +25,20 @@ function FilterView({type = 'Course Trading', setIsOpen, setFilterValue, filterV
         minAvailabilityScalar: 0,
         maxAvailabilityScalar: 100,
         availabilityDuration: 'month',
-        courseName: 'bookss',
+        courseName: 'books',
         sectionNo: 2,
         wantToGive: true,
         sortBy: 1
     });
 
-    const pages = ['Market', 'Renting', 'LostItems', 'FoundItems', 'PrivateLessons', 'CourseTrading'];
+    useEffect(() => {
+        // Log the latest filterValue when it changes
+        console.log(filterValue);
+      }, [filterValue]);
+
+    const pages = ['Market', 'Renting', 'LostandFound', 'PrivateLessons', 'CourseTrading'];
 
     const filterNames = {
-        numberOfItems: 'Number Of Items',
         minPrice: 'Min Price',
         maxPrice: 'Max Price',
         offset: 'Offset',
@@ -80,14 +83,24 @@ function FilterView({type = 'Course Trading', setIsOpen, setFilterValue, filterV
     let component;
     //console.log(productIn)
     const handleInputChange = (event) => {
-        setFilters({
-            ...filters,
-            [event.target.name]: event.target.value
-        });
-        setFilterValue({
-            ...filters,
-            [event.target.name]: event.target.value
-        });
+        let value = event.target.value;
+
+        if (filterTypes[event.target.name] === 'number') {
+            value = Number(value);
+        }
+        else if (filterTypes[event.target.name] === 'checkbox') {
+            value = Boolean(event.target.checked);
+        }
+
+        setFilters(prevFilters => ({
+            ...prevFilters,
+            [event.target.name]: value
+        }));
+
+        setFilterValue(prevFilterValue => ({
+            ...prevFilterValue,
+            [event.target.name]: value
+        }));
     };
     
     function buttonComponent(key){
@@ -95,17 +108,10 @@ function FilterView({type = 'Course Trading', setIsOpen, setFilterValue, filterV
                     <label className="block text-sm font-medium">{filterNames[key]}</label>
                     {key === 'wantToGive' ? (
                         <button
-                        onClick={() => {
-                            const updatedFilters = {
-                              ...filters,
-                              [key]: !filters[key]
-                            };
-                          
-                            setFilters(updatedFilters);
-                            setFilterValue(updatedFilters);
-                            console.log(filterValue);
-                    
-                          }}
+                            onClick={() => setFilters({
+                                ...filters,
+                                [key]: !filters[key]
+                            })}
                             className="mt-0.5 p-1 block w-full border rounded-md text-white bg-ui-purple rounded hover:bg-purple-700 transition duration-200 ease-in-out"
                         >
                             {filters[key] ? 'Yes' : 'No'}
@@ -198,8 +204,15 @@ function FilterView({type = 'Course Trading', setIsOpen, setFilterValue, filterV
         <div className="bg-gray-blue w-[25vw] z-10 absolute top-full left-0 border-ui-purple shadow-lg rounded-lg p-4 transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">
             {/* Your popup content goes here */}
             {component} 
-            <button onClick={()=>{setIsOpen(false)}} className="mt-4 bg-ui-purple font-sans text-white w-full py-2 rounded hover:bg-blue-dark transition duration-200 ease-in-out">
-                Submit
+            <button
+            onClick={() => {
+                setIsOpen(false);
+                setFilterValue(filters);
+                console.log(filters); // Log the latest filters state
+            }}
+            className="mt-4 bg-ui-purple font-sans text-white w-full py-2 rounded hover:bg-blue-dark transition duration-200 ease-in-out"
+            >
+            Submit
             </button>
         </div>
 
