@@ -207,7 +207,9 @@ app.get("/newPassword/:token", (req,res)=>{
 //This endpoint will be called when user wants to change his/her password and successfully got verification mail.
 app.patch("/newPassword/:token", (req,res)=>{
     const user = req.session.foundUser;
+    //If there is a valid session
     if (user && Object.keys(user).length > 0) {
+        //Verifying the token that is received as parameter from url (wheter expired or not)
         jwt.verify(req.params.token, 'ourSecretKey', function(err, decoded){
                     // User is authenticated
             
@@ -216,9 +218,11 @@ app.patch("/newPassword/:token", (req,res)=>{
                 res.send("Email verification for password change failed, possibly the link is invalid or expired").redirect("/home");
             } 
             else{
+                //User will enter two new passwords and they should be matched
                 const firstPassword = req.body.password1;
                 if(firstPassword == req.body.password2){
                     let userController = new UserController();   
+                    //Change password method of User controller is called
                     userController.changePassword(user.mail, firstPassword);
                     res.send(200);
                 }
@@ -241,14 +245,17 @@ app.patch("/newPassword/:token", (req,res)=>{
 app.get("/logout", (req,res)=>{
     //console.log(req.session);
     //req.session = null;
+    //Current session will be destroyed, next attemps performed in website will result in redirection to login page.
     req.session.destroy();    
     res.send("You are logged out.");
 });
 
+//This endpoint will be called when user wants to change password
 app.get("/changePassword", (req,res)=>{
     const user = req.session.foundUser;
-    if(user && Object.keys(user).length > 0){
-        let userController = new UserController();               
+    if(user && Object.keys(user).length > 0){ // If there is a valid session
+        let userController = new UserController();  
+        //Mail for changing the password will be called             
         userController.sendMailForPassword(user.mail, user.name);  
         
     }else {
@@ -258,15 +265,16 @@ app.get("/changePassword", (req,res)=>{
     }
  
 });
-
+//This endpoint will be called when user has forgotten the password, and wants to reset it.
 app.post("/forgotPassword", async(req,res)=>{
     const studentIdOfUser = req.body.id;
     let userController = new UserController();   
     let foundUser = await userController.accessUserWithId(studentIdOfUser);
-
+    //If there is a user with entered student ID
     if (foundUser) {
         let foundUserName = foundUser.name;
         let foundUserEmail = foundUser.email;
+        //Mail for resetting forgotten password will be sent.
         userController.sendMailForForgotPassword(foundUserEmail, foundUserName, studentIdOfUser);  
         console.log("Email sent to reset password");
     }
@@ -278,23 +286,26 @@ app.post("/forgotPassword", async(req,res)=>{
 app.get("/resetPassword/:token/:id", (req,res)=>{
     
 });
+//This endpoint will be called when user receives and clicks the resetting password mail
 app.patch("/resetPassword/:token/:id", async (req,res)=>{
     const studentIdOfUser = req.params.id;
     let userController = new UserController();   
     let foundUser = await userController.accessUserWithId(studentIdOfUser);
-
+    //If there is a user with given id
     if (foundUser) {
         jwt.verify(req.params.token, 'ourSecretKey', function(err, decoded){
-            // User is authenticated
+            // User is authenticated, session verified
             
             if (err) {
                 console.log(err); 
                 res.send("Email verification for password reset failed, possibly the link is invalid or expired").redirect("/home");
             } 
             else{
+                //User will enter two new passwords and they should be matched
                 const firstPassword = req.body.password1;
                 if(firstPassword == req.body.password2){
-                    let userController = new UserController();   
+                    let userController = new UserController();
+                    //If two passwords match, changePassword method of UserController class will be called   
                     userController.changePassword(foundUser.email, firstPassword);
                     res.send(200);
                 }
@@ -311,12 +322,15 @@ app.patch("/resetPassword/:token/:id", async (req,res)=>{
         res.status(401).redirect("/login");
     }
 });
-
+//This endpoint will be called when user wants to rate the user that he/she's been chatting and in transaction with
 app.post("/submitTransaction/:ratedUserStudentId/:itemName/:isBought", async(req,res)=>{
     const user = req.session.foundUser;
+    //If there is a valid session
     if (user && Object.keys(user).length > 0) {
-        let transactionController = new TransactionController();   
+        let transactionController = new TransactionController(); 
+        //New transaction will be created and added to the user  
         transactionController.addTransactionToUser(user.studentId, req.params.ratedUserStudentId, req.params.itemName, req.params.isBought);
+        //Also, rating of the chatted user will be updated according to the rating that user has given.
         await transactionController.updateRating(req.params.ratedUserStudentId, req.body.newRating);
 
     } else {
@@ -325,12 +339,15 @@ app.post("/submitTransaction/:ratedUserStudentId/:itemName/:isBought", async(req
     }
 });
 
-
+//This endpoint is created if chatting feature is not successfully implemented(backup).
+//When this endpoint is hitted, email will be send to particular user, which indicates that 
+//a user is interested in his/her item.
 app.post("/requestContact/:requestedUserStudentId/:itemName", async(req,res)=>{
     const user = req.session.foundUser;
-    if (user && Object.keys(user).length > 0) {
+    if (user && Object.keys(user).length > 0) { //If there is a valid session
         let userController = new UserController();
         let requestedUser = await userController.accessUserWithId(req.params.requestedUserStudentId);   
+        //Mail for communication will be sent to owner of the item. 
         userController.sendMailForRequest(requestedUser.email, requestedUser.name, user.mail, user.name, user.studentId, req.params.itemName);
         
     } else {

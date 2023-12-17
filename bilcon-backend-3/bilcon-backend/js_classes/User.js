@@ -1,4 +1,5 @@
 class User{
+    //Below is the properties of user.
     #name;
     #email;
     #studentId;    
@@ -23,7 +24,7 @@ class User{
         this.#boughtTransactions = []; 
         this.#soldTransactions = [];
     }
-
+    //Getters and setters for users properties.
     get name(){
         return this.#name;
     }
