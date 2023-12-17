@@ -24,10 +24,14 @@ class UserController{
     
                 return new Promise((resolve, reject) => {
                     bcrypt.compare(passwordOfUser, foundUser.password, function (err, result) {
-                        if (result === true) {
+                        if (result === true && foundUser.isVerified === true) {
                             console.log(`User with ID ${foundUser.studentId} has logged in.`);
                             resolve(foundUser);
-                        } else {
+                        } 
+                        else if(result ===true && foundUser.isVerified ===false){
+                            resolve (false);
+                        }
+                        else {
                             console.log("Entered wrong password");
                             resolve(null);
                         }
@@ -247,7 +251,7 @@ class UserController{
         console.log(`Email sent to ${userEmail} (password change request)`);
     }
 
-    async accessUserWhenForgotPassword(studentIdOfUser) {
+    async accessUserWithId(studentIdOfUser) {
         try {
             let doesExists = await this.userExistsID(studentIdOfUser);
             if (doesExists) {

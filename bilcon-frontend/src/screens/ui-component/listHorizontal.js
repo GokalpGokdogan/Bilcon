@@ -78,8 +78,6 @@ function ListHorizontal(title='Favorites')
                 </div>
             )}
         </div>
-        
-        
        
     );
 }

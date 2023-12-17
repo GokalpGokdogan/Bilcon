@@ -2,6 +2,8 @@ import React from 'react';
 import NavMenu from '../ui-component/navMenu';
 import Feed from '../ui-component/feed';
 import Header from '../ui-component/header';
+import { FloatButton } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 
 
 function LostFound() 
@@ -16,8 +18,11 @@ function LostFound()
         <div className='w-full max-w-screen-lg px-4'>
                 <Feed type='LostandFound' />
             </div>
-        </div>
-    </div>
+            
+            <div className='mt-28'>
+                <Feed type='Lost & Found'/>
+            </div>
+       </div>
     );
 }
 
