@@ -1257,3 +1257,13 @@ app.post("/getUserIdOfPosterId", async (req, res) => {
         return res.redirect("/login");
     }
 })
+
+app.post("/getUserId", async (req, res)=> {
+    const user = req.session.foundUser;
+    if(user && Object.keys(user).length > 0){
+        res.status(200).send(req.session.foundUser.userId);
+    }
+    else{
+        return res.redirect("/login");
+    }
+})
