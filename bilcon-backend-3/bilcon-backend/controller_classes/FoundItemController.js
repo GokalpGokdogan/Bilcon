@@ -265,6 +265,17 @@ class FoundItemController extends ItemController{
             return itemCount;
     }
 
+    async getItemWithItemId(itemId){
+        const foundItemDb = FoundItemDB;
+        let itemData = await foundItemDb.findOne({itemId: itemId});
+        if(itemData == null || itemData == undefined){
+            return null;
+        }
+        else{
+            return new FoundItem(itemData.name, itemData.definition, itemData.itemId, itemData.photo, itemData.place, itemData.date.getDate(), itemData.date.getMonth(), itemData.date.getFullYear(), itemData.posterId, itemData.posterName);
+        }
+    }
+
 }
 
 module.exports = FoundItemController;
