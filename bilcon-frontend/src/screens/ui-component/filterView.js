@@ -32,7 +32,7 @@ function FilterView({type = 'Course Trading', setIsOpen} /*{nameIn="Nameless", p
         sortBy: 1
     });
 
-    const pages = ['Market', 'Renting', 'LostandFound', 'PrivateLessons', 'CourseTrading'];
+    const pages = ['Market', 'Renting', 'LostItems', 'FoundItems', 'PrivateLessons', 'CourseTrading'];
 
     const filterNames = {
         numberOfItems: 'Number Of Items',
@@ -137,7 +137,7 @@ function FilterView({type = 'Course Trading', setIsOpen} /*{nameIn="Nameless", p
                         ))}
                     </div>
     }
-    else if(type == pages[2]){
+    else if(type == pages[2] || pages[3]){
         component=  <div className='text-ui-purple font-sans border-black'>
                         <h1 className="text-2xl font-bold mb-4">Filter View</h1>
                         {Object.keys(['minDay', 'minMonth', 'minYear', 'maxDay', 'maxMonth', 'maxYear', 'offset', 'numberOfItems', 'sortBy'].reduce((obj, key) => {
@@ -150,7 +150,7 @@ function FilterView({type = 'Course Trading', setIsOpen} /*{nameIn="Nameless", p
                         ))}
                     </div>
     }
-    else if(type == pages[3]){
+    else if(type == pages[4]){
         component=  <div className='text-ui-purple font-sans border-black'>
                         <h1 className="text-2xl font-bold mb-4">Filter View</h1>
                         {Object.keys(['minPrice', 'maxPrice', 'offset', 'numberOfItems', 'sortBy'].reduce((obj, key) => {
@@ -163,7 +163,7 @@ function FilterView({type = 'Course Trading', setIsOpen} /*{nameIn="Nameless", p
                         ))}
                     </div>
     }
-    else if(type == pages[4]){
+    else if(type == pages[5]){
         component=  <div className='text-ui-purple font-sans border-black'>
                         <h1 className="text-2xl font-bold mb-4">Filter View</h1>
                         {Object.keys(['numberOfItems', 'offset', 'sortBy', 'courseName', 'sectionNo', 'wantToGive'].reduce((obj, key) => {

@@ -8,12 +8,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import SendIcon from '@mui/icons-material/Send';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ChatIcon from '@mui/icons-material/Chat';
 
-function Header(type = 'Market') {
+function Header({type = 'Market', setSearchValue, searchValue, handleSearch}) {
     const [isOpenFilter, setIsOpenFilter] = useState(false);
     const [isOpenFav, setIsOpenFav] = useState(false);
     const [isOpenChats, setIsOpenChats] = useState(false);
-    const [searchValue, setSearchValue] = useState("");
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -23,7 +23,7 @@ function Header(type = 'Market') {
     };
 
     return (
-        <div className='flex flex-row p-2 px-4 w-full justify-between'>
+        <div className='flex flex-row p-2 px-4 w-full justify-between bg-white'>
             <div className='w-[10vw]'>
                 <Link to="/market" onMouseOver={(e) => {
                     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -62,7 +62,7 @@ function Header(type = 'Market') {
                         <FilterView type={type.type} isOpen={isOpenFilter} setIsOpen={setIsOpenFilter} />
                     )}
                     <div className='absolute right-3 top-1/2 transform -translate-y-1/2'>
-                        <SearchIcon /* onClick={() => search}  */ className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100" />
+                        <SearchIcon onClick={handleSearch} className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100" />
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@ function Header(type = 'Market') {
             <div className='flex flex-row items-center'>
                 <div className='flex relative'>
                     {/* <button onClick={() => setIsOpenChats(!isOpenChats)} className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Chats</button> */}
-                    <SendIcon onClick={() => setIsOpenChats(!isOpenChats)} className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100 mr-2" />
+                    <ChatIcon onClick={() => setIsOpenChats(!isOpenChats)} className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100 mr-2 mt-1" />
                     {isOpenChats && (
                         <div className="absolute right-0 top-full">
                             <ChatsPop type={type.type} />
