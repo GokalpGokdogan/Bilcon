@@ -88,8 +88,7 @@ import { ChatContext } from '../context/ChatContext';
                 }
     4) About real time chatting:
                 When a user has the page that displays previous chats open, the frontend needs to be aware of this. (adamın chat sayfasını anlık olarak açıp açmadığını anlayamıyosak başka bir şey yapıcam, chat sayfası dediğim adamın 4-5 tane eski chati gözüküyo atıyorum.)
-                If we can understand that a given user has his chat page open, then, front end will always call /getConversation implicity in small time periods (say 50ms). This way, when a user has his chat page open,
-                /getConversation will be called for all the different chats for that user with their respective participants attribute.
+                If we can understand that a given user has his chat page open, then, front end will always call /getAllConversations implicity in small time periods (say 50ms). 
 
                 Yapmaya çalıştığım şu:
                     Adamın 5 tane chati var diyelim. Kendi idsi 0, diğerleri 1,2,3,4,5  olsun. Yani 5 chatin participants kısmı şöyle: [["0", "1"], ... , ["0","5"]]
