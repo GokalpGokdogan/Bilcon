@@ -314,6 +314,18 @@ class RentItemController extends ItemController{
             return itemCount;
     }
 
+    async getItemWithItemId(itemId){
+        const rentItemDb = RentItemDB;
+        let itemData = await rentItemDb.findOne({itemId: itemId});
+        if(itemData == null || itemData == undefined){
+            return null;
+        }
+        else{
+            return new RentItem(itemData.name, itemData.definition, itemData.itemId, itemData.price, itemData.durationOfPrice, itemData.availabilityScalar,
+                itemData.availabilityDuration, itemData.photo, itemData.posterId, itemData.arrayOfFavoritesList, itemData.posterName);
+        }
+    }
+
 }
 
 module.exports = RentItemController;
