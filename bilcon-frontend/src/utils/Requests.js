@@ -489,3 +489,30 @@ export const forgotPassword = async (studentIdOfUser) => {
 // };
 
 
+let userId; 
+
+export const getUserId = async () => {
+  try {
+    const res = await axios({
+      method: 'get',
+      url: `http://${API_HOST}/forgotPassword,`,
+      headers: { 'Content-Type': 'application/json' },
+      withCredentials: true
+    });
+
+    if (res.data && res.data.redirect) {
+      // Manually handle the redirect
+      window.location.href = res.data.redirect;
+    }
+    if (res.data) {
+      console.log(res.data);
+      userId = res.data; // Assign a value to the variable
+    }
+    return res.data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+export { userId }; // Export the variable

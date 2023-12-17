@@ -5,6 +5,7 @@ import Header from './ui-component/header';
 import NavMenu from './ui-component/navMenu';  
 import { ChatContext } from '../context/ChatContext';
 import { createConversation, getConversation, sendMessage } from '../utils/Requests';
+import { userId } from '../utils/Requests';
 
 /*
 
@@ -90,24 +91,12 @@ import { createConversation, getConversation, sendMessage } from '../utils/Reque
     4) About real time chatting:
                 When a user has the page that displays previous chats open, the frontend needs to be aware of this. (adamın chat sayfasını anlık olarak açıp açmadığını anlayamıyosak başka bir şey yapıcam, chat sayfası dediğim adamın 4-5 tane eski chati gözüküyo atıyorum.)
                 If we can understand that a given user has his chat page open, then, front end will always call /getAllConversations implicity in small time periods (say 50ms). 
-
-                Yapmaya çalıştığım şu:
-                    Adamın 5 tane chati var diyelim. Kendi idsi 0, diğerleri 1,2,3,4,5  olsun. Yani 5 chatin participants kısmı şöyle: [["0", "1"], ... , ["0","5"]]
-                    /getAllConversations deyince dönen arrayin içinde farklı conversation objeleri var. Bunları DM sayfasında display ediyoruz for loopla falan.
-                    Adamın bu DM sayfasını açtığını anlayıp, 50ms de bir, getAllConversations çağırmamız lazım.
-                    Burada, request body'e current userın id sini, yani 0'ı vermeniz lazım. request.body = {participant : "0"}
-                    Böylece, db den sürekli conversationların son halini çekebiliriz.
-
-                    Eğer adam spesifik bir chate tıklarsa, aynı mantığın devam etmesi lazım. Bu sefer daha hızlı olması için, sadece bu chati istiyebilirsiniz backendden, / getConversation diyerek.
-                    Gene 50ms de bir falan çağırmanız lazım. Atıyorum adam ["0", "3"] chatini açmış olsun, /getConversation 50ms bir çağırıp sürekli ["0", "3"] vererek request body'e.
-                    
-                    Adam "03" chatinden çıkıp, gene tüm chatlerin olduğu sayfaya dönerse, gene /getAllConversation çağırmamız lazım yukarda ilk anlattığımdaki gibi.
-                    FSM gibi aslında, her bir sayfa bir sinyal gibi ve state değiştiriyoruz.
-
  */
+
 
 function Chat({participants}) 
 {
+
     const [list, setList] = useState([]);
     const [messages, setMessages] = useState([]);
 
@@ -131,7 +120,7 @@ function Chat({participants})
             
           const newMessage = (
             <div key={Date.now()} className='inline-block w-[50vw]'>
-              <Message sender={"657cdc55ad49a566f0d00109"} text={newText}></Message>
+              <Message sender={userId} text={newText}></Message>
             </div>
           );
       

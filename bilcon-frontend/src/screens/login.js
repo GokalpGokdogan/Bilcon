@@ -18,6 +18,8 @@ function Login()
     const [password, setPassword] = useState('');
     const [conditionToShowAlert, setConditionToShowAlert] = useState(false);
 
+     let usId = 0;
+
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             login(id, password);
