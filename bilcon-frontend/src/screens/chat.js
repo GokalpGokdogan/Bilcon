@@ -5,7 +5,101 @@ import Header from './ui-component/header';
 import NavMenu from './ui-component/navMenu';  
 import { ChatContext } from '../context/ChatContext';
 
+/*
 
+    The structure of a conversation is as follows (It is in MessageDb class inside db_modules):
+
+    *****************************************************************************
+
+    participants: Array, // Array of user IDs participating in the conversation For example: participants = ["7", "9"] implies that, user1Id = "7", user2Id = "9" 
+    messages: [
+        {
+            sentFrom: { // sender id
+            type: String,
+            required : true
+            },
+
+            text: { // actual text user is sending
+            type: String,
+            required : true
+            },
+
+            timestamp: { type: Date, default: Date.now }, // timestamp of the sent message 
+        }
+    ]
+    *****************************************************************************
+
+
+    3 functions are in the backend:
+    1) /sendMessage
+    2) /createConversation
+    3) /getConversation
+
+
+    1) /SendMessage
+        const {participants, text, sentFrom} = req.body;
+            participants is a array string of two user ids in sorted order. For example: user2Id = "6", user2Id = "8", then participants = ["6", "8"]. (6 < 8 (lexicgrophic order)).
+            text is the text user enters
+            sentFrom is the user id of the sender
+
+            
+
+    2) /createConversation
+        const {participants} = req.body;
+        participants is  string array of two user ids in sorted order, as explained in 1).
+
+        When user wants to create a chat with a user, this function will be called. !Edge case is they already have a created chat.
+        In that case, the function returns the existing conversation. So when the page changes to the chatBox page, you have the necessary conversation to display. 
+        If the chat is newly created, then, it will return an empty conversation, which can be displayed as empty.
+
+    3) getConversation
+        const {participants} = req.body;
+    
+        When user clicks on a chatBox, this function will be called. It returns the conversation from the db.
+
+    Example Scenario:
+
+    1) User looks at a post, and clicks on a designated button that creates a chat with the owner of the post. (The button must contain the id of the user for future use.)
+    2) The button calls the /createConversation endpoint, request body is the concatanated string of the current user's id and the poster's owner id in sorted order. E.g: currentUserID = "22", posterOwnerId = "33", then, 
+    request body is: {"participants" : ["22", "33"]}.
+
+    3) Assumption: The button changes the page to the chatBox page
+        3.1) (They have a past conversation) 
+            Then, /createConversation endpoints returns the previous messages of the two users for display. The user enters a text and presses the send button.
+            Then, /SendMessage function is called with the request body: 
+                {
+                    "participants" : "this is the same with the current conversation's participants key value" , 
+                    text : "text the user entered",
+                    sentFrom "sender's id": 
+                }
+
+        3.2) (They dont have a past conversation)
+            Then, /createConversation endpoints returns the empty messages array of the two users for display. The user enters a text and presses the send button.
+            Then, /SendMessage function is called with the request body: 
+                {
+                    "participants" : "this is the same with the current conversation's participants key value" , 
+                    text : "text the user entered",
+                    sentFrom "sender's id": 
+                }
+    4) About real time chatting:
+                When a user has the page that displays previous chats open, the frontend needs to be aware of this. (adamın chat sayfasını anlık olarak açıp açmadığını anlayamıyosak başka bir şey yapıcam, chat sayfası dediğim adamın 4-5 tane eski chati gözüküyo atıyorum.)
+                If we can understand that a given user has his chat page open, then, front end will always call /getConversation implicity in small time periods (say 50ms). This way, when a user has his chat page open,
+                /getConversation will be called for all the different chats for that user with their respective participants attribute.
+
+                Yapmaya çalıştığım şu:
+                    Adamın 5 tane chati var diyelim. Kendi idsi 0, diğerleri 1,2,3,4,5  olsun. Yani 5 chatin participants kısmı şöyle: [["0", "1"], ... , ["0","5"]]
+                    /getAllConversations deyince dönen arrayin içinde farklı conversation objeleri var. Bunları DM sayfasında display ediyoruz for loopla falan.
+                    Adamın bu DM sayfasını açtığını anlayıp, 50ms de bir, getAllConversations çağırmamız lazım.
+                    Burada, request body'e current userın id sini, yani 0'ı vermeniz lazım. request.body = {participant : 0}
+                    Böylece, db den sürekli conversationların son halini çekebiliriz.
+
+                    Eğer adam spesifik bir chate tıklarsa, aynı mantığın devam etmesi lazım. Bu sefer daha hızlı olması için, sadece bu chati istiyebilirsiniz backendden, / getConversation diyerek.
+                    Gene 50ms de bir falan çağırmanız lazım. Atıyorum adam ["0", "3"] chatini açmış olsun, /getConversation 50ms bir çağırıp sürekli ["0", "3"] vererek request body'e.
+                    
+                    Adam "03" chatinden çıkıp, gene tüm chatlerin olduğu sayfaya dönerse, gene /getAllConversation çağırmamız lazım yukarda ilk anlattığımdaki gibi.
+                    FSM gibi aslında, her bir sayfa bir sinyal gibi ve state değiştiriyoruz.
+
+ */
 
 function Chat({OtherId = '22222222'} /*{nameIn="Nameless", priceIn=-1, sellerIn="@Gokalp", imgIn='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg', key="" }*/) 
 {
@@ -38,7 +132,7 @@ function Chat({OtherId = '22222222'} /*{nameIn="Nameless", priceIn=-1, sellerIn=
         setList(list);
     }
 
-    const sendMessage = () => {
+    const sendMessage = () => { // call /sendMessage here.
         const newMessage = (
             <div className='inline-block w-[50vw]'>
                 <Message type='Self' text={newText}></Message>

@@ -30,7 +30,7 @@ const corsOptions ={
 app.use(cors(corsOptions));
 
 app.use(bodyParser.urlencoded({ extended: false }));
-const dbUrl = "mongodb://localhost:27017/UserDB"; //enter the link of mongo db cluster;
+const dbUrl = 'mongodb+srv://dbuser:dbuser@user.fyqmjti.mongodb.net/'; //enter the link of mongo db cluster;
 
 /* 
 In order to test it, first the url should be entered above.
@@ -776,143 +776,103 @@ app.post("/removeItemFromFavoritesList", async (req, res) => {
     }
 })
 
+// *******************************************CHAT***********************************************************
+
+app.post("/sendMessage", (req, res) => {
+
+    const {participants, text, sentFrom} = req.body;
+
+    let messageController = new MessageController();
+
+    messageController.sendMessage(participants, text, sentFrom)
+        .then((result) => {
+            if(result){
+
+                console.log("sent message");
+                res.send("sent message");
+                
+
+            }
+            else{
+
+                console.log("error sending message");
+                res.send("error sending message");                
+            }
+
+        })
+
+});
 
 
-app.post("/createChat", (req, res) => {
-   
-    const {firstId, secondId} = req.body;
 
-    let chatController = new ChatController();
+app.post("/createConversation", (req, res) => {
 
-    chatController.createChat(firstId, secondId)
-        .then((result) =>{
+    const {participants} = req.body;
+
+    let messageController = new MessageController();
+
+
+    messageController.createConversation(participants)
+        .then((result) => {
+
             if(result){
                 res.status(200).json(result);
             }
             else{
-                res.status(500);
+                res.status(500).json(result);
             }
-        })
-
-
-});
-
-
-/*
-
-    Returns all chats of a user.
-    The user id of the given user is given as a PARAMETER in the request endpoint.
-
-*/
- 
-
-app.get("/findUserChats/:userId", (req, res) => {
-
-        const userId = req.params.userId;
-
-        let chatController = new ChatController();
-
-        chatController.findUserChats(userId)
-        .then((result) =>{
-
-            if(result){
-                res.status(200).json(result);
-            }else{
-                res.status(500);
-            }
-
 
         });
 
 });
 
-/*
-    Returns the specific chat between two users.
-    The user id's of the two users is given as parameters within the endpoint.
 
-    TODO:
-        Make the chats not tied between two users, but also between two different items.
-        That is, create different chats for different items.
+app.get("/getConversation", (req, res) => {
 
-*/
+    const {participants} = req.body;
+
+    let messageController = new MessageController();
 
 
-app.get("/find/:firstId/:secondId", (req, res) => {
-    
-
-    const {firstId, secondId} = req.params;
-    let chatController = new ChatController();
-
-    chatController.findChat(firstId, secondId)
+    messageController.getConversation(participants)
         .then((result) => {
 
             if(result){
                 res.status(200).json(result);
-            }else{
-                res.status(500);
+            }
+            else{
+                res.status(500).json(result);
             }
         });
 
 });
 
+app.get("/getAllConversations", (req, res) => {
 
-/*
+    const {participant} = req.body;
 
-    Creates the message that the user wants to send to the other user, and ties it to the given chat.
-    For this, chatId, senderId, and the content of the message should be given within the request body.
+    let userController = new UserController();
 
-    The format of request:
-
-    {
-     "chatId" : "65737167ce518188d397f5b5",
-     "senderId" : "abc123",
-     "text" : "hello"
-    }
-
-*/
-
-app.post("/createMessage", (req, res) => {
-
-    const {chatId, senderId, text} = req.body;
-
-    let messageController = new MessageController();
-
-    messageController.createMessage(chatId, senderId, text)
+    userController.getAllConversations(participant)
         .then((result) => {
-            if(result){     
-                res.status(200).json(result);
-            }else{
-                res.status(500);
-            }
-        });
-
-
-});
-
-/*
-
-   Returns all the messages of a given chat between two users.
-   For this, the chatId must be given within the request paramaters.
-
-*/
-
-
-app.get("/getMessages/:chatId", (req, res)=>{
-
-    const chatId = req.params.chatId;
-
-    let messageController = new MessageController();
-
-    messageController.getMessages(chatId)
-        .then((result) =>{
             if(result){
                 res.status(200).json(result);
-            }else{
-                res.status(500);
+            }
+            else{
+                res.status(500).json(result);
             }
         })
 
+
+
 });
+
+
+
+// *******************************************************************************************************
+
+
+
 
 // req and res are the same with getItems route
 app.post("/getItemsExceptUser", async (req, res) => {

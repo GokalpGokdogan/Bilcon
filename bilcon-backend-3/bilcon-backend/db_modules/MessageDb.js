@@ -1,15 +1,25 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const messageSchema = new mongoose.Schema({
+const messageSchema = new Schema({
+    
+    participants: Array, // Array of user IDs participating in the conversation
+    messages: [
+        {
+            sentFrom: {
+            type: String,
+            required : true
+            },
+            text: {
+            type: String,
+            required : true
+            },
+            timestamp: { type: Date, default: Date.now },
+        }
+    ]
 
-    chatId: String,
-    senderId: String,
-    text: String
+}, {timestamps: true});
 
-},{
-    timestamps: true
-});
+const MessageDB = mongoose.model("MessageDB", messageSchema);
 
-const messageModel = mongoose.model("Message", messageSchema);
-
-module.exports = messageModel;
+module.exports = MessageDB;

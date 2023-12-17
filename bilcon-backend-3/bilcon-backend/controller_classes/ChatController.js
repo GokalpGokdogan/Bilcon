@@ -2,7 +2,7 @@
 // get user chats
 // findChat
 
-const chatModel = require('../db_modules/ChatDb');
+/* const chatModel = require('../db_modules/ChatDb');
 
 class chatController{
 
@@ -71,4 +71,4 @@ class chatController{
     };
 }
 
-module.exports = chatController;
+module.exports = chatController; */

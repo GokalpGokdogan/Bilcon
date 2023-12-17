@@ -24,7 +24,7 @@ import { ChatContextProvider } from './context/ChatContext';
 import Chat from './screens/chat';
 import LostItems from './screens/top-menu/lostItemsPage';
 import FoundItems from './screens/top-menu/foundItemsPage';
-
+import ChatBox from './screens/chatBox';
 
 export default function App() {
 
@@ -39,7 +39,7 @@ export default function App() {
         <Route path="register" element={<Register/>} />
        {/* home inactive till decided */}
         <Route path="dashboard" element={<Market/>} />
-        <Route path="chat" element={<Chat />} />
+        <Route path="chat" element={<Chat />} /> 
         <Route path="forgotPassword" element={<ForgotPassword/>} />
         <Route path="verificationPage" element={<VerificationPage/>} />
         <Route path="accountPage" element={<AccountPage/>} />
