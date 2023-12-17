@@ -213,6 +213,17 @@ class CourseItemController extends ItemController{
             });
             return itemCount;
     }
+
+    async getItemWithItemId(itemId){
+        const courseItemDb = CourseItemDB;
+        let item = await courseItemDb.findOne({itemId: itemId});
+        if(item == null || item == undefined){
+            return null;
+        }
+        else{
+            return new CourseItem(item.name, item.definition, item.itemId, item.sectionNo, item.posterId, item.wantToGive, item.arrayOfFavoritesList, item.posterName);
+        }
+    }
 }
 
 module.exports = CourseItemController;
