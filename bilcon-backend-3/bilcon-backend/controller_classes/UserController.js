@@ -15,30 +15,33 @@ class UserController{
     constructor(){
         
     }
+    //Method for logging user in.
     async loginUser(studentIdOfUser, passwordOfUser) {
         try {
-            let doesExists = await this.userExistsID(studentIdOfUser);
+            let doesExists = await this.userExistsID(studentIdOfUser); //Checking whether there is a user with given ID
             if (doesExists) {
                 const userDB = UserDB;
+                //User with given ID is received from Database
                 const foundUser = await userDB.findOne({ studentId: studentIdOfUser });
     
                 return new Promise((resolve, reject) => {
+                    //bcrypt is hashing and salting module for storing passwords safely.
                     bcrypt.compare(passwordOfUser, foundUser.password, function (err, result) {
                         if (result === true && foundUser.isVerified === true) {
                             console.log(`User with ID ${foundUser.studentId} has logged in.`);
-                            resolve(foundUser);
+                            resolve(foundUser); //If entered password is correct, foundUser is passed to frontend.
                         } 
                         else if(result ===true && foundUser.isVerified ===false){
-                            resolve (false);
+                            resolve (false); //If there is a user with given id, but it is not activated via mail yet.
                         }
                         else {
                             console.log("Entered wrong password");
-                            resolve(null);
+                            resolve(null); //If entered password is incorrect
                         }
                     });
                 });
             } else {
-                console.log("User with entered ID does not exist.");
+                console.log("User with entered ID does not exist."); //If user with given id does not exist
                 return null;
             }
         } catch (error) {
@@ -48,12 +51,19 @@ class UserController{
     }
 
     async registerUser(nameOfUser, emailOfUser, studentIdOfUser, passwordOfUser){
-        bcrypt.hash(passwordOfUser, saltRounds, async  (err, hash)=> {
-            let user = new User(nameOfUser, emailOfUser, studentIdOfUser, passwordOfUser, false);
-            await this.saveUserToDB(user, hash);
-        })
+        if(!await this.userExistsID(studentIdOfUser)){
+            bcrypt.hash(passwordOfUser, saltRounds, async  (err, hash)=> {
+                let user = new User(nameOfUser, emailOfUser, studentIdOfUser, passwordOfUser, false);
+                await this.saveUserToDB(user, hash);
+            })
+        }
+        else{
+            console.log("User already exists.");
+        }
+
 
     }
+    //This is method for sending registration confirmation mail
     async sendVerificationMail(User){
         var transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -85,6 +95,7 @@ class UserController{
             console.log("User already exists");
         }
         else{
+            //If there aren't any user with given id, user is saved to Database but not verified(as his/her status)
             await this.sendVerificationMail(User);
             const userDb = UserDB;
             await userDb.create({                
@@ -113,7 +124,7 @@ class UserController{
                         
         }
     }
-
+    
     async getNameByUserId(userId){
         const userDb = UserDB;
         return userDb.findById(userId).then((res) => {
@@ -127,7 +138,7 @@ class UserController{
             return res.email;
         });
     }
-
+    //Checking whether user exists with given mail and id
     async userExists(mail , id){        
         const userDB = UserDB;
         let exists = userDB.findOne({email: mail})
@@ -162,6 +173,7 @@ class UserController{
         });        
        return await exists;
     }
+    //When user confirms the link, his/her isVerified status is changed to true.
     async activateUser(userEmail){        
         const userDB = UserDB;
         let updatedUser = await userDB.findOneAndUpdate({email: userEmail}, {isVerified: true});
@@ -216,14 +228,14 @@ class UserController{
         });
 
     }
-
+    //This method will change the password of user with given email.
     async changePassword(emailOfUser, newPassword){
         bcrypt.hash(newPassword, saltRounds, async  (err, hash)=> {
             const userDB = UserDB;
             let updatedUser = await userDB.findOneAndUpdate({email: emailOfUser}, {password: hash});
         })
     }
-
+    //sending a mail for changing password
     async sendMailForPassword(userEmail, userName){
         var transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -295,7 +307,7 @@ class UserController{
         console.log(`Email sent to ${userEmail} (password change request)`);
     }
 
-
+    //Sending mail to user to notify that a user is interested in his/her product.
     async sendMailForRequest(requestedUserEmail, requestedUserName, userEmail, userName, userId, itemName){
         var transporter = nodemailer.createTransport({
             service: 'gmail',

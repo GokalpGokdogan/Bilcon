@@ -58,12 +58,14 @@ const RentingItem = ({product}) => {
                          src={`data:image/jpeg;base64,${product.photo}`}
                      />
                  </div>
+                 <Link to={`/details/rent/${product.itemId}`}>
                  <div className='w-auto flex flex-col justify-center items-left mt-1 font-sans'>
                      <p className='font-semibold stext-md'>{product.name}</p>
                      <p className='font-bold text-lg'>{product.price} TL / {product.durationOfPrice}</p>
                     <p className='text-sm'>{(product.posterName).replace('@', '')}</p>
                      
                  </div>
+                 </Link>
              </div>
        //  </Link>
      );
