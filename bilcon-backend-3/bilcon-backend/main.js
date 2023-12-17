@@ -1226,3 +1226,34 @@ app.post("/getAllItemsOfPoster", async (req, res) => { // when a user clicks to 
     }
 })
 
+/* 
+Example JSON: 
+{
+    "itemId": 4,
+    "itemType": "lost"
+}
+
+*/
+
+app.post("/getItemWithItemId", async (req, res) => {
+    const user = req.session.foundUser;
+    if(user && Object.keys(user).length > 0){
+        let {itemId, itemType} = req.body;
+        let userController = new UserController();
+        let customerId = await userController.getCustomerIdByUserId(req.session.foundUser.userId);
+        let customerController = new CustomerController(itemType, customerId);
+        let item = await customerController.getItemWithItemId(itemId);
+        if(item == null){
+            res.status(404).send("null");
+        }
+        else{
+            let arrayOfFavListItemIds = await customerController.getFavoritesListItemIds();
+            item = item.toJSON(arrayOfFavListItemIds);
+            res.status(200).send(JSON.stringify(item));
+        }
+        
+    }
+    else{
+        return res.redirect("/login");
+    }
+})
