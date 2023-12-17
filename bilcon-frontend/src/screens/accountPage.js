@@ -4,14 +4,14 @@ import Header from './ui-component/header';
 import ListHorizontal from './ui-component/listHorizontal';
 import { Upload, Button, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { getAllItemsInFavoritesList, getItemsOfPoster, getAllItemsOfPoster,  } from '../utils/Requests';
+import { getAllItemsInFavoritesList, getItemsOfPoster  } from '../utils/Requests';
 
 
 function AccountPage() 
 {
     const [dataFav, setDataFav] = useState([]);
     const [ dataOfPoster, setDataOfPoster] = useState([]);
-    const [allItemsOfPoster, setAllItemsOfPoster] = useState([]);
+    // const [allItemsOfPoster, setAllItemsOfPoster] = useState([]);
 
 
 
@@ -32,18 +32,18 @@ function AccountPage()
         }
     };
 
-    const handleAllDataOfPoster = async () => {
-        let curr = await getAllItemsOfPoster("sale", 4, 0);
-        console.log(curr);
-        if (curr) {
-            setAllItemsOfPoster(curr);
-        }
-    };
+    // const handleAllDataOfPoster = async () => {
+    //     let curr = await getAllItemsOfPoster("sale", 4, 0);
+    //     console.log(curr);
+    //     if (curr) {
+    //         setAllItemsOfPoster(curr);
+    //     }
+    // };
     
     useEffect(() => {
         handleFavoritesSale();
         handleDataOfPoster();
-        handleAllDataOfPoster();
+        // handleAllDataOfPoster();
     }, []); // <-- Dependency array should be inside the parentheses
     
     
@@ -141,9 +141,9 @@ function AccountPage()
                     {line}
                     <ListHorizontal title='Purchases' products={dataOfPoster}/>
                     
-                    {line}
+                    {/* {line}
                     <ListHorizontal title='Sold Items' products={allItemsOfPoster}/>
-                    {line}
+                    {line} */}
                     <div className='flex flex-row justify-start ml-9'>
                         {starIcons}
                     </div>
