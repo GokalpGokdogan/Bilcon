@@ -28,7 +28,7 @@ import { postItem } from '../utils/Requests';
         const [section, setSection] = useState(0);
         const [wantToGive, setWantToGive ] = useState(true);
         const [posterId, setPosterId] = useState('22222222');
-        const [itemType, setItemType] = useState('Market');
+        const [itemType, setItemType] = useState('sale');
         const [photo, setPhoto] = useState();
         const [uploadedFile, setUploadedFile] = useState(null);
         //ant design
@@ -100,7 +100,7 @@ import { postItem } from '../utils/Requests';
                             </div>
 
         const dateSelect =  <div className='flex flex-row'>
-                                <input min={1} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-xs rounded-xl p-1.5 w-1/5" required={true} type='number' placeholder='Number of' onChange={(e)=>{setAvailabilityScalar(e)/**availabilityScalar */}}/>
+                                <input min={1} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-xs rounded-xl p-1.5 w-1/5" required={true} type='number' placeholder='Number of' onChange={(e)=>{setAvailabilityScalar(e.target.value)/**availabilityScalar */}}/>
                                 <Select  defaultValue={'day'} style={{ width: 90 }} onChange={(e) => { setAvailabilityDuration(e)/**availabilityDuration */ }}>
                                     {['hour', 'day', 'week', 'month', 'year'].map(page => <Option key={page} value={page} >{page}</Option>)}
                                 </Select>
@@ -117,7 +117,7 @@ import { postItem } from '../utils/Requests';
             console.log(name, description, price, availabilityScalar, availabilityDuration, place, day, month, year, section, wantToGive, posterId);
         };
 
-        const submit =  <button type="submit" className="bg-ui-purple hover:bg-ig-purple text-white font-bold py-2 px-4 rounded transition duration-200 ease-in-out transform transition-transform scale-95 hover:scale-100"   onClick={async () => {
+        const submit =  <button type="submit" className="bg-ui-purple hover:bg-ig-purple text-white font-bold py-2 px-4 rounded duration-200 ease-in-out transform transition-transform scale-95 hover:scale-100"   onClick={async () => {
             try {
               // Set the item data
               setItem({
@@ -143,6 +143,7 @@ import { postItem } from '../utils/Requests';
               formData.append('price', price);
               formData.append('availabilityScalar', availabilityScalar);
               formData.append('availabilityDuration', availabilityDuration);
+              formData.append('durationOfPrice', "month");
               formData.append('place', place);
               formData.append('day', day);
               formData.append('month', month);

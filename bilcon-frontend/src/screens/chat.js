@@ -105,7 +105,7 @@ import { ChatContext } from '../context/ChatContext';
 
  */
 
-function Chat({OtherId = '22222222'} /*{nameIn="Nameless", priceIn=-1, sellerIn="@Gokalp", imgIn='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg', key="" }*/) 
+function Chat({userId} /*{nameIn="Nameless", priceIn=-1, sellerIn="@Gokalp", imgIn='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg', key="" }*/) 
 {
     
     const chatContext = useContext(ChatContext);
@@ -207,9 +207,9 @@ function Chat({OtherId = '22222222'} /*{nameIn="Nameless", priceIn=-1, sellerIn=
                 </div>
     
     let pop = <div className={'bg-gray-blue z-10 absolute top-full left-[-15vw] border-ui-purple shadow-lg rounded-lg p-4'}>
-        <div className='flex flex-col justify-center items-center justify-between'>
+        <div className='flex flex-col items-center justify-between'>
             <strong className='text-ui-purple'> Please Rate User </strong>
-            <div className='flex flex-row justify-center items-center justify-between'>
+            <div className='flex flex-row items-center justify-between'>
                 {starIconsSpecial}
             </div>
             

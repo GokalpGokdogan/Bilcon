@@ -3,7 +3,9 @@ import ProductComponent from './productComponent';
 import Product from '../../Classes/Product'
 import { Link } from 'react-router-dom';
 import ProductList from './ProductList';
-import { searchAllItems, filterAllItems } from '../../utils/Requests';
+import {getAllItemsInFavoritesList } from '../../utils/Requests';
+
+
 
 
 
@@ -37,50 +39,28 @@ function setList(/*type,pageOffset*/){
     return list;
 }
 
+
+
 function ListHorizontal(title='Favorites') 
 {
-
-    const [lists, setLists] = useState([]);
-    const [isOpen, setIsOpen] = useState(false);    
-    const handleSearch = async () => {
-        let data = await filterAllItems( 0, 
-            "sale", 
-             0, 
-            5, 
-             6, 
-            10, 
-            2023, 
-            7, 
-            10, 
-            2023, 
-            "week", 
-            0, 
-            100, 
-            "month",
-            "book", 2, true, 1 , false
-           );
-        setLists(data);
-    }
-    const list = setList();
-    const [pageOffset, setPageOffset] = useState(0);
-    const maxOffset = lists.length/5 + (lists.length%5===0 ? 0 : 1);
-    const component = <div className='flex flex-row mx-auto justify-center items-center px-4 py-1 w-220'>
-                            <div className='grid grid-cols-5 gap-4'>
-                                {/* //{list} */}
-                                <ProductList products={lists} type={"Market"} />
-                            </div>
-                        </div> 
-    
-
     useEffect(() => {
-        handleSearch();
-
+        handleFavoritesSale();
     },[]);
 
+    const handleFavoritesSale = async () => {
+        let data = await getAllItemsInFavoritesList( 0, "sale");
+        console.log(data);
+        setFavorites(data);
+    }
 
-    
+    const [favorites, setFavorites] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);    
+    const list = setList();
+    const [pageOffset, setPageOffset] = useState(0);
+    const maxOffset = favorites.length/5 + (favorites.length%5===0 ? 0 : 1);
+    const component = <ProductList products={favorites} type={"Market"} />
 
-    
+
     return(
         <div>
 

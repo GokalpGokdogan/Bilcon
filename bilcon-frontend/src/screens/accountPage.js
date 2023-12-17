@@ -8,6 +8,7 @@ import { UploadOutlined } from '@ant-design/icons';
 
 function AccountPage() 
 {
+    
     const buttonClassAccount = "w-64 my-1.5 text-ui-purple bg-gray-blue hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
     
     const [isOpenSettings, setIsOpenSettings] = useState(false);
@@ -59,11 +60,9 @@ function AccountPage()
             <div className='flex flex-row'>
                 <div className='flex flex-col bg-white h-screen px-10'>
                     <p className='font-inter font-extrabold text-3xl text-ui-purple my-4'>Account</p>
+
                     
-                    {/* <Link type="submit" to="/home" className={buttonClassAccount}>Notifications</Link>
-                    {line}
-                    <Link type="submit" to="/home" className={buttonClassAccount}>Security</Link>
-                    {line} */}
+
                     <div>
 
                         <div className='w-64 my-1.5 text-black bg-gray-blue hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800' onClick={() => setIsOpenSettings(!isOpenSettings)}>
