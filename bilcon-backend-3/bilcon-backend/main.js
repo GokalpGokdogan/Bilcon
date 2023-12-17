@@ -621,7 +621,7 @@ Example JSON:
 }
 Possible item types: "sale", "rent", "lost", "found", "lesson", "course"
 */
-app.get("/getItemsOfPoster", async (req, res) => { // when a user clicks to another user's profile, the items posted by the user will appear-item type must be specified in the req
+app.post("/getItemsOfPoster", async (req, res) => { // when a user clicks to another user's profile, the items posted by the user will appear-item type must be specified in the req
     const user = req.session.foundUser;
     if(user && Object.keys(user).length > 0){
         let {nameOfPoster, itemType, numberOfItems, offset} = req.body;

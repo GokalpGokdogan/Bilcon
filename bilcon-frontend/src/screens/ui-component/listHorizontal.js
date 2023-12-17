@@ -12,44 +12,65 @@ import {getAllItemsInFavoritesList } from '../../utils/Requests';
 
     
 //gets product list and updates the feed
-function setList(/*type,pageOffset*/){
-    let list = [];
-    for (let i = 0; i < 5; i++) {
-        
-        let obj = new Product();
-        obj.productId=10+i*i*1.5
-        
-        
-        list.push(
-            <Link to='/detailsPage' className='bg-gray-blue rounded-md' key={obj.id}>
-                <div className='m-6'>
-                    <img            
-                    className="h-28 w-21 rounded-md "
-                        alt=''
-                        src={`${obj.img} `}
-                    />
-                    <div className='w-auto flex flex-col justify-center items-left mt-3 text-ellipsis' style={{fontSize:'12px'}}>
-                        <strong className='text-ui-purple'>{obj.name}</strong>
-                        <p>{(obj.seller).replace('@','')}</p>
-                    </div>
-                </div>
-            </Link>
-        );
-    }
-    return list;
-}
+function setList(listIn, pageOffset) {
+    let list = listIn || [];
+    let jsxList = []; // Create a new array to store the JSX elements
+    
+    for (let i = 0; i < 4; i++) {
+        let obj = list[i + pageOffset * 4];
 
+        if (obj) {
+            console.log(obj);
+
+            // Push the JSX element into jsxList instead of list
+            jsxList.push(
+                <Link to='/detailsPage' className='bg-gray-blue rounded-md m-3 w-[12vw] flex items-center justify-center text-ui-purple hover:bg-ig-blue hover:text-white' key={obj.id}>
+                    <div className='m-6'>
+                        <div className='h-[8vw] w-[8vw] flex items-center justify-center border-b border-gray-mid mb-2'>
+                        <img
+                            className="h-[8vw] w-[8vw] rounded-md self-center object-contain"
+                            alt='Market Item'
+                            src={`data:image/jpeg;base64,${obj.photo}`}
+                        />
+                    </div>
+                        <div className='w-auto flex flex-col justify-center items-left mt-3 text-ellipsis' style={{fontSize:'12px'}}>
+                            <strong>{obj.name}</strong>
+                            <p>{obj.posterName}</p>
+                        </div>
+                    </div>
+                </Link>
+            );
+        }
+    }
+    return jsxList; // Return jsxList instead of list
+}
 
 
 function ListHorizontal({title='Favorites', products}) 
 {
+    //console.log(products);
+    // const [data, setData] = useState([]);
 
-    const [favorites, setFavorites] = useState([]);
+    // const handleFavoritesSale = async () => {
+    //     let curr = await getAllItemsInFavoritesList(0, "sale");
+    //     console.log(curr);
+    //     if (curr) {
+    //         setData(curr);
+    //     }
+    // };
+
+    // useEffect(() => {
+    //     handleFavoritesSale();
+    // }, []); // <-- Dependency array should be inside the parentheses
+    
+    
+
+    //const [favorites, setFavorites] = useState([]);
     const [isOpen, setIsOpen] = useState(false);    
-    const list = setList();
     const [pageOffset, setPageOffset] = useState(0);
-    const maxOffset = products.length/5 + (products.length%5===0 ? 0 : 1);
-    const component = <ProductList products={products} type={"Market"} />
+    const list = setList(products, pageOffset);
+    const maxOffset = Math.floor(products.length / 4);;
+    const component = list //<ProductList products={products} type={"Market"} />
 
     return(
         <div>
@@ -64,16 +85,16 @@ function ListHorizontal({title='Favorites', products})
                         <button 
                             onClick={()=>{if(pageOffset > 0){ setPageOffset(pageOffset - 1);}}} 
                             disabled={pageOffset===0} 
-                            className={`flex flex-row justify-center items-center bg-gray-blue rounded-md px-4 py-1.5 text-ui-purple text-sm font-bold transition duration-200 ease-in-out ${
-                                pageOffset===0 ? 'text-gray-light bg-gray-light' : 'hover:bg-ui-purple hover:text-white'}`}
+                            className={`flex flex-row justify-center items-center bg-gray-blue rounded-md px-4 py-1.5 text-sm font-bold transition duration-200 ease-in-out ${
+                                pageOffset===0 ? 'text-gray-light bg-gray-light' : 'text-ui-purple hover:bg-ui-purple hover:text-white'}`}
                         >back</button>
                         {component}
                         <button 
                             onClick={()=>{if(pageOffset < maxOffset){ setPageOffset(pageOffset + 1);}}} 
-                            disabled={pageOffset===maxOffset} 
-                            className={`flex flex-row justify-center items-center bg-gray-blue rounded-md px-4 py-1.5 text-ui-purple text-sm font-bold transition duration-200 ease-in-out ${
-                                pageOffset===maxOffset ? 'text-gray-light bg-gray-light' : 'hover:bg-ui-purple hover:text-white'}`}
-                        >next</button>
+                            disabled={pageOffset >= maxOffset-1} 
+                            className={`flex flex-row justify-center items-center bg-gray-blue rounded-md px-4 py-1.5  text-sm font-bold transition duration-200 ease-in-out ${
+                                pageOffset >= maxOffset-1 ? 'text-gray-light bg-gray-light' : 'text-ui-purple hover:bg-ui-purple hover:text-white'}`}
+                        >next{pageOffset}{maxOffset}</button>
                     </div>
                 </div>
             )}

@@ -89,11 +89,11 @@ const DetailsPage = ({ match }) => {
     ));
       const line = <hr className='border-gray border-1 w-100 my-[1vw]'/>
       const user = <div className='flex flex-row items-center mb-[1vw]'>
-                      <img
+                      {/* <img
                           className="h-[32px] w-[32px] rounded-full my-auto mr-[1vw]"
                           alt=''
-                          src={`${product.img } `}
-                      />
+                          src={`data:image/jpeg;base64,${product} `}
+                      /> */}
                       <div className='mt-0 flex flex-row'>
                           <div className='mr-[1vw]'>
                             <strong className='text-[14px] mt-0'>{product.posterName}</strong>
