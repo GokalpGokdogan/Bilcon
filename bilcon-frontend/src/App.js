@@ -9,7 +9,7 @@ import Register from './screens/register';
 import ForgotPassword from './screens/forgotPassword'
 import VerificationPage from './screens/verificationPage'
 import AccountPage from './screens/accountPage'
-import DetailsPage from './screens/detailsPage'
+import DetailsPage from './screens/Details'
 import Market from './screens/top-menu/marketPage';
 import Rent from './screens/top-menu/rentPage';
 import LostFound from './screens/top-menu/lostFoundPage';
@@ -21,6 +21,8 @@ import LostandFoundItem from './screens/products/LostandFoundItem';
 import PrivateLessonItem from './screens/products/PrivateLessonItem';
 import { ChatContextProvider } from './context/ChatContext';
 import Chat from './screens/chat';
+import LostItems from './screens/top-menu/lostItemsPage';
+import FoundItems from './screens/top-menu/foundItemsPage';
 
 
 export default function App() {
@@ -29,8 +31,9 @@ export default function App() {
 
   return (
     <ChatContextProvider user={user}>
-    <div className="App">
+    <div className="bg-gray-light min-h-screen">
      <Routes>
+     <Route path="/itemType/:itemId" element={<DetailsPage />} />
         <Route path="" element={<Login/>} />
         <Route path="register" element={<Register/>} />
        {/* home inactive till decided */}
@@ -39,12 +42,14 @@ export default function App() {
         <Route path="forgotPassword" element={<ForgotPassword/>} />
         <Route path="verificationPage" element={<VerificationPage/>} />
         <Route path="accountPage" element={<AccountPage/>} />
-        <Route path='detailsPage' element={<DetailsPage/>}/>
+       {/* // <Route path='detailsPage' element={<DetailsPage/>}/> */}
         <Route path={`/${'Market'.toLowerCase()}`} element={<Market/>}/>
         <Route path={`/${'Renting'.toLowerCase()}`} element={<Rent/>}/>
-        <Route path={`/${'Lost & Found'.toLowerCase()}`} element={<LostFound/>}/>
-        <Route path={`/${'Private Lessons'.toLowerCase()}`} element={<PrivateLessons/>}/>
-        <Route path={`/${'Course Trading'.toLowerCase()}`} element={<CourseTrading/>}/>
+        <Route path={`/${'LostandFound'.toLowerCase()}`} element={<LostFound/>}/>
+        <Route path={`/${'lostitems'.toLowerCase()}`} element={<LostItems/>}/>
+        <Route path={`/${'founditems'.toLowerCase()}`} element={<FoundItems/>}/>
+        <Route path={`/${'PrivateLessons'.toLowerCase()}`} element={<PrivateLessons/>}/>
+        <Route path={`/${'CourseTrading'.toLowerCase()}`} element={<CourseTrading/>}/>
       </Routes> 
      {/*   <MarketItem/>
       <RentingItem/>

@@ -1,34 +1,55 @@
 import React, { useState, useEffect } from 'react';
 import ProductComponent from './productComponent';
 import Product from '../../Classes/Product'
-import { getItems } from '../../utils/Requests';
+import { getAllItems } from '../../utils/Requests';
 import ProductList from './ProductList';
-
-//gets product list and updates the feed
-function setList(prodType/*filter*/) {
-    let list = [];
-    for (let i = 0; i < 10; i++) {
-
-        let obj = new Product();
-        obj.productId = 10 + i * i * 1.5
-        obj.price = 10 + i * i * 1.5
-
-        list.push(
-            <ProductComponent key={obj.productId + i} productIn={obj} type={prodType} />
-        );
-    }
-    return list;
-}
+import BlogList from './BlogList';
+import CircularProgress from '@mui/material/CircularProgress';
+import PrivateLessonItem from '../products/PrivateLessonItem';
+import { searchAllItems, filterAllItems } from '../../utils/Requests';
 
 
 function Feed({ type = 'Market', filters, searchValue }) {
 
-    const [products, setProducts] = useState([]);
+     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await getItems(1, 0, 'sale'); // Adjust parameters as needed
+                setLoading(true); // Set loading to true before fetching data
+                let data = await filterAllItems( 0, 
+                "sale", 
+                 0, 
+                5, 
+                 6, 
+                10, 
+                2023, 
+                7, 
+                10, 
+                2023, 
+                "week", 
+                0, 
+                100, 
+                "month",
+                "book", 2, true, 1 , false
+               );
+                /* if (type === 'Market') {
+                    data = await getAllItems(0, 'sale', false);
+                } else if (type === 'Renting') {
+                    data = await getAllItems(0, 'rent', false);
+                } else if (type === 'PrivateLessons') {
+                    data = await getAllItems(0, 'lesson', false);
+                } else if (type === 'LostItems') {
+                    data = await getAllItems(0, 'lost', false);
+                } else if (type === 'FoundItems') {
+                    data = await getAllItems(0, 'found', false);
+                }  else if (type === 'CourseTrading') {
+                    data = await getAllItems(0, 'course', false);
+                }
+                else {
+                    // Handle other types if needed
+                } */
                 if (data) {
                     setProducts(data); // Assuming the data is an array of items
                     console.log(data);
@@ -36,22 +57,24 @@ function Feed({ type = 'Market', filters, searchValue }) {
             } catch (error) {
                 console.error('Error in fetching items:', error);
                 // Handle the error or set an appropriate state to indicate an error
+            } finally {
+                setLoading(false); // Set loading to false after fetching data (success or error)
             }
         };
 
         fetchData();
-    }, []);
+    }, [filters, searchValue, type]);
+ 
 
     /**filter = database; */
     // let products = setList(type/*filter*/);
-    const pages = ['Market', 'Renting', 'Lost & Found', 'Private Lessons', 'Course Trading'];
+/*    const pages = ['Market', 'Renting', 'Lost & Found', 'Private Lessons', 'Course Trading'];
 
     let component;
     //console.log(productIn)
-
+ 
     if (type.type === pages[0]) {
-        component =
-            <ProductList/>
+        <ProductList products={products} type="Market" />
     }
     else if (type.type === pages[1]) {
         component = <div className='flex flex-row mx-auto justify-center items-center py-10 w-220'>
@@ -83,18 +106,28 @@ function Feed({ type = 'Market', filters, searchValue }) {
         component = <div>
             <strong>Unknown Error</strong>
         </div>
-    }
-
-
-
-
-
+    } */
 
 
     return (
-
-            <ProductList/>
+        <div className='h-full bg-gray-light'>
+            {loading ? (
+                <div>
+                <CircularProgress color='primary' className='justify-center flex self-center h-3' />
+                </div>) 
+                : (
+                // Render the content once data has been loaded
+                type === 'Market' || type === 'Renting' || type === 'PrivateLessons' || type == 'CourseTrading' ? (
+                    <ProductList products={products} type={type} />
+                ) : type === 'LostItems' || type === 'FoundItems'?  (
+                    <BlogList products={products} type={type} />
+                ) : (
+                  <div></div>  
+                )
+            )}
+        </div>
     );
+      
 }
 
 export default Feed;

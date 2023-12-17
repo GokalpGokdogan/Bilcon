@@ -58,6 +58,13 @@ class CustomerController{
         return this.#customerId;
     }
 
+    set itemController(newItemController){
+        this.#itemController = newItemController;
+    }
+    get itemController(){
+        return this.#itemController;
+    }
+
     async createCustomerInDb(userId){
         let customer = new Customer(userId, [], [], [], [], []);
         const customerDb = customerDB;

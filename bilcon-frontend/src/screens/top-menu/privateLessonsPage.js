@@ -6,17 +6,17 @@ import Header from '../ui-component/header';
 function PrivateLessons() 
 {
     return(
-        <div className='bg-white h-screen'> 
-            <div className='fixed top-0 w-full bg-white pb-2'>
-                <Header type='Private Lessons'/>
-                <NavMenu currPage='Private Lessons' />
+        <div className='bg-gray-light flex flex-col gap-3 h-full'>
+            <div className='fixed top-0 w-full bg-white z-10'>
+                <Header type='PrivateLessons' />
+                <NavMenu currPage='PrivateLessons' />
             </div>
-            
-            <div className='mt-28'>
-                <Feed type='Private Lessons'/> 
+            <div className=' mt-28 flex justify-center h-full' >
+            <div className='w-full max-w-screen-lg h-full'>
+                    <Feed type='PrivateLessons' />
+                </div>
             </div>
-
-       </div>
+        </div>
     );
 }
 

@@ -4,21 +4,21 @@ import Feed from '../ui-component/feed';
 import Header from '../ui-component/header';
 
 
-function LostFound() 
+function FoundItems() 
 {
     return(
         <div className='bg-gray-light flex flex-col gap-3'>
         <div className='fixed top-0 w-full bg-white z-10'>
             <Header type='LostandFound' />
-            <NavMenu currPage='LostandFound' />
+            <NavMenu currPage='FoundItems' />
         </div>
         <div className=' mt-28 flex justify-center' >
         <div className='w-full max-w-screen-lg px-4'>
-                <Feed type='LostandFound' />
+                <Feed type='FoundItems' />
             </div>
         </div>
     </div>
     );
 }
 
-export default LostFound;
+export default FoundItems;
