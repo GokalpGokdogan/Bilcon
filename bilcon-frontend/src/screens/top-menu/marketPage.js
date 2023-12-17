@@ -2,7 +2,7 @@ import React from 'react';
 import NavMenu from '../ui-component/navMenu';
 import Feed from '../ui-component/feed';
 import Header from '../ui-component/header';
-import { Button, Tooltip, FloatButton } from 'antd';
+import { FloatButton } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 
