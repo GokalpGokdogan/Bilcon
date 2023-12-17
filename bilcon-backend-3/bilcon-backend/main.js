@@ -62,15 +62,16 @@ mongoose.connect(dbUrl, options)
         console.log(err);
     })
 
-
+// We are using cookies for session based authentication and maintenance of the session.
 app.use(cookieParser());
- 
+
+// Forming the session
 app.use(session({
     secret: "Lahmar",
     saveUninitialized: false,
     resave: false,
     cookie: {
-        maxAge: 3600000,
+        maxAge: 3600000,  //3600000 miliseconds , meaning 1 hour, is the maximum duration of the session
         secure: false,
         httpOnly: true
     }
@@ -95,7 +96,9 @@ app.post("/register", (req,res)=>{
     console.log(req.body.email);
     const studentIdOfUser = req.body.id;
     const passwordOfUser = req.body.password;
-    let userController = new UserController();   
+    //User informations for registration is received (name, email, studentId and password)
+    let userController = new UserController();
+    //registerUser method of UserController class is called with given informations (inputs)   
     userController.registerUser(nameOfUser, emailOfUser, studentIdOfUser, passwordOfUser);
     res.send("User registered, waiting for email confirm");
 })
@@ -107,10 +110,13 @@ The body of the request should be in json format for example:
 app.post("/login", async(req,res)=>{
     const studentIdOfUser = req.body.id;
     const passwordOfUser = req.body.password;
+    //User informations for logging in is received (studentId and password)
     let userController = new UserController();   
     let foundUser = await userController.loginUser(studentIdOfUser, passwordOfUser);
-    
+    //loginUser method of UserController class is called with given informations (inputs)
     //console.log(foundUser);
+
+    //If there is such a user with given credentials exist, new session is formed and saved.
     if (foundUser) {
         req.session.foundUser = {
             name: foundUser.name,
@@ -125,51 +131,54 @@ app.post("/login", async(req,res)=>{
         req.session.save();
         //console.log(req.session);        
         console.log("Login Successful");
+
+        //After creating and saving the session, user is redirected to the main (market) page. 
         res.status(200).json({ redirect: "http://localhost:3001/dashboard" });
     }
+    //If there is such a user, but is not activated with mail, user is asked to check their mail 
     else if (foundUser === false){
         console.log("User is not activated. Please check your mail");
     }
+    // If the user is given credentials doesn't exist:
     else {
         console.log("Invalid login credentials");
     }
     });
 
-
-/* 
-
-
-*/
-
+//This endpoint will be called when user clicks the link that is sent to his/her email.
 app.get('/verify/:token/:email', (req, res)=>{ 
     const token = req.params.token; 
     const email = req.params.email;     
-    
+    //Token and the email of the user is received from parameters from link
         
-        // Verifying the JWT token  
+    // Verifying the JWT token, whether it is expired or not 
     jwt.verify(token, 'ourSecretKey', function(err, decoded) { 
         if (err) {
             console.log(err); 
+            //If the link is expired or token is not valid.
             res.send("Email verification failed,possibly the link is invalid or expired").redirect("/register");
          
         } 
-        else { 
+        else {
+            //If token is valid, user is activated and his/her status is changed to active. 
             let userController = new UserController();               
             userController.activateUser(email);
+            //After, redirected to login page.
             res.redirect("login"); 
         } 
     }); 
     
 }); 
 
+//This endpoint will be called when user wants to go to his/her own account page.
 app.get("/accountPage", async (req,res)=>{
     const user = req.session.foundUser;
-    if (user && Object.keys(user).length > 0) {
-        // User is authenticated
+    if (user && Object.keys(user).length > 0) { //Checking whether session exists or not
+        // Session exists, user is authenticated
 
-        let userController = new UserController();   
-        let updatedUser = await userController.accessUserWithId(user.studentId);
-
+        let userController = new UserController(); 
+        //Most recent user information is received from database  
+        let updatedUser = await userController.accessUserWithId(user.studentId);        
         // Update the session information
         req.session.foundUser = {
             name: updatedUser.name,
@@ -183,6 +192,7 @@ app.get("/accountPage", async (req,res)=>{
         // Save the updated session
         req.session.save();
         const sentUser = req.session.foundUser;
+        //Sending the required user information such as name, mail, id, transactions, rating etc. is passed to frontend.
         res.send(sentUser);
 
     } else {
@@ -194,6 +204,7 @@ app.get("/accountPage", async (req,res)=>{
 app.get("/newPassword/:token", (req,res)=>{
     
 });
+//This endpoint will be called when user wants to change his/her password and successfully got verification mail.
 app.patch("/newPassword/:token", (req,res)=>{
     const user = req.session.foundUser;
     if (user && Object.keys(user).length > 0) {
