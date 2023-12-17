@@ -1245,3 +1245,16 @@ app.post("/getItemWithItemId", async (req, res) => {
         return res.redirect("/login");
     }
 })
+
+app.post("/getUserIdOfPosterId", async (req, res) => {
+    const user = req.session.foundUser;
+    if(user && Object.keys(user).length > 0){
+        let {posterId} = req.body;
+        let userController = new UserController();
+        let userId = await userController.getUserObjectIdByPosterId(posterId);
+        res.status(200).send(userId);
+    }
+    else{
+        return res.redirect("/login");
+    }
+})
