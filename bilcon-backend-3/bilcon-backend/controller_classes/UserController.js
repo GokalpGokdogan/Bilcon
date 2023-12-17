@@ -124,7 +124,12 @@ class UserController{
                         
         }
     }
-    
+    async getUserObjectIdByPosterId(posterId){
+        const userDb = UserDB;
+        let userId = await userDb.findOne({posterId: posterId});
+        userId = userId._id;
+        return userId;
+    }
     async getNameByUserId(userId){
         const userDb = UserDB;
         return userDb.findById(userId).then((res) => {
