@@ -623,7 +623,7 @@ Possible item types: "sale", "rent", "lost", "found", "lesson", "course"
 app.post("/getItemsOfPoster", async (req, res) => { // when a user clicks to another user's profile, the items posted by the user will appear-item type must be specified in the req
     const user = req.session.foundUser;
     if(user && Object.keys(user).length > 0){
-        let {nameOfPoster, itemType, numberOfItems, offset} = req.body;
+        let {itemType, numberOfItems, offset} = req.body;
         let userController = new UserController();
         
         //let posterIdOfPoster = await userController.getPosterIdByName(nameOfPoster);
@@ -1191,7 +1191,7 @@ Example JSON:
 app.post("/getAllItemsOfPoster", async (req, res) => { // when a user clicks to another user's profile, the items posted by the user will appear-item type must be specified in the req
     const user = req.session.foundUser;
     if(user && Object.keys(user).length > 0){
-        let {nameOfPoster, itemType, offset} = req.body;
+        let {itemType, offset} = req.body;
         let userController = new UserController();
         
         //let posterIdOfPoster = await userController.getPosterIdByName(nameOfPoster);
