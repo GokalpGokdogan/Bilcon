@@ -7,23 +7,12 @@ import Product from '../../Classes/Product'
 
 
 
-function Message({type = 'Self', text="Wow Gökalp Çok Yaqışıklı"} /*{nameIn="Nameless", priceIn=-1, sellerIn="@Gokalp", imgIn='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg', key="" }*/) 
+function Message({sender, text} )
 {
-    
-    /**filter = database; */
-    // let products = setList(/*filter*/);
-    // console.log(productIn.productIn)
 
-
-
-    // const pages = ['Market', 'Renting', 'Lost & Found', 'Private Lessons', 'Course Trading'];
-
-    
-    
-    
     let component;
     
-    if(type === 'Self'){
+    if(sender === "657c3d9453e88c291cb70aaf"){
         component = 
             <div className="flex justify-end mb-4">
                 <div className="bg-ig-purple rounded-lg p-2 text-white max-w-xl break-words">
@@ -31,7 +20,7 @@ function Message({type = 'Self', text="Wow Gökalp Çok Yaqışıklı"} /*{nameI
                 </div>
             </div>
     }
-    else if(type === 'Other'){
+    else {
         component = 
             <div className="flex justify-start mb-4">
                 <div className="bg-gray-light rounded-lg p-2 max-w-xl break-words">
@@ -39,36 +28,11 @@ function Message({type = 'Self', text="Wow Gökalp Çok Yaqışıklı"} /*{nameI
                 </div>
             </div>
     }
-    else {
+   /*  else {
         component = <div>
             <strong>Unknown Error</strong>
         </div>
-    }
-
-    //console.log(productIn)
-
-    
-    // if(type == pages[0]){
-    //     component=  
-    // }
-    // else if(type == pages[1]){
-    //     component=  
-    // }
-    // else if(type == pages[2]){
-    //     component=  
-    // }
-    // else if(type == pages[3]){
-    //     component=  
-    // }
-    // else if(type == pages[4]){
-    //     component=  
-    // }
-    // else {
-    //     component = <div>
-    //         <strong>Unknown Error</strong>
-    //     </div>
-    // }
-    
+    } */
     return(
         
         <div>

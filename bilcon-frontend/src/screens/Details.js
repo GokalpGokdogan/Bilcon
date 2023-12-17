@@ -4,7 +4,9 @@ import { Link, useParams } from 'react-router-dom';
 import Header from './ui-component/header';
 import NavMenu from './ui-component/navMenu';
 import Product from '../Classes/Product';
-import { getItemWithItemId } from '../utils/Requests';
+import { getItemWithItemId,createConversation } from '../utils/Requests';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+
 
 
 
@@ -19,6 +21,12 @@ const DetailsPage = ({ match }) => {
         if (curr) {
             setProduct(curr);
         }
+    };
+
+    const createChat = async () => {
+        let curr = await createConversation(["657cdc55ad49a566f0d00109", "657c3d9453e88c291cb70aaf"]);
+        console.log(curr);
+        //navigate to cartcurt
     };
     
     useEffect(() => {
@@ -89,11 +97,6 @@ const DetailsPage = ({ match }) => {
     ));
       const line = <hr className='border-gray border-1 w-100 my-[1vw]'/>
       const user = <div className='flex flex-row items-center mb-[1vw]'>
-                      <img
-                          className="h-[32px] w-[32px] rounded-full my-auto mr-[1vw]"
-                          alt=''
-                          src={`${product.img } `}
-                      />
                       <div className='mt-0 flex flex-row'>
                           <div className='mr-[1vw]'>
                             <strong className='text-[14px] mt-0'>{product.posterName}</strong>
@@ -107,18 +110,19 @@ const DetailsPage = ({ match }) => {
       let component;
       console.log(product)
       if (itemType == "sale") {
-          component = <div className='flex flex-col bg-white justify-center items-center'>
+          component = <div className='flex flex-col bg-gray-light justify-center items-center font-sans'>
 
                           <Header/>
                           <NavMenu currPage="Details Page"/>
                           <h1 className='font-inter font-extrabold text-3xl text-ui-purple my-2'>{product.name}</h1>
-                          <div className='flex flex-row bg-gray-light rounded-xl'>
+                          <div className='flex flex-row bg-white rounded-xl shadow-sm'>
                               <div>
                                   <img
                                       className="h-[32vw] w-[24vw] rounded-md m-[2vw] object-contain"
                                       alt=''
                                       src={`data:image/jpeg;base64,${product.photo} `}
                                   />
+                                  
                               </div>
                               <div className='block h-[20vw] w-[50vw]'>
                                   <div className='flex flex-col justify-center text-ellipsis m-6 items-left'>
@@ -146,12 +150,12 @@ const DetailsPage = ({ match }) => {
                           </div>
                       </div>  
       } else if (itemType == "rent") {
-          component = <div className='flex flex-col bg-white justify-center items-center'>
+          component = <div className='flex flex-col bg-gray-light justify-center items-center'>
 
                           <Header/>
                           <NavMenu currPage="Details Page"/>
                           <h1 className='font-inter font-extrabold text-3xl text-ui-purple my-2'>{product.name}</h1>
-                          <div className='flex flex-row bg-gray-light rounded-xl'>
+                          <div className='flex flex-row bg-white rounded-xl shadow-sm'>
                               <div>
                               <img
                                       className="h-[32vw] w-[24vw] rounded-md m-[2vw] object-contain"
@@ -163,7 +167,7 @@ const DetailsPage = ({ match }) => {
                                   <div className='flex flex-col justify-center text-ellipsis m-6 items-left'>
                                       {user}
                                       {line}
-                                      <div className='relative flex-col h-[20vw] w-[45vw] overflow-hidden text-ellipsis '>
+                                      <div className='relative flex-col h-36 w-[45vw] overflow-hidden text-ellipsis '>
                                           <p>
                                               {product.definition}
                                           </p>
@@ -185,25 +189,25 @@ const DetailsPage = ({ match }) => {
                           </div>
                       </div>  
       } else if (itemType == "lost") {
-          component = <div className='flex flex-col bg-white justify-center items-center'>
+          component = <div className='flex flex-col bg-gray-light justify-center items-center font-sans'>
 
                           <Header/>
                           <NavMenu currPage="Details Page"/>
                           <h1 className='font-inter font-extrabold text-3xl text-ui-purple my-2'>{product.name}</h1>
-                          <div className='flex flex-row bg-gray-light rounded-xl'>
+                          <div className='flex flex-row bg-white rounded-xl shadow-sm'>
                               <div className='block h-[20vw] w-[50vw]'>
                                   <div className='flex flex-col justify-center text-ellipsis m-6 items-left'>
                                       {user}
                                       <div className='flex flex-row text-ui-pruple items-stretch'>
                                           <div className='flex flex-row mr-auto'>
-                                              <img className='h-4 w-4 my-auto mr-[1vw]' alt='' src='https://png.pngtree.com/png-clipart/20191121/original/pngtree-vector-location-icon-png-image_5159127.jpg'/>
+                                          <LocationOnIcon className='text-xs text-gray -ml-1'/>
                                               <p className='text-gray'> {product.place} </p> 
                                           </div>
 
-                                          <p className='text-gray mr-4'>{product.day}/{product.month}/{product.year} </p>
+                                          <p className='text-gray mr-4'>{product.dayOfLose}/{product.monthOfLose}/{product.yearOfLose} </p>
                                       </div>
                                       {line}
-                                      <div className='relative flex-col h-[20vw] w-[45vw] overflow-hidden text-ellipsis '>
+                                      <div className='relative flex-col h-16 w-[45vw] overflow-hidden text-ellipsis '>
                                           <p>
                                               {product.definition}
                                           </p>
@@ -245,11 +249,11 @@ const DetailsPage = ({ match }) => {
                                       {user}
                                       <div className='flex flex-row text-ui-pruple items-stretch'>
                                           <div className='flex flex-row mr-auto'>
-                                              <img className='h-4 w-4 my-auto mr-[1vw]' alt='' src='https://png.pngtree.com/png-clipart/20191121/original/pngtree-vector-location-icon-png-image_5159127.jpg'/>
+                                          <LocationOnIcon className='text-xs text-gray -ml-1'/>
                                               <p className='text-gray'> {product.place} </p> 
                                           </div>
 
-                                          <p className='text-gray mr-4'>{product.day}/{product.month}/{product.year} </p>
+                                          <p className='text-gray mr-4'>{product.dayOfFind}/{product.monthOfFind}/{product.yearOfFind} </p>
                                       </div>
                                       {line}
                                       <div className='relative flex-col h-[16vw] w-[45vw] overflow-hidden text-ellipsis '>

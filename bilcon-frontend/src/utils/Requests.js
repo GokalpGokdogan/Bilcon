@@ -310,3 +310,157 @@ export const getItemWithItemId = async (itemId, itemType) => {
     throw error; // Rethrow the error to handle it in the component
   }
 };
+
+export const sendMessage = async (participants, text, sentFrom) => {
+  try {
+    const body = {"participants": participants, "text": text, "sentFrom": sentFrom};
+    const res = await axios({
+      method: 'post',
+      url: `http://${API_HOST}/sendMessage`,
+      headers: { 'Content-Type': 'application/json' },
+      data: body,
+      withCredentials: true
+  });
+
+    if (res.data && res.data.redirect) {
+      // Manually handle the redirect
+      window.location.href = res.data.redirect;
+    }
+    if (res.data) {
+      console.log(res.data);
+    }
+    return res.data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+
+export const createConversation = async (participants) => {
+  try {
+    const body = {"participants": participants};
+    const res = await axios({
+      method: 'post',
+      url: `http://${API_HOST}/createConversation`,
+      headers: { 'Content-Type': 'application/json' },
+      data: body,
+      withCredentials: true
+  });
+
+    if (res.data && res.data.redirect) {
+      // Manually handle the redirect
+      window.location.href = res.data.redirect;
+    }
+    if (res.data) {
+      console.log(res.data);
+    }
+    return res.data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+
+export const getConversation = async (participants) => {
+  try {
+    const body = {"participants": participants};
+    const res = await axios({
+      method: 'post',
+      url: `http://${API_HOST}/getConversation`,
+      headers: { 'Content-Type': 'application/json' },
+      data: body,
+      withCredentials: true
+  });
+
+    if (res.data && res.data.redirect) {
+      // Manually handle the redirect
+      window.location.href = res.data.redirect;
+    }
+    if (res.data) {
+      console.log(res.data);
+    }
+    return res.data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+export const getAllConversations = async (participant) => {
+  try {
+    const body = {"participant": participant};
+    const res = await axios({
+      method: 'post',
+      url: `http://${API_HOST}/getAllConversations`,
+      headers: { 'Content-Type': 'application/json' },
+      data: body,
+      withCredentials: true
+  });
+
+    if (res.data && res.data.redirect) {
+      // Manually handle the redirect
+      window.location.href = res.data.redirect;
+    }
+    if (res.data) {
+      console.log(res.data);
+    }
+    return res.data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+export const forgotPassword = async (studentIdOfUser) => {
+  try {
+    const body = {"id": studentIdOfUser};
+    const res = await axios({
+      method: 'post',
+      url: `http://${API_HOST}/forgotPassword`,
+      headers: { 'Content-Type': 'application/json' },
+      data: body,
+      withCredentials: true
+  });
+
+    if (res.data && res.data.redirect) {
+      // Manually handle the redirect
+      window.location.href = res.data.redirect;
+    }
+    if (res.data) {
+      console.log(res.data);
+    }
+    return res.data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+export const getItemsOfPoster = async (nameOfPoster, itemType, numberOfItems, offset) => {
+  try {
+    const body = { 'nameOfPoster':nameOfPoster, 'itemType':itemType, 'numberOfItems': numberOfItems, 'offset': offset };
+    const res = await axios({
+      method: 'post',
+      url: `http://${API_HOST}/getItemsOfPoster`,
+      headers: { 'Content-Type': 'application/json' },
+      data: body,
+      withCredentials: true
+    });
+
+    if (res.data && res.data.redirect) {
+      // Manually handle the redirect
+      window.location.href = res.data.redirect;
+    }
+    if (res.data) {
+      console.log(res.data);
+    }
+    return res.data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+

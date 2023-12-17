@@ -12,7 +12,7 @@ function AccountPage()
     const [data, setData] = useState([]);
 
     const handleFavoritesSale = async () => {
-        let curr = await getAllItemsInFavoritesList(0, "sale");
+        let curr = await getAllItemsInFavoritesList(0, "rent");
         console.log(curr);
         if (curr) {
             setData(curr);

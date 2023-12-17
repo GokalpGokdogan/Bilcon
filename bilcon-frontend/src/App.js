@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getItems } from './utils/Requests';
-
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Login from './screens/login';
 import Register from './screens/register';
 // import Home from './screens/home';
@@ -22,13 +23,13 @@ import { ChatContextProvider } from './context/ChatContext';
 import Chat from './screens/chat';
 import LostItems from './screens/top-menu/lostItemsPage';
 import FoundItems from './screens/top-menu/foundItemsPage';
+import ResetPassword from './screens/resetPassword';
 
 export default function App() {
 
   const user = {"_id" : "657c3d9453e88c291cb70aaf"};
 
   return (
-    <ChatContextProvider user={user}>
     <div className="bg-gray-light min-h-screen">
      <Routes>
      <Route path="/details/:itemType/:itemId" element={<DetailsPage />} />
@@ -40,7 +41,7 @@ export default function App() {
         <Route path="forgotPassword" element={<ForgotPassword/>} />
         <Route path="verificationPage" element={<VerificationPage/>} />
         <Route path="accountPage" element={<AccountPage/>} />
-       {/* // <Route path='detailsPage' element={<DetailsPage/>}/> */}
+        <Route path='resetPassword' element={<ResetPassword/>}/>
         <Route path={`/${'Market'.toLowerCase()}`} element={<Market/>}/>
         <Route path={`/${'Renting'.toLowerCase()}`} element={<Rent/>}/>
         <Route path={`/${'lostitems'.toLowerCase()}`} element={<LostItems/>}/>
@@ -51,6 +52,5 @@ export default function App() {
         <Route path={`/${'Add-Item'.toLowerCase()}`} element={<AddItem/>}/>
       </Routes>
     </div>
-  </ChatContextProvider>
   );
 }
