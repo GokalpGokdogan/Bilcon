@@ -34,7 +34,7 @@ import { ChatContext } from '../context/ChatContext';
     1) /sendMessage
     2) /createConversation
     3) /getConversation
-
+    4) /getAllConversations
 
     1) /SendMessage
         const {participants, text, sentFrom} = req.body;
@@ -52,11 +52,16 @@ import { ChatContext } from '../context/ChatContext';
         In that case, the function returns the existing conversation. So when the page changes to the chatBox page, you have the necessary conversation to display. 
         If the chat is newly created, then, it will return an empty conversation, which can be displayed as empty.
 
-    3) getConversation
+    3) /getConversation
         const {participants} = req.body;
     
         When user clicks on a chatBox, this function will be called. It returns the conversation from the db.
+    4) /getAllConversations
+        const {participant} = req.body;
+        For example: "0", is given as the body, then it returns all conversation that has the user "0" as a participant. Can be used when displaying the different chats a user has.
+    
 
+        
     Example Scenario:
 
     1) User looks at a post, and clicks on a designated button that creates a chat with the owner of the post. (The button must contain the id of the user for future use.)
