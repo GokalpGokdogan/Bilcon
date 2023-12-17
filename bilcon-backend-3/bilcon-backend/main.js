@@ -125,7 +125,7 @@ app.post("/login", async(req,res)=>{
         req.session.save();
         //console.log(req.session);        
         console.log("Login Successful");
-        res.status(200).json({ redirect: "http://localhost:3001/home" });
+        res.status(200).json({ redirect: "http://localhost:3001/dashboard" });
     }
     else if (foundUser === false){
         console.log("User is not activated. Please check your mail");
@@ -156,7 +156,7 @@ app.get('/verify/:token/:email', (req, res)=>{
         else { 
             let userController = new UserController();               
             userController.activateUser(email);
-            res.redirect("http://localhost:3001"); 
+            res.redirect("login"); 
         } 
     }); 
     
@@ -184,7 +184,7 @@ app.get("/accountPage", async (req,res)=>{
         req.session.save();
         const sentUser = req.session.foundUser;
         res.send(sentUser);
-        
+
     } else {
         // User is not authenticated
         //console.log("Unauthorized. Session foundUser:", req.session.foundUser);
@@ -315,6 +315,20 @@ app.post("/submitTransaction/:ratedUserStudentId/:itemName/:isBought", async(req
 });
 
 
+app.post("/requestContact/:requestedUserStudentId/:itemName", async(req,res)=>{
+    const user = req.session.foundUser;
+    if (user && Object.keys(user).length > 0) {
+        let userController = new UserController();
+        let requestedUser = await userController.accessUserWithId(req.params.requestedUserStudentId);   
+        userController.sendMailForRequest(requestedUser.email, requestedUser.name, user.mail, user.name, user.studentId, req.params.itemName);
+        
+    } else {
+        // User is not authenticated
+        res.status(401).redirect("/login");
+    }
+});
+
+
 app.get('/dashboard', (req, res) => {
     const user = req.session.foundUser;
     if (user && Object.keys(user).length > 0) {
@@ -329,7 +343,8 @@ app.get('/dashboard', (req, res) => {
     }
 });
 app.get("/login", (req,res)=>{
-    res.send("Hello, log in");
+    // res.send("Hello, log in");
+    res.json({ redirect: "http://localhost:3001" });
 })
 
 
@@ -598,7 +613,7 @@ app.get("/getItemsOfPoster", async (req, res) => { // when a user clicks to anot
         res.status(200).send(JSON.stringify(serializedArray));
     }
     else{
-        return res.redirect("/login");
+        return res.redirect("login");
     }
 })
 /* 

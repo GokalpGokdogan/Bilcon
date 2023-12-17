@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
-const LostandFoundItem = (product) => {
-    product = { "id": 1, "itemType": "lost","name": "CS book", "img": "https://image.cnnturk.com/i/cnnturk/75/740x416/639af44b70380e06b8eaa291.jpg", "seller": "@Onur", "price": "2TL", "location": "x hours", "date": "12.01.2023" };
-
-    const [day, month, year] = product.date.split('.');
+const FoundItem = ({product}) => {
 
     return (
         // <Link to='/detailsPage' className='bg-gray-light rounded-md' key={product.id}>
@@ -13,18 +10,20 @@ const LostandFoundItem = (product) => {
             <img
                 className="h-48 w-48 rounded-md object-contain mr-2"
                 alt='Lost Item'
-                src={`${product.img} `}
+                src={`data:image/jpeg;base64,${product.photo}`}
             />
             </div>
             <div className='flex flex-col m-6 w-60 text-sm font-sans'>
                 <p className='font-bold text-lg'>{product.name}</p>
-                <div className='flex flex-row items-center'>
+                <p>{product.posterName}</p>
+                <div className='flex flex-row items-center mt-2'>
                     <LocationOnIcon className='text-xs text-gray -ml-1'/>
-                    <p className='text-gray mr-5'>{product.location}</p>
-                    <p className='text-gray'>{`${day}/${month}/${year}`}</p>
+                    <p className='text-gray mr-5'>{product.place}</p>
+                    <p className='text-gray'>{`${product.dayOfFind}/${product.monthOfFind}/${product.yearOfFind}`}</p>
                 </div>
+                
                 <div className='flex flex-col mt-3 gap-2'>
-                    <p className='text-sm max-w-sm truncate'>Found at G building</p>
+                    <p className='text-sm max-w-sm truncate'>{product.definition}</p>
                     <a href='' className='text-sm text-blue font-semibold hover:text-blue-dark hover:underline'>View details</a>
                 </div>
             </div>
@@ -34,4 +33,4 @@ const LostandFoundItem = (product) => {
     );
 }
 
-export default LostandFoundItem;
+export default FoundItem;

@@ -10,9 +10,9 @@ import { PlusOutlined } from '@ant-design/icons';
 function Rent() 
 {
     return(
-        <div className='bg-white h-screen'>
-            <div className='fixed top-0 w-full bg-white pb-2'>
-                <Header type='Renting'/>
+        <div className='bg-gray-light flex flex-col gap-3 h-full'>
+            <div className='fixed top-0 w-full bg-white z-10'>
+                <Header type='Renting' />
                 <NavMenu currPage='Renting' />
             </div>
             <FloatButton
@@ -23,10 +23,13 @@ function Rent()
                 icon={<PlusOutlined />}
                 onClick={() => {window.location.href = '/add-item'}}
             />
-            <div className='mt-28'>
-                <Feed type='Renting'/>
+            <div className=' mt-28 flex justify-center h-full' >
+            <div className='w-full max-w-screen-lg h-full'>
+                    <Feed type='Renting' />
+                </div>
+         
             </div>
-       </div>
+        </div>
     );
 }
 

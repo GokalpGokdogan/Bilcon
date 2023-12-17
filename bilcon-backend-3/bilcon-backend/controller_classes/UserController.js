@@ -294,5 +294,26 @@ class UserController{
         });
         console.log(`Email sent to ${userEmail} (password change request)`);
     }
+
+
+    async sendMailForRequest(requestedUserEmail, requestedUserName, userEmail, userName, userId, itemName){
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'bilconwebapp@gmail.com',
+                pass: 'vnjt ydrm hqkn fpth'
+            }
+          });
+
+        await transporter.sendMail({
+            from: 'bilconwebapp@gmail.com',
+            to: requestedUserEmail,
+            subject: "Contact Request",
+            html: `Hi ${requestedUserName} 👋, <br>Bilcon Web App user ${userName} with id ${userId} wants to contact you about ${itemName}.
+            <br>You can contact ${userName} by ${userEmail},
+            <br>Bilcon Web App Team` 
+        });
+        console.log(`Email sent to ${requestedUserEmail} (contact request)`);
+    }
 }
 module.exports = UserController;
