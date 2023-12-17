@@ -8,7 +8,7 @@ import { postItem } from '../utils/Requests';
 
     function AddItem() 
     {
-        const pages = ['Market', 'Renting', 'LostItems', 'FoundItems','PrivateLessons', 'CourseTrading'];
+        const pages = ['Market', 'Renting', 'Lost Items', 'Found Items','Private Lessons', 'Course Trading'];
         const [type, setType] = useState('Market');
         const [imageUrl, setImageUrl] = useState(null);
         const [file, setFile] = useState(null);
@@ -20,7 +20,7 @@ import { postItem } from '../utils/Requests';
         const [description, setDescription] = useState('');
         const [price, setPrice] = useState(0);
         const [availabilityScalar, setAvailabilityScalar] = useState(0);
-        const [availabilityDuration, setAvailabilityDuration] = useState('hour');
+        const [availabilityDuration, setAvailabilityDuration] = useState('day');
         const [place, setPlace] = useState('');
         const [day, setDay] = useState(1);
         const [month, setMonth] = useState(1);
@@ -94,7 +94,7 @@ import { postItem } from '../utils/Requests';
 
         const typeSelect =  <div>                                    
                                 <p className='text-gray font-bold'>Type</p>
-                                <Select defaultValue={type} style={{ width: 180 }} onChange={(value) => { if(value !== 'Lost & Found'){setItemType(value)}; setType(pages[pageValues.indexOf(value)]);/*handleChange(); /*setType(selectedType)*/}}>
+                                <Select defaultValue={type} style={{ width: 180 }} onChange={(value) => { setType(pages[pageValues.indexOf(value)]); setItemType(value)/*handleChange(); /*setType(selectedType)*/}}>
                                     {pages.map((page,index) => <Option key={page} value={pageValues[index]} >{page}</Option>)}
                                 </Select>
                             </div>
@@ -108,7 +108,7 @@ import { postItem } from '../utils/Requests';
 
         useEffect(() => {
             // This effect will run every time the 'item' state is updated
-            console.log(item, type, itemType);
+            console.log(item, type, itemType, availabilityDuration);
             
         }, [item]);
 
@@ -143,7 +143,7 @@ import { postItem } from '../utils/Requests';
               formData.append('price', price);
               formData.append('availabilityScalar', availabilityScalar);
               formData.append('availabilityDuration', availabilityDuration);
-              formData.append('durationOfPrice', "month");
+              formData.append('durationOfPrice', availabilityDuration);
               formData.append('place', place);
               formData.append('day', day);
               formData.append('month', month);
@@ -281,12 +281,12 @@ import { postItem } from '../utils/Requests';
                                 {/* Type Select */}
                                 <div className='flex flex-row text-ellipsis m-3 w-[40vw]'>
                                     {typeSelect}
-                                    <div className='ml-auto'>                                    
+                                    {/* <div className='ml-auto'>                                    
                                         <p className='text-gray font-bold'>Lost or Found</p>
                                         <Select defaultValue={'lost'} style={{ width: 120 }} onChange={(value) => {console.log(value);setItemType(value)}}>
                                             {['lost','found'].map(page => <Option key={page} value={page} >{page}</Option>)}
                                         </Select>
-                                    </div>
+                                    </div> */}
                                 </div>
                                 {/* Name */}
                                 <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
@@ -328,8 +328,63 @@ import { postItem } from '../utils/Requests';
                                 {submit}
                             </div>
                         </div>
-                    
         } else if (type === pages[3]) {
+            component = <div className='flex flex-row '>
+
+                            
+                            <div className='h-[32vw] w-[24vw] flex justify-center items-center'>
+                                <div>
+                                <Upload uploadedFile={uploadedFile} setUploadedFile={setUploadedFile}></Upload>
+                                </div>
+                                
+                            </div>
+                            <div className='block h-[20vw] w-[50vw]'>
+                                
+                                {/* Type Select */}
+                                <div className='flex flex-row text-ellipsis m-3 w-[40vw]'>
+                                    {typeSelect}
+                                </div>
+                                {/* Name */}
+                                <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
+                                    <p className='text-gray font-bold'>Name</p>
+                                    <input className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/2" required={true} type='text' placeholder='Name' onChange={(e)=>{setName(e.target.value)}}/>
+                                </div>
+                                {/* Description */}
+                                <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
+                                    <p className='text-gray font-bold'>Description</p>
+                                    <textarea className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-full" required={false} type='text' placeholder='Description' onChange={(e)=>{setDescription(e.target.value)}}/>
+                                </div>
+                                {/* Info */}
+                                <p className='text-gray font-bold'>Info</p>
+                                {line}
+                                <div className='flex flex-row'>
+                                    {/* Loction */}
+                                    <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
+                                        <p className='text-gray font-bold'>Location</p>
+                                        <div className='flex flex-row'>
+                                            <input min={0} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-2/5" required={true} type='Text' placeholder='Location' onChange={(e)=>{setPlace(e.target.value)}}/>
+                                             
+                                        </div>            
+                                    </div>
+                                    {/* Date */}
+                                    <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
+                                        <p className='text-gray font-bold'>Date</p>
+                                        <div className='flex flex-row'>
+                                            <input min={0} max={31} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/5" required={true} type='Text' placeholder='DD' onChange={(e)=>{setDay(e.target.value)}}/>
+                                            <p className='text-gray my-auto mx-2'>/</p>
+                                            <input min={0} max={12} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/5" required={true} type='Text' placeholder='MM' onChange={(e)=>{setMonth(e.target.value)}}/>
+                                            <p className='text-gray my-auto mx-2'>/</p>
+                                            <input min={2000    } className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/5" required={true} type='Text' placeholder='YYYY' onChange={(e)=>{setYear(e.target.value)}}/>
+                                            
+                                        </div>            
+                                    </div>
+                                    
+
+                                </div>
+                                {submit}
+                            </div>
+                        </div>
+        } else if (type === pages[4]) {
             component = <div className='flex flex-row '>
 
                             
@@ -380,7 +435,7 @@ import { postItem } from '../utils/Requests';
                                 {submit}
                             </div>
                         </div>
-           } else if (type === pages[4]) {
+           } else if (type === pages[5]) {
             component = <div className='flex flex-row '>
 
                             
