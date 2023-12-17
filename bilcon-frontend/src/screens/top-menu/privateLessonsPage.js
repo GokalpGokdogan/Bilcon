@@ -20,7 +20,8 @@ function PrivateLessons()
                 style={{ right: 94 }}
                 icon={<PlusOutlined />}
                 onClick={() => {window.location.href = '/add-item'}}
-            /><div className=' mt-28 flex justify-center h-full' >
+            />
+            <div className=' mt-28 flex justify-center h-full' >
             <div className='w-full max-w-screen-lg h-full'>
                     <Feed type='PrivateLessons' />
                 </div>

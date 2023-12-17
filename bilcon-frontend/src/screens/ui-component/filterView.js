@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 
 
-function FilterView({type = 'Course Trading', setIsOpen} /*{nameIn="Nameless", priceIn=-1, sellerIn="@Gokalp", imgIn='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg', key="" }*/) 
+function FilterView({type = 'Course Trading', setIsOpen, setFilterValue, filterValue } ) 
 {
     
     /**filter = database; */
@@ -84,6 +84,10 @@ function FilterView({type = 'Course Trading', setIsOpen} /*{nameIn="Nameless", p
             ...filters,
             [event.target.name]: event.target.value
         });
+        setFilterValue({
+            ...filters,
+            [event.target.name]: event.target.value
+        });
     };
     
     function buttonComponent(key){
@@ -91,10 +95,17 @@ function FilterView({type = 'Course Trading', setIsOpen} /*{nameIn="Nameless", p
                     <label className="block text-sm font-medium">{filterNames[key]}</label>
                     {key === 'wantToGive' ? (
                         <button
-                            onClick={() => setFilters({
-                                ...filters,
-                                [key]: !filters[key]
-                            })}
+                        onClick={() => {
+                            const updatedFilters = {
+                              ...filters,
+                              [key]: !filters[key]
+                            };
+                          
+                            setFilters(updatedFilters);
+                            setFilterValue(updatedFilters);
+                            console.log(filterValue);
+                    
+                          }}
                             className="mt-0.5 p-1 block w-full border rounded-md text-white bg-ui-purple rounded hover:bg-purple-700 transition duration-200 ease-in-out"
                         >
                             {filters[key] ? 'Yes' : 'No'}
