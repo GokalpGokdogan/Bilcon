@@ -4,16 +4,15 @@ import MenuItem from '@mui/material/MenuItem';
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 const items = [
-    {
-      label: <a className="font-sans" href="http://localhost:3001/lostItems">Lost Items</a>,
-      key: '0',
-    },
-    {
-      label: <a className="font-sans" href="http://localhost:3001/foundItems">Found Items</a>,
-      key: '1',
-    },
-  ];
-
+  {
+    label: <Link to="/lostItems" className="font-sans">Lost Items</Link>,
+    key: '0',
+  },
+  {
+    label: <Link to="/foundItems" className="font-sans">Found Items</Link>,
+    key: '1',
+  },
+];
 function NavMenu({currPage}) 
 {     
     const pages = ['Market', 'Renting', 'LostandFound', 'PrivateLessons', 'CourseTrading'];

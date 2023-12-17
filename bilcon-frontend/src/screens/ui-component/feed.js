@@ -9,47 +9,78 @@ import PrivateLessonItem from '../products/PrivateLessonItem';
 import { searchAllItems, filterAllItems } from '../../utils/Requests';
 
 
-function Feed({ type = 'Market', filters, searchValue }) {
+function Feed({ type = 'Market', searchValue, filterValue }) {
 
-     const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setLoading(true); // Set loading to true before fetching data
-                let data = await filterAllItems( 0, 
-                "sale", 
-                 0, 
-                5, 
-                 6, 
-                10, 
-                2023, 
-                7, 
-                10, 
-                2023, 
-                "week", 
-                0, 
-                100, 
-                "month",
-                "book", 2, true, 1 , false
-               );
-                /* if (type === 'Market') {
-                    data = await getAllItems(0, 'sale', false);
-                } else if (type === 'Renting') {
-                    data = await getAllItems(0, 'rent', false);
+                let data;
+                if (type === 'Market') {
+                    if(searchValue)
+                    {
+                        data = await searchAllItems(0, 'sale', 0, 10000000, 0, 0, 0, 1000000, 1000000, 1000000, 
+                        "", 0, 0, "", searchValue, false);
+                    }
+                    else
+                    {
+                        data = await getAllItems(0, 'sale', false);
+                    }
+                } 
+                else if (type === 'Renting') {
+                    console.log(searchValue);
+                    if(searchValue)
+                    {
+                        data = await searchAllItems(0, 'rent', 0, 10000000, 0, 0, 0, 1000000, 1000000, 1000000, 
+                        "week", 0, 100000, "week", searchValue, false);
+                    }
+                    else
+                    {
+                        data = await getAllItems(0, 'rent', false);
+                    }
                 } else if (type === 'PrivateLessons') {
-                    data = await getAllItems(0, 'lesson', false);
+                    if(searchValue)
+                    {
+                        data = await searchAllItems(0, 'lesson', 0, 10000000, 0, 0, 0, 1000000, 1000000, 1000000, 
+                        "", 0, 0, "", searchValue, false);
+                    }
+                    else
+                    {
+                        data = await getAllItems(0, 'lesson', false);
+                    }
                 } else if (type === 'LostItems') {
-                    data = await getAllItems(0, 'lost', false);
+                    if(searchValue)
+                    {
+                        data = await searchAllItems(0, 'lost', 0, 10000000, 0, 0, 0, 1000000, 1000000, 1000000, 
+                        "", 0, 0, "", searchValue, false);
+                    }
+                    else
+                    {
+                        data = await getAllItems(0, 'lost', false);
+                    }
                 } else if (type === 'FoundItems') {
-                    data = await getAllItems(0, 'found', false);
+                    if(searchValue)
+                    {
+                        data = await searchAllItems(0, 'found', 0, 10000000, 0, 0, 0, 1000000, 1000000, 1000000, 
+                        "", 0, 0, "", searchValue, false);
+                    }
+                    else
+                    {
+                        data = await getAllItems(0, 'found', false);
+                    }
                 }  else if (type === 'CourseTrading') {
-                    data = await getAllItems(0, 'course', false);
+
+                    
+                    {
+                        data = await getAllItems(0, 'course', false);
+                    }
                 }
                 else {
                     // Handle other types if needed
-                } */
+                }
                 if (data) {
                     setProducts(data); // Assuming the data is an array of items
                     console.log(data);
@@ -63,7 +94,7 @@ function Feed({ type = 'Market', filters, searchValue }) {
         };
 
         fetchData();
-    }, [filters, searchValue, type]);
+    }, [filterValue, searchValue, type]);
  
 
     /**filter = database; */

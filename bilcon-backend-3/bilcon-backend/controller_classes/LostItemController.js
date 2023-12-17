@@ -265,5 +265,15 @@ class LostItemController extends ItemController{
             });
             return itemCount;
     }
+    async getItemWithItemId(itemId){
+        const lostItemDb = LostItemDB;
+        let item = await lostItemDb.findOne({itemId: itemId});
+        if(item == null || item == undefined){
+            return null;
+        }
+        else{
+            return new LostItem(item.name, item.definition, item.itemId, item.place, item.date.getDate(), item.date.getMonth(), item.date.getFullYear(), item.posterId, item.posterName);
+        }
+    }
 }
 module.exports = LostItemController;

@@ -229,7 +229,16 @@ class SaleItemController extends ItemController{
         return itemCount;
     }
 
-
+    async getItemWithItemId(itemId){
+        const saleItemDb = SaleItemDB;
+        let item = await saleItemDb.findOne({itemId: itemId});
+        if(item == null || item == undefined){
+            return null;
+        }
+        else{
+            return new SaleItem(item.name, item.definition, item.itemId, item.price, item.posterId, item.photo, item.arrayOfFavoritesList, item.posterName);
+        }
+    }
     
 
 }
