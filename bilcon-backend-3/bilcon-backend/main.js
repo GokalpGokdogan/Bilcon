@@ -184,7 +184,7 @@ app.get("/accountPage", async (req,res)=>{
         req.session.save();
         const sentUser = req.session.foundUser;
         res.send(sentUser);
-        
+
     } else {
         // User is not authenticated
         //console.log("Unauthorized. Session foundUser:", req.session.foundUser);
@@ -308,6 +308,20 @@ app.post("/submitTransaction/:ratedUserStudentId/:itemName/:isBought", async(req
         transactionController.addTransactionToUser(user.studentId, req.params.ratedUserStudentId, req.params.itemName, req.params.isBought);
         await transactionController.updateRating(req.params.ratedUserStudentId, req.body.newRating);
 
+    } else {
+        // User is not authenticated
+        res.status(401).redirect("/login");
+    }
+});
+
+
+app.post("/requestContact/:requestedUserStudentId/:itemName", async(req,res)=>{
+    const user = req.session.foundUser;
+    if (user && Object.keys(user).length > 0) {
+        let userController = new UserController();
+        let requestedUser = await userController.accessUserWithId(req.params.requestedUserStudentId);   
+        userController.sendMailForRequest(requestedUser.email, requestedUser.name, user.mail, user.name, user.studentId, req.params.itemName);
+        
     } else {
         // User is not authenticated
         res.status(401).redirect("/login");
