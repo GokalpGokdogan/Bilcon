@@ -94,7 +94,7 @@ import { ChatContext } from '../context/ChatContext';
                     Adamın 5 tane chati var diyelim. Kendi idsi 0, diğerleri 1,2,3,4,5  olsun. Yani 5 chatin participants kısmı şöyle: [["0", "1"], ... , ["0","5"]]
                     /getAllConversations deyince dönen arrayin içinde farklı conversation objeleri var. Bunları DM sayfasında display ediyoruz for loopla falan.
                     Adamın bu DM sayfasını açtığını anlayıp, 50ms de bir, getAllConversations çağırmamız lazım.
-                    Burada, request body'e current userın id sini, yani 0'ı vermeniz lazım. request.body = {participant : 0}
+                    Burada, request body'e current userın id sini, yani 0'ı vermeniz lazım. request.body = {participant : "0"}
                     Böylece, db den sürekli conversationların son halini çekebiliriz.
 
                     Eğer adam spesifik bir chate tıklarsa, aynı mantığın devam etmesi lazım. Bu sefer daha hızlı olması için, sadece bu chati istiyebilirsiniz backendden, / getConversation diyerek.
