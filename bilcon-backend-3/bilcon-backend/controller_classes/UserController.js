@@ -51,10 +51,16 @@ class UserController{
     }
 
     async registerUser(nameOfUser, emailOfUser, studentIdOfUser, passwordOfUser){
-        bcrypt.hash(passwordOfUser, saltRounds, async  (err, hash)=> {
-            let user = new User(nameOfUser, emailOfUser, studentIdOfUser, passwordOfUser, false);
-            await this.saveUserToDB(user, hash);
-        })
+        if(!await this.userExistsID(studentIdOfUser)){
+            bcrypt.hash(passwordOfUser, saltRounds, async  (err, hash)=> {
+                let user = new User(nameOfUser, emailOfUser, studentIdOfUser, passwordOfUser, false);
+                await this.saveUserToDB(user, hash);
+            })
+        }
+        else{
+            console.log("User already exists.");
+        }
+
 
     }
     //This is method for sending registration confirmation mail
