@@ -1,0 +1,1 @@
+From the pushes that Hakan and Onur has done, we studied registration and login functionalities. Fundamentals of these functionalities has added. Hashing and salting of users data is done. 

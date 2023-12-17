@@ -1,16 +1,97 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import FilterView from './filterView';
+import FavPop from './favPop';
+import ChatsPop from './chatsPop';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import SearchIcon from '@mui/icons-material/Search';
+import SendIcon from '@mui/icons-material/Send';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ChatIcon from '@mui/icons-material/Chat';
 
+function Header({type = 'Market', setSearchValue, searchValue, filterValue, setFilterValue}) {
+    const [isOpenFilter, setIsOpenFilter] = useState(false);
+    const [isOpenFav, setIsOpenFav] = useState(false);
+    const [isOpenChats, setIsOpenChats] = useState(false);
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            setSearchValue(searchValue);
+            console.log(searchValue);
+        }
+    };
 
-function Header() 
-{
-    return(
-    <div className='flex flex-row p-4 w-full'>
-        <Link to="/market" className='font-inter font-extrabold text-3xl text-blue-dark'>BILCON</Link>
-        <input type="text" className="mx-auto border border-gray bg-gray-light text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-2.5 w-80 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Search for second-hand items, books and more!" required=""></input>
-        <Link type="submit" to="/accountPage" className="w-32 my-auto text-white bg-ui-purple hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Account</Link>
-    </div>);
+    return (
+        <div className='flex flex-row p-2 px-4 w-full justify-between bg-white'>
+            <div className='w-[10vw]'>
+                <Link to="/market" onMouseOver={(e) => {
+                    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    let repetitons = 0;
+                    const interval = setInterval(
+                        () => {
+                            e.target.innerText = e.target.innerText.split('').map((letter, index) => {
+                                if (index < repetitons) {
+                                    return e.target.dataset.value[index]
+                                }
+                                return letters[Math.floor(Math.random() * letters.length)]
+
+                            }).join('')
+                            if (repetitons >= e.target.dataset.value.length) {
+                                clearInterval(interval)
+
+                            }
+                            repetitons += 3 / 4;
+                        }, 30)
+                }} data-value="BILCON" className='font-inter font-extrabold text-3xl text-blue-dark'>BILCON</Link>
+            </div>
+            <div className='flex flex-row justify-center'>
+                <div className='relative flex items-center'>
+                    <input
+                        onKeyDown={handleKeyDown}
+                        type="text"
+                        className="mx-1 bg-gray-light text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-lg p-2.5 w-96 pl-10 pr-10" // Add pl-10 and pr-10 for left and right padding
+                        placeholder="Search for second-hand items, books and more!"
+                        value={searchValue}
+                        onChange={setSearchValue ? (e) => setSearchValue(e.target.value) : undefined}
+                    />
+                    <div className='absolute left-3 top-1/2 transform -translate-y-1/2'>
+                        <FilterListIcon onClick={() => setIsOpenFilter(!isOpenFilter)} className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100" />
+                    </div>
+                    {isOpenFilter && (
+                        <FilterView type={type} isOpen={isOpenFilter} setIsOpen={setIsOpenFilter} filterValue={filterValue} setFilterValue={setFilterValue}/>
+                    )}
+                    <div className='absolute right-3 top-1/2 transform -translate-y-1/2'>
+                        <SearchIcon onClick={setSearchValue ? (e) => setSearchValue(e.target.value) : undefined} className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100" />
+                    </div>
+                </div>
+            </div>
+
+            <div className='flex flex-row items-center'>
+                <div className='flex relative'>
+                    {/* <button onClick={() => setIsOpenChats(!isOpenChats)} className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Chats</button> */}
+                    <ChatIcon onClick={() => setIsOpenChats(!isOpenChats)} className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100 mr-2 mt-1" />
+                    {isOpenChats && (
+                        <div className="absolute right-0 top-full">
+                            <ChatsPop type={type.type} />
+                        </div>
+                    )}
+                </div>
+                <div className='relative'>
+                    {/* <button onClick={() => setIsOpenFav(!isOpenFav)} className="bg-ui-purple text-white py-2 px-4 font-bold rounded transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100">Fav.</button> */}
+                    <FavoriteBorderIcon onClick={() => setIsOpenFav(!isOpenFav)}  className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100 mr-2" />
+                    {isOpenFav && (
+                        <div className="absolute right-0 top-full">
+                            <FavPop type={type.type} />
+                        </div>
+                    )}
+                </div>
+                <div>
+                    <Link type="submit" to="/accountPage"><AccountCircleIcon className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100" /></Link>
+                </div>
+
+            </div>
+        </div>);
 }
 
 export default Header;

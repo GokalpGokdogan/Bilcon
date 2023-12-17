@@ -1,13 +1,60 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
 import NavMenu from './ui-component/navMenu';
 import Header from './ui-component/header';
+import ListHorizontal from './ui-component/listHorizontal';
+import { Upload, Button, message } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import { getAllItemsInFavoritesList, getItemsOfPoster  } from '../utils/Requests';
 
 
 function AccountPage() 
 {
-    const buttonClassAccount = "w-64 my-1.5 text-black bg-gray-blue hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+    const [dataFav, setDataFav] = useState([]);
+    const [ dataOfPoster, setDataOfPoster] = useState([]);
+    // const [allItemsOfPoster, setAllItemsOfPoster] = useState([]);
+
+
+
+
+    const handleFavoritesSale = async () => {
+        let curr = await getAllItemsInFavoritesList(0, "rent");
+        console.log(curr);
+        if (curr) {
+            setDataFav(curr);
+        }
+    };
+
+    const handleDataOfPoster = async () => {
+        let curr = await getItemsOfPoster("sale", 4, 0);
+        console.log(curr);
+        if (curr) {
+            setDataOfPoster(curr);
+        }
+    };
+
+    // const handleAllDataOfPoster = async () => {
+    //     let curr = await getAllItemsOfPoster("sale", 4, 0);
+    //     console.log(curr);
+    //     if (curr) {
+    //         setAllItemsOfPoster(curr);
+    //     }
+    // };
     
+    useEffect(() => {
+        handleFavoritesSale();
+        handleDataOfPoster();
+        // handleAllDataOfPoster();
+    }, []); // <-- Dependency array should be inside the parentheses
+    
+    
+
+    const buttonClassAccount = "w-64 my-1.5 text-ui-purple bg-gray-blue hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+    
+    const [isOpenSettings, setIsOpenSettings] = useState(false);
+    const [newPassword, setNewPassword] = useState('');
+    const [newProfilePicture, setNewProfilePicture] = useState('');
+    const [newName, setNewName] = useState('');
+
     const starIcons = Array.from({ length: 5 }, (_, i) => (
         <svg key={i} className='my-auto' width="36px" height="35px" viewBox="0 0 36 35" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <title>Star</title>
@@ -23,6 +70,26 @@ function AccountPage()
         </svg>
     ));
 
+    const line = <hr className='border-white border-1 w-100 my-[0.5vw]'/>
+
+    const uploadProps = {
+        name: 'file',
+        action: 'http://localhost:3001/',/// I have no idea what to put here
+        headers: {
+            authorization: 'authorization-text',
+        },
+        onChange(info) {
+            if (info.file.status !== 'uploading') {
+                console.log(info.file, info.fileList);
+            }
+            if (info.file.status === 'done') {
+                message.success(`${info.file.name} file uploaded successfully`);
+                setNewProfilePicture(info.file.response);
+            } else if (info.file.status === 'error') {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+    };
     
     
     return(
@@ -30,27 +97,67 @@ function AccountPage()
             <Header/>
             <NavMenu currPage="Account"/>
             <div className='flex flex-row'>
-        <div className='flex flex-col bg-white h-screen px-10'>
-            <p className='font-inter font-extrabold text-3xl text-ui-purple my-4'>Account</p>
-            <Link type="submit" to="/home" className={buttonClassAccount}>Favorites</Link>
-            <Link type="submit" to="/home" className={buttonClassAccount}>Purchases</Link>
-            <Link type="submit" to="/home" className={buttonClassAccount}>Notifications</Link>
-            
-            
-            <Link type="submit" to="/home" className={buttonClassAccount}>Security</Link>
-            <Link type="submit" to="/home" className={buttonClassAccount}>Sold Items</Link>
-            <Link type="submit" to="/home" className={buttonClassAccount}>Ratings</Link>
-            <div className='flex flex-row justify-center'>
-                
-                {starIcons}
-            </div>
+                <div className='flex flex-col bg-white h-screen px-10'>
+                    <p className='font-inter font-extrabold text-3xl text-ui-purple my-4'>Account</p>
 
-            <div className='flex flex-col w-64 mt-3'>
+                    
+
+                    <div>
+
+                        <div className='w-64 my-1.5 text-black bg-gray-blue hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800' onClick={() => setIsOpenSettings(!isOpenSettings)}>
+                        <strong className='text-ui-purple'>Settings</strong>
+
+                        </div>
+                        {isOpenSettings && (
+                            <div className='bg-gray-light p-5 rounded-lg'>
+                                <div className='flex flex-col justify-center text-ellipsis m-3 items-left'>
+                                    <p className='text-gray font-bold'>Set New Name</p>
+                                        <div className='flex flex-row justify-start items-center'>
+                                            <input className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/2" required={false} type='text' placeholder='New Password' onChange={(e)=>{setNewName(e.target.value)}}/>
+                                            <button className='ml-7 text-ui-purple bg-gray-blue hover:bg-ig-purple hover:text-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800' onClick={()=>{console.log(newName)}}>Save</button>
+                                        </div>
+                                    <p className='text-gray font-bold'>Set New Password</p>
+                                    <div className='flex flex-row justify-start items-center'>
+                                        <input className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-1.5 w-1/2" required={false} type='text' placeholder='New Password' onChange={(e)=>{setNewPassword(e.target.value)}}/>
+                                        <button className='ml-7  text-ui-purple bg-gray-blue hover:bg-ig-purple hover:text-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800' onClick={()=>{console.log(newPassword)}}>Save</button>
+                                    </div>
+                                    <p className='text-gray font-bold'>Set New Profile Picture</p>
+                                    <div className='flex flex-row justify-start items-center'>
+                                    {/**Image input */}
+                                        <div className='flex flex-row justify-start items-center'>
+                                            <Upload {...uploadProps}>
+                                                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                                            </Upload>
+                                        </div>
+                                        <button className='ml-4 text-ui-purple bg-gray-blue hover:bg-ig-purple hover:text-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg font-sans text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800' onClick={()=>{console.log('look',newProfilePicture)}}>Save</button>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    {line}
+                    {<ListHorizontal title='Favorites' products={dataFav}/>}
+                    {line}
+                    <ListHorizontal title='Purchases' products={dataOfPoster}/>
+                    
+                    {/* {line}
+                    <ListHorizontal title='Sold Items' products={allItemsOfPoster}/>
+                    {line} */}
+                    <div className='flex flex-row justify-start ml-9'>
+                        {starIcons}
+                    </div>
+                    
+                    {/* <Link type="submit" to="/home" className={buttonClassAccount}>Favorites</Link>
+                    <Link type="submit" to="/home" className={buttonClassAccount}>Purchases</Link>
+                    <Link type="submit" to="/home" className={buttonClassAccount}>Notifications</Link>
+                    <Link type="submit" to="/home" className={buttonClassAccount}>Security</Link>
+                    <Link type="submit" to="/home" className={buttonClassAccount}>Sold Items</Link>
+                    <Link type="submit" to="/home" className={buttonClassAccount}>Ratings</Link> */}
+
+                </div>
                 
             </div>
-        </div>
-        
-    </div>
         </div>
     
     
