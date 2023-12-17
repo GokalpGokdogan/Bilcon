@@ -4,6 +4,7 @@ import Message from './ui-component/message';
 import Header from './ui-component/header';
 import NavMenu from './ui-component/navMenu';  
 import { ChatContext } from '../context/ChatContext';
+import { createConversation, getConversation, sendMessage } from '../utils/Requests';
 
 /*
 
@@ -105,58 +106,72 @@ import { ChatContext } from '../context/ChatContext';
 
  */
 
-function Chat({userId} /*{nameIn="Nameless", priceIn=-1, sellerIn="@Gokalp", imgIn='https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg', key="" }*/) 
+function Chat({participants}) 
 {
-    
-    const chatContext = useContext(ChatContext);
-
-    const {createChat } = chatContext;
-
     const [list, setList] = useState([]);
+    const [messages, setMessages] = useState([]);
 
     const [newText, setNewText] = useState('');
 
     const [isOpenEnd, setIsOpenEnd] = useState(false);
     const [noStar, setNoStar] = useState(-1);
 
-    function loadList(){
-        let list = [];
-        for (let i = 0; i < 20; i++) {
+    function loadList() {
+        let updatedList = messages.map((message, index) => (
+          <div key={index}>
+            <Message sender={message.sentFrom} text={message.text}></Message>
+          </div>
+        ));
+        console.log(updatedList);
+        setList(updatedList);
+      }
+      const send = async () => {   
+        try {
+          const response = await sendMessage(["657cdc55ad49a566f0d00109", "657c3d9453e88c291cb70aaf"], newText, "657c3d9453e88c291cb70aaf");
             
-            let obj = <Message type={i%2==0? 'Self':'Other' }></Message>;
-            
-            
-            
-            list.push(
-                <div className='inline-block w-[50vw]'>
-                    {obj}
-                </div>
-            );
-        }
-        setList(list);
-    }
-
-    const sendMessage = () => { // call /sendMessage here.
-        const newMessage = (
-            <div className='inline-block w-[50vw]'>
-                <Message type='Self' text={newText}></Message>
+          const newMessage = (
+            <div key={Date.now()} className='inline-block w-[50vw]'>
+              <Message sender={"657cdc55ad49a566f0d00109"} text={newText}></Message>
             </div>
-        );
-        setList(prevList => [...prevList, newMessage]);
-        setNewText('');
-        createChat({"first": "657c3d9453e88c291cb70aaf", "second": "657cdc55ad49a566f0d00109"});
-    };
+          );
+      
+          setList((prevList) => [...prevList, newMessage]);
+        } catch (error) {
+          console.error('Error sending message:', error.message);
+          // Handle the error, display a notification, etc.
+        }
+      };
 
-    useEffect(() => {
-        loadList();
-    }, []);
+      const getConv = async () => {
+        try {
+          const response = await getConversation(["657cdc55ad49a566f0d00109", "657c3d9453e88c291cb70aaf"]);
+          setMessages(response.messages);
+        } catch (error) {
+          console.error('Error getting conversation:', error.message);
+          // Handle the error, display a notification, etc.
+        }
+      };
 
-    const messagesEndRef = useRef(null);
-
-    const scrollToBottom = () => {
+      const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
 
+      useEffect(() => {
+        // Call the fetchConversations function initially
+        getConv();
+
+        // Set up an interval to call fetchConversations every 10 seconds (adjust as needed)
+        const intervalId = setInterval(getConv, 1000);
+
+        // Clean up the interval on component unmount
+        return () => {
+            clearInterval(intervalId);
+        };
+        }, []);
+
+        useEffect(() => {loadList()}, [messages])
+
+   const messagesEndRef = useRef(null);
     let seller = {name:'@Gokalp',img:'https://i.ebayimg.com/images/g/C4AAAOSwm~daZhuB/s-l1600.jpg',rating:4.5}
 
     const starIcons = Array.from({ length: Math.ceil(seller.rating)  }, (_, i) => (
@@ -173,6 +188,8 @@ function Chat({userId} /*{nameIn="Nameless", priceIn=-1, sellerIn="@Gokalp", img
             </g>
         </svg>
     ));
+
+    
 
     const starIconsSpecial = Array.from({ length: 5  }, (_, i) => (
         <button key={i} onClick={() => { setNoStar(i) }}>
@@ -219,7 +236,7 @@ function Chat({userId} /*{nameIn="Nameless", priceIn=-1, sellerIn="@Gokalp", img
         </div>
     </div>
 
-    useEffect(scrollToBottom, [list]);
+ useEffect(scrollToBottom, [list]);
 
     
     return(
@@ -233,7 +250,7 @@ function Chat({userId} /*{nameIn="Nameless", priceIn=-1, sellerIn="@Gokalp", img
             <div className='bg-white h-screen pt-28'>
                     
                 
-                <div className='fixed mt-6 w-screen bg-white p-2 px-0 flex justify-center items-center'>
+                <div className='fixed w-screen bg-white p-2 px-0 flex justify-center items-center'>
                     <div className="flex flex-row bg-ui-purple w-[54vw] text-white text-2xl p-3 rounded-md shadow-lg">
                         {/* Header Block */}
                         {user}
@@ -250,24 +267,24 @@ function Chat({userId} /*{nameIn="Nameless", priceIn=-1, sellerIn="@Gokalp", img
                         
                     </div>
                 </div>
+               
                 <div className='flex flex-col items-center bg-white'>
                     
                     
                     <div className='mt-36 w-[45vw] mb-16 '>
-                        
                         {list}
-                        <div ref={messagesEndRef} />
+                      <div ref={messagesEndRef} />
                     </div>
                     
                     
                     <div className='fixed bottom-0 bg-white p-2 pb-4 w-full flex justify-center'>
                         <div className="relative w-[50vw] mx-2">
                             <input value={newText} onChange={ (e) => {setNewText(e.target.value)}}
-                                                    onKeyDown={ (e) => {if(e.key === 'Enter'){ if(newText != ''){sendMessage()}
+                                                    onKeyDown={ (e) => {if(e.key === 'Enter'){ if(newText != ''){send()}
                                                     setNewText('') 
                                                     }}} 
                                                     type="text" className="border border-gray bg-gray-light text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-xl p-2.5 w-full" placeholder="Write here..." required=""></input>
-                            <button onClick={ () =>{ if(newText != ''){sendMessage()}
+                            <button onClick={ () =>{ if(newText != ''){send()}
                                                 setNewText('') 
                                             }} 
                                     

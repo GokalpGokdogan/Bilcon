@@ -50,9 +50,6 @@ function Login()
                 <Link className="font-sans text-blue font-bold text-xs hover:underline" to="/register">Register</Link>
             </div>
         </div>
-        {conditionToShowAlert && (
-            <AlertPop errorCode={errorCode} />
-        )}
     </div>
     );
 }

@@ -23,7 +23,7 @@ class messageController{
             }
         });
        return exists;
-    }
+    } 
 
     // conversationTuple contains the ids of users, that is: let "0" and "1" be the ids of the two users.
     // then taking the id of the users, we sort them in ascending order and concatanate them into a string.
@@ -34,14 +34,14 @@ class messageController{
     async sendMessage(participants, text, sentFrom){
 
 
-        const MessageDb = MessageDB;
+        const MessageDb = messageModel;
         let addMessageToConversation = this.checkIfConversationExist(participants)
             .then((result) => {
                 
-                let message = new Message(text, sentFrom)
+                //let message = new Message(text, sentFrom)
                 const  newMessage = {
-                    sentFrom: message.sentFrom,
-                    text: message.text
+                    sentFrom: sentFrom,
+                    text: text
                 }
 
                 if(result !== null){
@@ -49,7 +49,9 @@ class messageController{
                         { participants: participants },
                         { $push: { messages: newMessage }})
                         .then((result) => {
+                            console.log(result);
                             return true;
+                            
                         })
                         .catch((err) =>{
                             return false;
@@ -82,7 +84,7 @@ class messageController{
    
     async checkIfConversationExist(participants){
 
-        const MessageDb = MessageDB;
+        const MessageDb = messageModel;
         let conversation = MessageDb.findOne({participants : participants})
             .then((result) => {
                 return result;
@@ -94,7 +96,7 @@ class messageController{
     //
     async getConversation(participants){
 
-        const MessageDb = MessageDB;
+        const MessageDb = messageModel;
         let conversation = MessageDb.findOne({participants : participants})
         .then((result) => {
             return result;
@@ -114,7 +116,7 @@ class messageController{
     //
     async createConversation(participants){
 
-        const MessageDb = MessageDB;
+        const MessageDb = messageModel;
 
         let created = this.checkIfConversationExist(participants)
             .then((result) => {
@@ -147,7 +149,7 @@ class messageController{
     async getAllConversations(userId){
 
 
-        const MessageDb = MessageDB;
+        const MessageDb = messageModel;
         let conversations = MessageDb.find({participants : {$in : [userId]}})
             .then((res) => {
                 return res;

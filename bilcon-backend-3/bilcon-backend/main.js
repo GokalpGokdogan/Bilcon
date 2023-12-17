@@ -284,7 +284,7 @@ app.post("/forgotPassword", async(req,res)=>{
 });
 
 app.get("/resetPassword/:token/:id", (req,res)=>{
-    
+    res.status(200).json({ redirect: "http://localhost:3001/resetPassword" });
 });
 //This endpoint will be called when user receives and clicks the resetting password mail
 app.patch("/resetPassword/:token/:id", async (req,res)=>{
@@ -301,6 +301,7 @@ app.patch("/resetPassword/:token/:id", async (req,res)=>{
                 res.send("Email verification for password reset failed, possibly the link is invalid or expired").redirect("/home");
             } 
             else{
+
                 //User will enter two new passwords and they should be matched
                 const firstPassword = req.body.password1;
                 if(firstPassword == req.body.password2){
@@ -623,7 +624,7 @@ Possible item types: "sale", "rent", "lost", "found", "lesson", "course"
 app.post("/getItemsOfPoster", async (req, res) => { // when a user clicks to another user's profile, the items posted by the user will appear-item type must be specified in the req
     const user = req.session.foundUser;
     if(user && Object.keys(user).length > 0){
-        let {nameOfPoster, itemType, numberOfItems, offset} = req.body;
+        let {itemType, numberOfItems, offset} = req.body;
         let userController = new UserController();
         
         //let posterIdOfPoster = await userController.getPosterIdByName(nameOfPoster);
@@ -854,7 +855,7 @@ app.post("/createConversation", (req, res) => {
 });
 
 
-app.get("/getConversation", (req, res) => {
+app.post("/getConversation", (req, res) => {
 
     const {participants} = req.body;
 
@@ -874,7 +875,7 @@ app.get("/getConversation", (req, res) => {
 
 });
 
-app.get("/getAllConversations", (req, res) => {
+app.post("/getAllConversations", (req, res) => {
 
     const {participant} = req.body;
 
@@ -1191,7 +1192,7 @@ Example JSON:
 app.post("/getAllItemsOfPoster", async (req, res) => { // when a user clicks to another user's profile, the items posted by the user will appear-item type must be specified in the req
     const user = req.session.foundUser;
     if(user && Object.keys(user).length > 0){
-        let {nameOfPoster, itemType, offset} = req.body;
+        let {itemType, offset} = req.body;
         let userController = new UserController();
         
         //let posterIdOfPoster = await userController.getPosterIdByName(nameOfPoster);
@@ -1251,6 +1252,16 @@ app.post("/getUserIdOfPosterId", async (req, res) => {
         let userController = new UserController();
         let userId = await userController.getUserObjectIdByPosterId(posterId);
         res.status(200).send(userId);
+    }
+    else{
+        return res.redirect("/login");
+    }
+})
+
+app.post("/getUserId", async (req, res)=> {
+    const user = req.session.foundUser;
+    if(user && Object.keys(user).length > 0){
+        res.status(200).send(req.session.foundUser.userId);
     }
     else{
         return res.redirect("/login");
