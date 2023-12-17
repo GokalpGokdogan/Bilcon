@@ -25,6 +25,14 @@ function Feed({ type = 'Market', searchValue, filterValue }) {
                         data = await searchAllItems(0, 'sale', 0, 10000000, 0, 0, 0, 1000000, 1000000, 1000000, 
                         "", 0, 0, "", searchValue, false);
                     }
+                    else if(Object.keys(filterValue).length > 0)
+                    {
+                        data = await filterAllItems(filterValue.offset, 'sale', filterValue.minPrice, filterValue.maxPrice, filterValue.minDay, filterValue.minMonth,
+                        filterValue.minYear, filterValue.maxDay, filterValue.maxMonth, filterValue.maxYear, filterValue.durationOfPrice, filterValue.minAvailabilityScalar, 
+                        filterValue.maxAvailabilityScalar, filterValue.availabilityDuration, filterValue.courseName, filterValue.sectionNo, filterValue.wantToGive, 
+                        filterValue.sortBy, false);
+                        console.log(filterValue);
+                    }
                     else
                     {
                         data = await getAllItems(0, 'sale', false);
@@ -37,6 +45,14 @@ function Feed({ type = 'Market', searchValue, filterValue }) {
                         data = await searchAllItems(0, 'rent', 0, 10000000, 0, 0, 0, 1000000, 1000000, 1000000, 
                         "week", 0, 100000, "week", searchValue, false);
                     }
+                    else if(Object.keys(filterValue).length > 0)
+                    {
+                        data = await filterAllItems(filterValue.offset, 'rent', filterValue.minPrice, filterValue.maxPrice, filterValue.minDay, filterValue.minMonth,
+                        filterValue.minYear, filterValue.maxDay, filterValue.maxMonth, filterValue.maxYear, filterValue.durationOfPrice, filterValue.minAvailabilityScalar, 
+                        filterValue.maxAvailabilityScalar, filterValue.availabilityDuration, filterValue.courseName, filterValue.sectionNo, filterValue.wantToGive, 
+                        filterValue.sortBy, false);
+                        console.log(filterValue);
+                    }
                     else
                     {
                         data = await getAllItems(0, 'rent', false);
@@ -46,6 +62,14 @@ function Feed({ type = 'Market', searchValue, filterValue }) {
                     {
                         data = await searchAllItems(0, 'lesson', 0, 10000000, 0, 0, 0, 1000000, 1000000, 1000000, 
                         "", 0, 0, "", searchValue, false);
+                    }
+                    else if(Object.keys(filterValue).length > 0)
+                    {
+                        data = await filterAllItems(filterValue.offset, 'lesson', filterValue.minPrice, filterValue.maxPrice, filterValue.minDay, filterValue.minMonth,
+                        filterValue.minYear, filterValue.maxDay, filterValue.maxMonth, filterValue.maxYear, filterValue.durationOfPrice, filterValue.minAvailabilityScalar, 
+                        filterValue.maxAvailabilityScalar, filterValue.availabilityDuration, filterValue.courseName, filterValue.sectionNo, filterValue.wantToGive, 
+                        filterValue.sortBy, false);
+                        console.log(filterValue);
                     }
                     else
                     {
@@ -57,6 +81,14 @@ function Feed({ type = 'Market', searchValue, filterValue }) {
                         data = await searchAllItems(0, 'lost', 0, 10000000, 0, 0, 0, 1000000, 1000000, 1000000, 
                         "", 0, 0, "", searchValue, false);
                     }
+                    else if(Object.keys(filterValue).length > 0)
+                    {
+                        data = await filterAllItems(filterValue.offset, 'lost', filterValue.minPrice, filterValue.maxPrice, filterValue.minDay, filterValue.minMonth,
+                        filterValue.minYear, filterValue.maxDay, filterValue.maxMonth, filterValue.maxYear, filterValue.durationOfPrice, filterValue.minAvailabilityScalar, 
+                        filterValue.maxAvailabilityScalar, filterValue.availabilityDuration, filterValue.courseName, filterValue.sectionNo, filterValue.wantToGive, 
+                        filterValue.sortBy, false);
+                        console.log(filterValue);
+                    }
                     else
                     {
                         data = await getAllItems(0, 'lost', false);
@@ -67,13 +99,29 @@ function Feed({ type = 'Market', searchValue, filterValue }) {
                         data = await searchAllItems(0, 'found', 0, 10000000, 0, 0, 0, 1000000, 1000000, 1000000, 
                         "", 0, 0, "", searchValue, false);
                     }
+                    else if(Object.keys(filterValue).length > 0)
+                    {
+                        data = await filterAllItems(filterValue.offset, 'found', filterValue.minPrice, filterValue.maxPrice, filterValue.minDay, filterValue.minMonth,
+                        filterValue.minYear, filterValue.maxDay, filterValue.maxMonth, filterValue.maxYear, filterValue.durationOfPrice, filterValue.minAvailabilityScalar, 
+                        filterValue.maxAvailabilityScalar, filterValue.availabilityDuration, filterValue.courseName, filterValue.sectionNo, filterValue.wantToGive, 
+                        filterValue.sortBy, false);
+                        console.log(filterValue);
+                    }
                     else
                     {
                         data = await getAllItems(0, 'found', false);
                     }
-                }  else if (type === 'CourseTrading') {
-
-                    
+                }  else if (type === 'CourseTrading') 
+                    {
+                    if(Object.keys(filterValue).length > 0)
+                    {
+                        data = await filterAllItems(filterValue.offset, 'found', filterValue.minPrice, filterValue.maxPrice, filterValue.minDay, filterValue.minMonth,
+                        filterValue.minYear, filterValue.maxDay, filterValue.maxMonth, filterValue.maxYear, filterValue.durationOfPrice, filterValue.minAvailabilityScalar, 
+                        filterValue.maxAvailabilityScalar, filterValue.availabilityDuration, filterValue.courseName, filterValue.sectionNo, filterValue.wantToGive, 
+                        filterValue.sortBy, false);
+                        console.log(filterValue);
+                    }
+                    else
                     {
                         data = await getAllItems(0, 'course', false);
                     }

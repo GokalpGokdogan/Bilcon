@@ -101,7 +101,7 @@ import { postItem } from '../utils/Requests';
 
         const dateSelect =  <div className='flex flex-row'>
                                 <input min={1} className="border border-gray bg-white text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-xs rounded-xl p-1.5 w-1/5" required={true} type='number' placeholder='Number of' onChange={(e)=>{setAvailabilityScalar(e.target.value)/**availabilityScalar */}}/>
-                                <Select  defaultValue={'day'} style={{ width: 90 }} onChange={(value) => { setAvailabilityDuration(value)/**availabilityDuration */ }}>
+                                <Select  defaultValue={'day'} style={{ width: 90 }} onChange={(e) => { setAvailabilityDuration(e)/**availabilityDuration */ }}>
                                     {['hour', 'day', 'week', 'month', 'year'].map(page => <Option key={page} value={page} >{page}</Option>)}
                                 </Select>
                             </div>
@@ -117,7 +117,7 @@ import { postItem } from '../utils/Requests';
             console.log(name, description, price, availabilityScalar, availabilityDuration, place, day, month, year, section, wantToGive, posterId);
         };
 
-        const submit =  <button type="submit" className="bg-ui-purple hover:bg-ig-purple text-white font-bold py-2 px-4 rounded transition duration-200 ease-in-out transform transition-transform scale-95 hover:scale-100"   onClick={async () => {
+        const submit =  <button type="submit" className="bg-ui-purple hover:bg-ig-purple text-white font-bold py-2 px-4 rounded duration-200 ease-in-out transform transition-transform scale-95 hover:scale-100"   onClick={async () => {
             try {
               // Set the item data
               setItem({

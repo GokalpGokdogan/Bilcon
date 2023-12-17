@@ -112,7 +112,7 @@ function FilterView({type = 'Course Trading', setIsOpen, filterValue, setFilterV
                                 ...filters,
                                 [key]: !filters[key]
                             })}
-                            className="mt-0.5 p-1 block w-full border rounded-md text-white bg-ui-purple rounded hover:bg-purple-700 transition duration-200 ease-in-out"
+                            className="mt-0.5 p-1 block w-full border rounded-md text-white bg-ui-purple  hover:bg-purple-700 transition duration-200 ease-in-out"
                         >
                             {filters[key] ? 'Yes' : 'No'}
                         </button>

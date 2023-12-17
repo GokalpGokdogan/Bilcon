@@ -58,34 +58,6 @@ export const getItems = async (numberOfItems, offset, itemType) => {
     }
   };
 
-/* export const postItem = async (itemData) => {
-    const formData = new FormData();
-
-    // Append form data key-value pairs
-    Object.entries(itemData).forEach(([key, value]) => {
-        formData.append(key, value);
-    });
-
-    // Append the image file
-    const imageFile = document.getElementById('imageFileInput').files[0]; // Replace with your actual file input ID
-    formData.append('image', imageFile);
-
-    const res = await axios.post(`http://${API_HOST}/postItem`, formData, {
-        headers: {
-        'Content-Type': 'multipart/form-data',
-        },
-        withCredentials: true,
-    });
-    if (res.data && res.data.redirect) {
-      // Manually handle the redirect
-      window.location.href = res.data.redirect;
-  }
-    if (res.data) {
-        console.log(res.data);
-    }
-    return res.data;
-}; */
-
 export const findUserChats = async (userId) => {
   try {
     const params = {userId};
@@ -285,6 +257,31 @@ export const postItem = async (formData) => {
     return res.data;
   } catch (error) {
     console.error('Error in searchItems:', error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+export const getAllItemsInFavoritesList = async (offset, itemType) => {
+  try {
+    const body = {'offset': offset, 'itemType': itemType };
+    const res = await axios({
+      method: 'post',
+      url: `http://${API_HOST}/getAllItemsInFavoritesList`,
+      headers: { 'Content-Type': 'application/json' },
+      data: body,
+      withCredentials: true
+  });
+
+    if (res.data && res.data.redirect) {
+      // Manually handle the redirect
+      window.location.href = res.data.redirect;
+    }
+    if (res.data) {
+      console.log(res.data);
+    }
+    return res.data;
+  } catch (error) {
+    console.error('Error in getItems:', error);
     throw error; // Rethrow the error to handle it in the component
   }
 };
