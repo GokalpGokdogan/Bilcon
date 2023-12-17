@@ -235,7 +235,16 @@ class PrivateLessonItemController extends ItemController{
             });
             return itemCount;
     }
-
+    async getItemWithItemId(itemId){
+        const privateLessonItemDb = privateLessonItemDB;
+        let item = await privateLessonItemDb.findOne({itemId: itemId});
+        if(item == null || item == undefined){
+            return null;
+        }
+        else{
+            return new PrivateLessonItem(item.name, item.definition, item.itemId, item.photo, item.price, item.posterId, item.arrayOfFavoritesListCustomerIds, item.posterName);
+        }
+    }
 }
 
 module.exports = PrivateLessonItemController;
