@@ -50,7 +50,7 @@ const CourseTradingItem = ({product}) => {
                      <FavoriteBorderIcon style={{fontSize: 'large', fontWeight: 'bold' }} className='text-white'/>
                  )}
              </div>
-        
+             <Link to={`/details/sale/${product.itemId}`}>
          <div className='w-auto h-48 flex flex-col ml-2 justify-center items-left items-stretch' >
              <p className='mt-2 font-semibold text-lg' style={{overflowWrap: 'break-word' }}>{product.name}</p>
              <div className='flex flex-col border-t border-gray-mid font-sanstext-sm'>
@@ -58,6 +58,7 @@ const CourseTradingItem = ({product}) => {
                  <p>{(product.posterName).replace('@', '')}</p>
              </div>
          </div>
+            </Link>
      </div>
     );
 }

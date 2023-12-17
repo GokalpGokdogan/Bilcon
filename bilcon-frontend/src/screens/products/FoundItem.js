@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { Link } from 'react-router-dom';
 
 const FoundItem = ({product}) => {
 
@@ -13,6 +14,7 @@ const FoundItem = ({product}) => {
                 src={`data:image/jpeg;base64,${product.photo}`}
             />
             </div>
+            <Link to={`/details/found/${product.itemId}`}>
             <div className='flex flex-col m-6 w-60 text-sm font-sans'>
                 <p className='font-bold text-lg'>{product.name}</p>
                 <p>{product.posterName}</p>
@@ -24,10 +26,10 @@ const FoundItem = ({product}) => {
                 
                 <div className='flex flex-col mt-3 gap-2'>
                     <p className='text-sm max-w-sm truncate'>{product.definition}</p>
-                    <a href='' className='text-sm text-blue font-semibold hover:text-blue-dark hover:underline'>View details</a>
+                    {/* <a href='' className='text-sm text-blue font-semibold hover:text-blue-dark hover:underline'>View details</a> */}
                 </div>
             </div>
-
+            </Link>
         </div>
         //</Link>
     );

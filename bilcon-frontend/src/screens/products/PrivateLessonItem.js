@@ -61,11 +61,11 @@ const PrivateLessonItem = ({product}) => {
                 (
                     <div></div>
                 )
-                }
+                }<Link to={`/details/lesson/${product.itemId}`}>
                 <div className='flex flex-col border-t border-gray-mid font-sanstext-sm'>
                     <p className='font-bold text-lg'>{product.price} TL/hour</p>
                     <p>{(product.posterName).replace('@', '')}</p>
-                </div>
+                </div></Link>
             </div>
         </div>
     );
