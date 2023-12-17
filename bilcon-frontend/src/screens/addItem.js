@@ -4,6 +4,7 @@ import Header from './ui-component/header';
 import {message, Select, Switch } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Upload from './ui-component/Upload';
+import { postItem } from '../utils/Requests';
 
     function AddItem() 
     {
@@ -116,27 +117,53 @@ import Upload from './ui-component/Upload';
             console.log(name, description, price, availabilityScalar, availabilityDuration, place, day, month, year, section, wantToGive, posterId);
         };
 
-        const submit =  <button type="submit" className="bg-ui-purple hover:bg-ig-purple text-white font-bold py-2 px-4 rounded transition duration-200 ease-in-out transform transition-transform scale-95 hover:scale-100" onClick={() => {
-                                        setItem({name:name, description:description, price:price, availabilityScalar:availabilityScalar, availabilityDuration:availabilityDuration, place:place, day:day, month:month, year:year, sectionNo:section, wantToGive:wantToGive, itemType:itemType, posterId:posterId});
-                                        if (file) {
-                                            formData.append('photo', uploadedFile);
-                                            console.log("didnt appended")
-                                          }
-                                        formData.append('name', name);
-                                        formData.append('description', description);
-                                        formData.append('price', price);
-                                        formData.append('availabilityScalar', availabilityScalar);
-                                        formData.append('availabilityDuration', availabilityDuration);
-                                        formData.append('place', place);
-                                        formData.append('day', day);
-                                        formData.append('month', month);
-                                        formData.append('year', year);
-                                        formData.append('sectionNo', section);
-                                        formData.append('wantToGive', wantToGive);
-                                        formData.append('itemType', itemType);
-                                        formData.append('posterId', posterId);                                        //console.log(item);
-                                        console.log(formData.photo);
-                                        }}>
+        const submit =  <button type="submit" className="bg-ui-purple hover:bg-ig-purple text-white font-bold py-2 px-4 rounded transition duration-200 ease-in-out transform transition-transform scale-95 hover:scale-100"   onClick={async () => {
+            try {
+              // Set the item data
+              setItem({
+                name,
+                description,
+                price,
+                availabilityScalar,
+                availabilityDuration,
+                place,
+                day,
+                month,
+                year,
+                sectionNo: section,
+                wantToGive,
+                itemType,
+                posterId,
+              });
+      
+              // Append file and other form data to formData
+              formData.append('image', uploadedFile);
+              formData.append('name', name);
+              formData.append('definition', description);
+              formData.append('price', price);
+              formData.append('availabilityScalar', availabilityScalar);
+              formData.append('availabilityDuration', availabilityDuration);
+              formData.append('place', place);
+              formData.append('day', day);
+              formData.append('month', month);
+              formData.append('year', year);
+              formData.append('sectionNo', section);
+              formData.append('wantToGive', wantToGive);
+              formData.append('itemType', itemType);
+              formData.append('posterId', posterId);
+      
+              // Call the postItem function
+              const response = await postItem(formData);
+      
+              // Log or handle the response
+              console.log('Item posted successfully:', response);
+      
+            } catch (error) {
+              // Handle errors
+              console.error('Error posting item:', error);
+            }
+          }}
+        >
                             Submit
                         </button>
         
@@ -196,19 +223,7 @@ import Upload from './ui-component/Upload';
                             
                             <div className='h-[32vw] w-[24vw] flex justify-center items-center'>
                                 <div>
-                                    <Upload
-                                        name="avatar"
-                                        listType="picture-card"
-                                        className="m-auto p-auto"
-                                        showUploadList={false}
-                                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                        beforeUpload={beforeUpload}
-                                        onChange={handleChange}
-                                        customRequest={handleUpload}
-                                        autoSize={true}
-                                    >
-                                        {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton}
-                                    </Upload>
+                                    <Upload uploadedFile={uploadedFile} setUploadedFile={setUploadedFile}></Upload>
                                 </div>
                                 
                             </div>
@@ -256,19 +271,7 @@ import Upload from './ui-component/Upload';
                             
                             <div className='h-[32vw] w-[24vw] flex justify-center items-center'>
                                 <div>
-                                    <Upload
-                                        name="avatar"
-                                        listType="picture-card"
-                                        className="m-auto p-auto"
-                                        showUploadList={false}
-                                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                        beforeUpload={beforeUpload}
-                                        onChange={handleChange}
-                                        customRequest={handleUpload}
-                                        autoSize={true}
-                                    >
-                                        {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton}
-                                    </Upload>
+                                <Upload uploadedFile={uploadedFile} setUploadedFile={setUploadedFile}></Upload>
                                 </div>
                                 
                             </div>
@@ -331,19 +334,7 @@ import Upload from './ui-component/Upload';
                             
                             <div className='h-[32vw] w-[24vw] flex justify-center items-center'>
                                 <div>
-                                    <Upload
-                                        name="avatar"
-                                        listType="picture-card"
-                                        className="m-auto p-auto"
-                                        showUploadList={false}
-                                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                        beforeUpload={beforeUpload}
-                                        onChange={handleChange}
-                                        customRequest={handleUpload}
-                                        autoSize={true}
-                                    >
-                                        {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton}
-                                    </Upload>
+                                <Upload uploadedFile={uploadedFile} setUploadedFile={setUploadedFile}></Upload>
                                 </div>
                                 
                             </div>
@@ -394,19 +385,7 @@ import Upload from './ui-component/Upload';
                             
                             <div className='h-[32vw] w-[24vw] flex justify-center items-center'>
                                 <div>
-                                    <Upload
-                                        name="avatar"
-                                        listType="picture-card"
-                                        className="m-auto p-auto"
-                                        showUploadList={false}
-                                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                        beforeUpload={beforeUpload}
-                                        onChange={handleChange}
-                                        customRequest={handleUpload}
-                                        autoSize={true}
-                                    >
-                                        {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton}
-                                    </Upload>
+                                <Upload uploadedFile={uploadedFile} setUploadedFile={setUploadedFile}></Upload>
                                 </div>
                                 
                             </div>

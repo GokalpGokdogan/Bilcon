@@ -14,7 +14,7 @@ const Upload = ({uploadedFile, setUploadedFile}) => {
     const fileUploaded = event.target.files[0]; // ADDED
     
     // Set the uploaded file in the component's state
-    setUploadedFile(fileUploaded);
+    setUploadedFile(event.target.files[0]);
 
     // You can perform additional actions with the file as needed
     console.log("Uploaded file:", fileUploaded);
@@ -23,7 +23,7 @@ const Upload = ({uploadedFile, setUploadedFile}) => {
   return (
 <div>
   <button className={`flex justify-center items-center w-full h-full bg-secondary-bg dark:bg-dark-secondary-bg`} onClick={handleClick}>
-    <input type="file" accept=".jpg" ref={hiddenFileInput} style={{ display: "none" }} onChange={handleChange} />
+    <input type="file" name="image" accept=".jpg" ref={hiddenFileInput} style={{ display: "none" }} onChange={handleChange} />
 
     {!(uploadedFile && uploadedFile.type === "image/jpeg") ? (
       <div>

@@ -22,7 +22,6 @@ import { ChatContextProvider } from './context/ChatContext';
 import Chat from './screens/chat';
 import LostItems from './screens/top-menu/lostItemsPage';
 import FoundItems from './screens/top-menu/foundItemsPage';
-import ChatBox from './screens/chatBox';
 
 export default function App() {
 

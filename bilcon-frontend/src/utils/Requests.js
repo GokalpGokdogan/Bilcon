@@ -58,7 +58,7 @@ export const getItems = async (numberOfItems, offset, itemType) => {
     }
   };
 
-export const postItem = async (itemData) => {
+/* export const postItem = async (itemData) => {
     const formData = new FormData();
 
     // Append form data key-value pairs
@@ -84,7 +84,7 @@ export const postItem = async (itemData) => {
         console.log(res.data);
     }
     return res.data;
-};
+}; */
 
 export const findUserChats = async (userId) => {
   try {
@@ -263,4 +263,28 @@ if (res.data && res.data.redirect) {
   console.error('Error in searchItems:', error);
   throw error; // Rethrow the error to handle it in the component
 }
+};
+
+export const postItem = async (formData) => {
+  try {
+    const res = await axios({
+      method: 'post',
+      url: `http://${API_HOST}/postItem`,
+      headers: { 'Content-Type': 'multipart/form-data' },
+      data: formData,
+      withCredentials: true
+  });
+  if (res.data && res.data.redirect) {
+    // Manually handle the redirect
+    window.location.href = res.data.redirect;
+  }
+    if (res.data) {
+      console.log(res.data);
+    }
+
+    return res.data;
+  } catch (error) {
+    console.error('Error in searchItems:', error);
+    throw error; // Rethrow the error to handle it in the component
+  }
 };

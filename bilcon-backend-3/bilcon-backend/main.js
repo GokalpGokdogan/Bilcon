@@ -30,7 +30,7 @@ const corsOptions ={
 app.use(cors(corsOptions));
 
 app.use(bodyParser.urlencoded({ extended: false }));
-const dbUrl = 'mongodb+srv://dbuser:dbuser@user.fyqmjti.mongodb.net/'; //enter the link of mongo db cluster;
+const dbUrl = 'mongodb://localhost:27017/UserDB'; //enter the link of mongo db cluster;
 
 /* 
 In order to test it, first the url should be entered above.
