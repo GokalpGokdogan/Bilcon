@@ -53,16 +53,16 @@ function Header({type = 'Market', setSearchValue, searchValue, filterValue, setF
                         className="mx-1 bg-gray-light text-gray-900 focus:outline-none focus:ring-1 ring-gray sm:text-sm rounded-lg p-2.5 w-96 pl-10 pr-10" // Add pl-10 and pr-10 for left and right padding
                         placeholder="Search for second-hand items, books and more!"
                         value={searchValue}
-                        onChange={(e) => setSearchValue(e.target.value)}
+                        onChange={setSearchValue ? (e) => setSearchValue(e.target.value) : undefined}
                     />
                     <div className='absolute left-3 top-1/2 transform -translate-y-1/2'>
                         <FilterListIcon onClick={() => setIsOpenFilter(!isOpenFilter)} className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100" />
                     </div>
                     {isOpenFilter && (
-                        <FilterView type={type.type} isOpen={isOpenFilter} setIsOpen={setIsOpenFilter} filterValue={filterValue} setFilterValue={setFilterValue}/>
+                        <FilterView type={type} isOpen={isOpenFilter} setIsOpen={setIsOpenFilter} filterValue={filterValue} setFilterValue={setFilterValue}/>
                     )}
                     <div className='absolute right-3 top-1/2 transform -translate-y-1/2'>
-                        <SearchIcon onClick={setSearchValue(searchValue)} className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100" />
+                        <SearchIcon onClick={setSearchValue ? (e) => setSearchValue(e.target.value) : undefined} className="text-blue-dark transform transition-transform duration-200 ease-in-out scale-95 hover:scale-100" />
                     </div>
                 </div>
             </div>

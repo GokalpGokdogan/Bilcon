@@ -1,14 +1,16 @@
 import React,{useState, useEffect} from 'react';
 import NavMenu from './ui-component/navMenu';
 import Header from './ui-component/header';
-import { Upload, message, Select, Switch } from 'antd';
+import {message, Select, Switch } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import Upload from './ui-component/Upload';
 
     function AddItem() 
     {
         const pages = ['Market', 'Renting', 'LostItems', 'FoundItems','PrivateLessons', 'CourseTrading'];
         const [type, setType] = useState('Market');
         const [imageUrl, setImageUrl] = useState(null);
+        const [file, setFile] = useState(null);
 
         const [item, setItem] = useState(null);
 
@@ -26,35 +28,55 @@ import { PlusOutlined } from '@ant-design/icons';
         const [wantToGive, setWantToGive ] = useState(true);
         const [posterId, setPosterId] = useState('22222222');
         const [itemType, setItemType] = useState('Market');
-
+        const [photo, setPhoto] = useState();
+        const [uploadedFile, setUploadedFile] = useState(null);
         //ant design
         const { Option } = Select;
 
+        let formData = new FormData();
         
         const line = <hr className='border-gray border-1 w-100 my-[1vw]'/>
         
         let component;
 
+        
         const beforeUpload = (file) => {
-            const isJpgOrPng = file.type === 'image/jpg';
-            if (!isJpgOrPng) {
-                message.error('You can only upload JPG file!');
-            }
-            return isJpgOrPng;
-        }
-    
-        const handleChange = (info) => {
-            if (info && info.file) {
-                if (info.file.status === 'done') {
-                    console.log(info.file.response.url)
-                    setImageUrl(info.file.response.url); // Here you should update the imageUrl with the URL of the image returned from the server
+            const isJpg = file.type === 'image/jpeg';
+
+                if (!isJpg) {
+                    message.error('You can only upload JPEG file!');
                 }
+                else{
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                // Set the base64 content to state and display the image preview
+                setImageUrl(reader.result);
+                };
+                reader.readAsDataURL(file);
             }
-        };
+                // Returning false prevents the default upload behavior
+                return false;
+        }
+
+        const handleChange = (info) => {
+            if (info.file.status === 'done') {
+              setFile(info.file.originFileObj);
+              // Log or perform any action after the state is updated
+              console.log(file);
+            } else if (info.file.status === 'error') {
+              // Handle the case where the file upload fails
+              console.error('File upload failed');
+            } else {
+              // Clear the file state when the file is removed
+              setFile(null);
+            }
+          };
+          
+          
 
         const handleUpload = ({ file, onSuccess }) => {
             console.log(file);
-            //setImg(file);
+            setPhoto(file);
             setTimeout(() => {
                 onSuccess("ok");
             }, 2000);
@@ -96,7 +118,24 @@ import { PlusOutlined } from '@ant-design/icons';
 
         const submit =  <button type="submit" className="bg-ui-purple hover:bg-ig-purple text-white font-bold py-2 px-4 rounded transition duration-200 ease-in-out transform transition-transform scale-95 hover:scale-100" onClick={() => {
                                         setItem({name:name, description:description, price:price, availabilityScalar:availabilityScalar, availabilityDuration:availabilityDuration, place:place, day:day, month:month, year:year, sectionNo:section, wantToGive:wantToGive, itemType:itemType, posterId:posterId});
-                                        console.log(item);
+                                        if (file) {
+                                            formData.append('photo', uploadedFile);
+                                            console.log("didnt appended")
+                                          }
+                                        formData.append('name', name);
+                                        formData.append('description', description);
+                                        formData.append('price', price);
+                                        formData.append('availabilityScalar', availabilityScalar);
+                                        formData.append('availabilityDuration', availabilityDuration);
+                                        formData.append('place', place);
+                                        formData.append('day', day);
+                                        formData.append('month', month);
+                                        formData.append('year', year);
+                                        formData.append('sectionNo', section);
+                                        formData.append('wantToGive', wantToGive);
+                                        formData.append('itemType', itemType);
+                                        formData.append('posterId', posterId);                                        //console.log(item);
+                                        console.log(formData.photo);
                                         }}>
                             Submit
                         </button>
@@ -105,19 +144,16 @@ import { PlusOutlined } from '@ant-design/icons';
             component = <div className='flex flex-row '>
                             <div className='h-[32vw] w-[24vw] flex justify-center items-center'>
                                 <div>
-                                    <Upload
-                                        name="avatar"
-                                        listType="picture-card"
-                                        className="m-auto p-auto"
-                                        showUploadList={false}
-                                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                        beforeUpload={beforeUpload}
-                                        onChange={handleChange}
-                                        customRequest={handleUpload}
-                                        autoSize={true}
+                               {/*  <Upload
+                                    name="avatar"
+                                    listType="picture-card"
+                                    className="m-auto p-auto"
+                                    showUploadList={false}
+                                    onChange={handleChange}
                                     >
-                                        {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton}
-                                    </Upload>
+                                    {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                                </Upload> */}
+                                <Upload uploadedFile={uploadedFile} setUploadedFile={setUploadedFile}></Upload>
                                 </div>
                                 
                             </div>
@@ -437,11 +473,11 @@ import { PlusOutlined } from '@ant-design/icons';
                 <NavMenu currPage="Add-Items"/>
                 <div className='flex flex-col bg-white justify-center items-center'>
                     <h1 className='font-inter font-extrabold text-3xl text-ui-purple my-2'>Post {type} Item</h1>
-                    <form onSubmit={handleSubmit}>
+                    {/* <form onSubmit={handleSubmit}> */}
                         <div className='flex flex-row bg-gray-light rounded-xl'>
                             {component}
                         </div>
-                    </form>
+                    {/* </form> */}
                     
                 </div>
             </div>

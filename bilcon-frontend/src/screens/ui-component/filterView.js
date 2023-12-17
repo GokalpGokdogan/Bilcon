@@ -97,7 +97,7 @@ function FilterView({type = 'Course Trading', setIsOpen, filterValue, setFilterV
             [event.target.name]: value
         }));
 
-        setFilterValue(prevFilterValue => ({
+        setFilterValue && setFilterValue(prevFilterValue => ({
             ...prevFilterValue,
             [event.target.name]: value
         }));
@@ -207,7 +207,7 @@ function FilterView({type = 'Course Trading', setIsOpen, filterValue, setFilterV
             <button
             onClick={() => {
                 setIsOpen(false);
-                setFilterValue(filters);
+                setFilterValue && setFilterValue(filters);
                 console.log(filters); // Log the latest filters state
             }}
             className="mt-4 bg-ui-purple font-sans text-white w-full py-2 rounded hover:bg-blue-dark transition duration-200 ease-in-out"
